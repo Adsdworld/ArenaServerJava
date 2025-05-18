@@ -1,6 +1,7 @@
 package com.arena;
 
 import com.arena.utils.Logger;
+import com.arena.server.Server;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
@@ -14,6 +15,7 @@ public class Main {
         Logger.info("**********************************************************");
         Logger.info("Démarrage du serveur");
 
-        // TODO: start server
+        Server server = new Server();
+        server.start();
     }
 }
