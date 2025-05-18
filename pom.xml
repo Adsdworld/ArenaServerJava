@@ -40,7 +40,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.yourgame.GameServer</mainClass>
+                            <mainClass>com.arena.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
