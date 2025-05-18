@@ -40,7 +40,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.arena.main</mainClass>
+                            <mainClass>com.arena.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
