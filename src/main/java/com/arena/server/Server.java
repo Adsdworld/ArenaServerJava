@@ -8,6 +8,6 @@ public class Server {
     }
 
     public void start() {
-        Logger.info("Server started successfully !");
+        Logger.info("Server started successfully !!");
     }
 }
