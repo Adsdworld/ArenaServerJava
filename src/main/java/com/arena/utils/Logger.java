@@ -31,6 +31,10 @@ public class Logger {
         enqueueLog("failure", message);
     }
 
+    public static void error(String message) {
+        enqueueLog("error", message);
+    }
+
     private static void enqueueLog(String level, String message) {
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
 
