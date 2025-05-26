@@ -9,6 +9,11 @@ public class Player {
      */
     private String uuid;
 
+    /**
+     * The name of the player.
+     */
+    private String name;
+
     // TODO: Add player name
     // TODO: Add pos x z y
     // TODO: Add rotation (0 to 360 degrees)
@@ -22,7 +27,18 @@ public class Player {
     public String getUuid() {
         return uuid;
     }
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+
+    /// <summary>
+    /// Do not change the UUID of a player.
+    /// </summary>
+    public void setUuid(String uuid) throws Exception {
+        throw new Exception("Do not change the UUID of a player.");
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }
