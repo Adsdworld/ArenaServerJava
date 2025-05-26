@@ -10,14 +10,14 @@ import com.arena.utils.Logger;
 import com.arena.network.message.Message;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * JavaWebSocket is a singleton WebSocket server that listens for incoming connections
@@ -77,19 +77,37 @@ public class JavaWebSocket extends WebSocketServer {
         conn.send(gson.toJson(msg));
         Logger.info("Sent test message: " + gson.toJson(msg));*/
 
-
-        //Logger.info("Message received: " + messageJson);
         try {
+            /**
+             * Check if the JSON keys match the Message class fields.
+             * If there is a mismatch, it means that the Message class is not up to date
+             */
             Gson gson = new Gson();
-            Message message = gson.fromJson(messageJson, Message.class);
+            JsonObject jsonRaw = JsonParser.parseString(messageJson).getAsJsonObject();
+            Message parsedMsg = gson.fromJson(messageJson, Message.class);
+            JsonObject jsonParsed = gson.toJsonTree(parsedMsg).getAsJsonObject();
 
-            if (!Objects.equals(messageJson, message.toString())) {
-                Logger.warn("Message JSON does not match parsed object, you have an error of naming between client and server.");
-                Logger.info("Parsed message: " + message);
-                return;
+            Set<String> rawKeys = jsonRaw.keySet();
+            Set<String> parsedKeys = jsonParsed.keySet();
+
+            if (!rawKeys.equals(parsedKeys)) {
+                Set<String> missing = new HashSet<>(rawKeys);
+                missing.removeAll(parsedKeys);
+
+                Set<String> extra = new HashSet<>(parsedKeys);
+                extra.removeAll(rawKeys);
+
+                if (!missing.isEmpty()) {
+                    Logger.warn("JSON keys missing in parsed object: " + missing);
+                }
+                if (!extra.isEmpty()) {
+                    Logger.warn("JSON keys present in parsed object but not in JSON: " + extra);
+                }
             }
 
-            Logger.info(message.getAction().toString());
+            Message message = gson.fromJson(messageJson, Message.class);
+
+            Logger.info(message.getUuid() + " >>> " + message.getAction() + " : " + messageJson);
 
             if (message.getAction() == ActionEnum.Login) {
                 Player player = new Player(message.getUuid());
