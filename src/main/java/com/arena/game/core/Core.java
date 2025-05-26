@@ -39,7 +39,7 @@ public class Core {
         handlers.put(ActionEnum.CreateGame, new CreateGameHandler());
         handlers.put(ActionEnum.Join, new JoinHandler());
         // Traitement toutes les 50ms
-        scheduler.scheduleAtFixedRate(this::processMessages, 0, 50, TimeUnit.MILLISECONDS);
+        //scheduler.scheduleAtFixedRate(this::processMessages, 0, 50, TimeUnit.MILLISECONDS);
     }
 
     public void receive(Message message) {
