@@ -5,6 +5,7 @@ import com.arena.game.core.Core;
 import com.arena.network.message.BroadcastMessage;
 import com.arena.player.ActionEnum;
 import com.arena.player.Player;
+import com.arena.server.Server;
 import com.arena.utils.Logger;
 import com.arena.network.message.Message;
 import com.google.gson.Gson;
@@ -16,6 +17,7 @@ import org.java_websocket.server.WebSocketServer;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * JavaWebSocket is a singleton WebSocket server that listens for incoming connections
@@ -76,16 +78,25 @@ public class JavaWebSocket extends WebSocketServer {
         Logger.info("Sent test message: " + gson.toJson(msg));*/
 
 
-        Logger.info("Message received: " + messageJson);
+        //Logger.info("Message received: " + messageJson);
         try {
             Gson gson = new Gson();
             Message message = gson.fromJson(messageJson, Message.class);
-            Logger.info("Parsed message: " + message);
+
+            if (!Objects.equals(messageJson, message.toString())) {
+                Logger.warn("Message JSON does not match parsed object, you have an error of naming between client and server.");
+                Logger.info("Parsed message: " + message);
+                return;
+            }
+
+            Logger.info(message.getAction().toString());
 
             if (message.getAction() == ActionEnum.Login) {
                 Player player = new Player(message.getUuid());
                 JavaWebSocket.getInstance().webSocketToUuid.put(conn, player);
                 JavaWebSocket.getInstance().uuidToWebSocket.put(player, conn);
+
+                Server.getInstance().registerPlayer(player);
                 return;
             }
 

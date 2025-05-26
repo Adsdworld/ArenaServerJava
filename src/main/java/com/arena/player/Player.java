@@ -9,6 +9,11 @@ public class Player {
      */
     private String uuid;
 
+    /**
+     * The name of the player.
+     */
+    private String name;
+
     // TODO: Add player name
     // TODO: Add pos x z y
     // TODO: Add rotation (0 to 360 degrees)
@@ -24,5 +29,12 @@ public class Player {
     }
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }

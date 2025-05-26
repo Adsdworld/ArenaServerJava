@@ -3,7 +3,7 @@ package com.arena.player;
 import com.google.gson.annotations.SerializedName;
 
 public enum ActionEnum {
-    @SerializedName("login")
+    @SerializedName("Login")
     Login("Login"),
 
     @SerializedName("Create Game")

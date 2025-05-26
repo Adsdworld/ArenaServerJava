@@ -11,6 +11,8 @@ public class Server {
 
     private static Server instance;
 
+    private ArrayList<Player> players;
+
     public ArrayList<Game> games;
 
     private boolean creatingGame;
@@ -20,6 +22,7 @@ public class Server {
     private Server() {
         games = new ArrayList<>();
         creatingGame = false;
+        players = new ArrayList<>();
     }
 
     public static synchronized Server getInstance() {
@@ -59,5 +62,27 @@ public class Server {
                 .filter(game -> game.getGameNameEnum() == gameNameEnum)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void registerPlayer(Player player) {
+        if (player == null) {
+            Logger.error("Could not register a null player.");
+            return;
+        }
+        players.add(player);
+        Logger.info("Registering player: " + player.getUuid());
+    }
+
+    public void unregisterPlayer(Player player) {
+        if (player != null && players.contains(player)) {
+            players.remove(player);
+            Logger.info("Unregistering player: " + player.getUuid());
+        } else {
+            Logger.error("Could not unregister player: " + (player != null ? player.getUuid() : "null"));
+        }
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 }
