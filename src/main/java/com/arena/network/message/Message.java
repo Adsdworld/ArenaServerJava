@@ -13,12 +13,12 @@ public class Message implements Comparable<Message> {
     private String _ability;
     private Float _x;
     private Float _z;
-    private Date _timestamp;
+    private long _timestamp;
 
     // Constructeur vide nécessaire pour Gson
     public Message() {}
 
-    public Date get_timestamp() {
+    public long getTimeStamp() {
         return _timestamp;
     }
 
@@ -45,7 +45,7 @@ public class Message implements Comparable<Message> {
 
     @Override
     public int compareTo(Message other) {
-        return this._timestamp.compareTo(other._timestamp);
+        return Long.compare(this._timestamp, other._timestamp);
     }
 
     @Override
