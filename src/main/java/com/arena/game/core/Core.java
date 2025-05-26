@@ -7,6 +7,7 @@ import com.arena.network.JavaWebSocket;
 import com.arena.network.message.Message;
 import com.arena.player.ActionEnum;
 import com.arena.player.Player;
+import com.arena.server.Server;
 import com.arena.utils.Logger;
 
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class Core {
         // On peut fixer une tolérance (ex: 2 ticks max d'écart, soit 100 ms)
         long tolerance = 100;
 
-        while (!messageQueue.isEmpty()) {
+        while (!messageQueue.isEmpty() && !Server.getInstance().getGames().isEmpty()) {
             Message next = messageQueue.peek(); // pas encore retiré
 
             if (next.getTimeStamp() <= now + tolerance) {
