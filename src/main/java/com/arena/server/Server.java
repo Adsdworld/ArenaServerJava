@@ -32,7 +32,7 @@ public class Server {
         return instance;
     }
 
-    public void createGame(GameNameEnum gameNameEnum) {
+    public synchronized void createGame(GameNameEnum gameNameEnum) {
         if (!creatingGame) {
             if (games.size() < MAX_GAMES) {
                 creatingGame = true;
