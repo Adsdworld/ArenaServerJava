@@ -27,8 +27,12 @@ public class Player {
     public String getUuid() {
         return uuid;
     }
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+
+    /// <summary>
+    /// Do not change the UUID of a player.
+    /// </summary>
+    public void setUuid(String uuid) throws Exception {
+        throw new Exception("Do not change the UUID of a player.");
     }
 
     public String getName() {
