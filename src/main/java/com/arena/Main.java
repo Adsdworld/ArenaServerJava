@@ -1,8 +1,14 @@
 package com.arena;
 
-import com.arena.utils.Logger;
+import com.arena.network.JavaWebSocket;
 import com.arena.server.Server;
+import com.arena.utils.Logger;
 
+/**
+ * Main class
+ * This is the entry point of the java application.
+ * It starts the JavaWebSocket server.
+ */
 public class Main {
     public static void main(String[] args) {
 
@@ -12,10 +18,13 @@ public class Main {
          * //System.setErr(new PrintStream(System.err, true, StandardCharsets.UTF_8));
          */
 
-        Logger.info("******************************************");
+        Logger.info("\n\n******************************************");
         Logger.info("Démarrage du serveur");
 
-        Server server = new Server();
-        server.start();
+        // Démarrage du serveur WebSocket
+        JavaWebSocket.getInstance().start();
+
+        // Démarrage du serveur Arena
+        Server.getInstance();
     }
 }
