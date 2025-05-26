@@ -54,7 +54,7 @@ public class Core {
         while (!messageQueue.isEmpty()) {
             Message next = messageQueue.peek(); // pas encore retiré
 
-            if (next.get_timestamp().getTime() <= now + tolerance) {
+            if (next.getTimeStamp() <= now + tolerance) {
                 messageQueue.poll(); // on retire car il est dans la bonne fenêtre
                 handleMessage(next); // traitement de l'action
             } else {
@@ -68,7 +68,7 @@ public class Core {
 
     private void handleMessage(Message message) {
         // Logique spécifique à ton jeu : mouvement, attaque, etc.
-        System.out.println("Traitement du message : " + message);
+        Logger.info("Traitement du message : " + message.toString());
 
         IMessageHandler handler = handlers.get(message.getAction());
 
@@ -80,7 +80,7 @@ public class Core {
     }
 
     private void sendGameState() {
-        System.out.println("⏱ Envoi de l'état du jeu");
+
         // TODO: construire et envoyer l'état du jeu aux clients
     }
 
