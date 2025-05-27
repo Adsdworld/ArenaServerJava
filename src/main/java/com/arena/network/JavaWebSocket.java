@@ -8,10 +8,7 @@ import com.arena.player.Player;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
 import com.arena.network.message.Message;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -65,45 +62,8 @@ public class JavaWebSocket extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, String messageJson) {
-
-        // To test if action are string or index
-        /*Message msg = new Message();
-        msg.setAction(ActionEnum.Join);
-        msg.setGameName(GameNameEnum.Game3);
-        msg.setUuid("7b7d8d9e-5fd7-4a2d-9713-a47c06da98a3");
-        BroadcastMessage broadcastMessage = new BroadcastMessage();
-        //broadcastMessage.sendMessage(msg);
-        //broadcastMessage.sendMessageToUuid("7b7d8d9e-5fd7-4a2d-9713-a47c06da98a3", msg);
-        conn.send(gson.toJson(msg));
-        Logger.info("Sent test message: " + gson.toJson(msg));*/
-
         try {
-            /**
-             * Check if the JSON keys match the Message class fields.
-             * If there is a mismatch, it means that the Message class is not up to date
-             */
-            Gson gson = new Gson();
-            JsonObject jsonRaw = JsonParser.parseString(messageJson).getAsJsonObject();
-            Message parsedMsg = gson.fromJson(messageJson, Message.class);
-            JsonObject jsonParsed = gson.toJsonTree(parsedMsg).getAsJsonObject();
-
-            Set<String> rawKeys = jsonRaw.keySet();
-            Set<String> parsedKeys = jsonParsed.keySet();
-
-            if (!rawKeys.equals(parsedKeys)) {
-                Set<String> missing = new HashSet<>(rawKeys);
-                missing.removeAll(parsedKeys);
-
-                Set<String> extra = new HashSet<>(parsedKeys);
-                extra.removeAll(rawKeys);
-
-                if (!missing.isEmpty()) {
-                    Logger.warn("JSON keys missing in parsed object: " + missing);
-                }
-                if (!extra.isEmpty()) {
-                    Logger.warn("JSON keys present in parsed object but not in JSON: " + extra);
-                }
-            }
+            validateJson(messageJson, Message.class);
 
             Message message = gson.fromJson(messageJson, Message.class);
 
@@ -127,5 +87,31 @@ public class JavaWebSocket extends WebSocketServer {
     @Override
     public void onError(WebSocket conn, Exception ex) {
         Logger.error("WebSocket error: " + ex.getMessage());
+    }
+
+
+    public static void validateJson(String messageJson, Class<?> clazz) {
+        Gson gson = new Gson();
+
+        JsonObject jsonRaw = JsonParser.parseString(messageJson).getAsJsonObject();
+
+        Object parsedObject = gson.fromJson(messageJson, clazz);
+
+        JsonObject jsonParsed = gson.toJsonTree(parsedObject).getAsJsonObject();
+
+        for (Map.Entry<String, JsonElement> entry : jsonRaw.entrySet()) {
+            String key = entry.getKey();
+            JsonElement rawValue = entry.getValue();
+
+            // Ignore les champs null dans le JSON brut
+            if (rawValue == null || rawValue.isJsonNull()) {
+                continue;
+            }
+
+            // Si le champ n'existe pas dans l'objet Java ou est devenu null → problème
+            if (!jsonParsed.has(key) || jsonParsed.get(key).isJsonNull()) {
+                Logger.warn("Donnée transmise ignorée ou enum non reconnue : '" + key + "' = " + rawValue);
+            }
+        }
     }
 }
