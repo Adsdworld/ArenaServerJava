@@ -19,18 +19,46 @@ public class Logger {
     // Thread dédié pour l'écriture
     private static volatile boolean isWriting = false;
 
+
+    /// <summary>
+    /// For logging System, Websocket, Server, Game and Player events.
+    /// example: "Player joined the game", "Game created", "Websocket connection established".
+    /// </summary>
     public static void info(String message) {
-        enqueueLog("info", message);
+        enqueueLog("info ...___>---{([||| SERVER |||]})---<___... >>> ", message);
     }
 
+    /// <summary>
+    /// For logging Server actions that have been processed successfully.
+    /// Must not be used if info, warn, failure or error can be used instead.
+    /// example: "Started", "Stopped", "Registering player <uuid> successfully".
+    /// </summary>
+    public static void server(String message) {
+        enqueueLog("info ", message);
+    }
+
+    /// <summary>
+    /// For logging warnings, warning can potentially cause a future failure in code execution.
+    /// A warning make code continue to run, but it is a sign that something might not be right.
+    /// example: "Player tried to join a game that is full", "Donnée transmise ignorée ou enum non reconnue : Foo = 'bar'".
+    /// </summary>
     public static void warn(String message) {
         enqueueLog("warning", message);
     }
 
+    /// <summary>
+    /// For logging failures, a failure says that something went wrong, but the code can still continue to run.
+    /// Used for game logic failures.
+    /// example: "Player tried to join a game that does not exist", "Game creation failed due to invalid parameters".
+    /// </summary>
     public static void failure(String message) {
         enqueueLog("failure", message);
     }
 
+    /// <summary>
+    /// For logging errors, an error is raised by Java Runtime or a library exception.
+    /// example: "NullPointerException in Player class", "Websocket error: Connection lost".
+    /// </summary>
     public static void error(String message) {
         enqueueLog("error", message);
     }
