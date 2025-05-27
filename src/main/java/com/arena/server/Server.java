@@ -40,14 +40,14 @@ public class Server {
                 Game game = gameExists(gameNameEnum);
 
                 if (game != null) {
-                    Logger.info("Game already exists: " + gameNameEnum.getGameName());
+                    Logger.info("Game already exists : " + gameNameEnum.getGameName());
                 } else {
                     game = new Game(gameNameEnum);
                     games.add(game);
-                    Logger.info("Created game: " + gameNameEnum.getGameName());
+                    Logger.server("Created game : " + gameNameEnum.getGameName());
                 }
             } else {
-                Logger.failure("Cannot create more games, maximum reached: " + MAX_GAMES);
+                Logger.failure("Cannot create more games, maximum reached : " + MAX_GAMES);
             }
         }
     }
@@ -66,19 +66,19 @@ public class Server {
 
     public void registerPlayer(Player player) {
         if (player == null) {
-            Logger.error("Could not register a null player.");
+            Logger.failure("Could not register a null player.");
             return;
         }
         players.add(player);
-        Logger.info("Registering player: " + player.getUuid());
+        Logger.server("Registering player : " + player.getUuid());
     }
 
     public void unregisterPlayer(Player player) {
         if (player != null && players.contains(player)) {
             players.remove(player);
-            Logger.info("Unregistering player: " + player.getUuid());
+            Logger.server("Unregistering player : " + player.getUuid());
         } else {
-            Logger.error("Could not unregister player: " + (player != null ? player.getUuid() : "null"));
+            Logger.failure("Could not unregister player : " + (player != null ? player.getUuid() : "null"));
         }
     }
 
