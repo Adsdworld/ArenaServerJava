@@ -80,7 +80,7 @@ public class JavaWebSocket extends WebSocketServer {
 
             Core.getInstance().receive(message);
         } catch (Exception e) {
-            Logger.error("Failed to parse message: " + e.getMessage());
+            Logger.failure("Failed to parse message: " + e.getMessage());
         }
     }
 
