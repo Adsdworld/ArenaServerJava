@@ -25,7 +25,7 @@ public class Logger {
     /// example: "Player joined the game", "Game created", "Websocket connection established".
     /// </summary>
     public static void info(String message) {
-        enqueueLog("info ...___>---{([||| SERVER |||]})---<___... >>> ", message);
+        enqueueLog("info", message);
     }
 
     /// <summary>
@@ -34,7 +34,7 @@ public class Logger {
     /// example: "Started", "Stopped", "Registering player <uuid> successfully".
     /// </summary>
     public static void server(String message) {
-        enqueueLog("info ", message);
+        enqueueLog("info", message, "...___---{([||| SERVER |||]})---<___... >>>");
     }
 
     /// <summary>
@@ -61,6 +61,23 @@ public class Logger {
     /// </summary>
     public static void error(String message) {
         enqueueLog("error", message);
+    }
+
+    private static void enqueueLog(String level, String message, String customBefore) {
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+
+        // Récupérer le nom de la méthode appelante (optionnel)
+        String callerInfo = getCallerInfo();
+
+        String formatted = String.format("[%s][%s][%s] %s %s", timestamp, callerInfo, level, customBefore, message);
+        System.out.println(formatted); // Affichage console
+
+        logQueue.add(formatted);
+
+        if (!isWriting) {
+            isWriting = true;
+            new Thread(Logger::processLogQueue).start();
+        }
     }
 
     private static void enqueueLog(String level, String message) {
