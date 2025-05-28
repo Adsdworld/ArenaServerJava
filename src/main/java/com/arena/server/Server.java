@@ -2,10 +2,14 @@ package com.arena.server;
 
 import com.arena.game.Game;
 import com.arena.game.GameNameEnum;
+import com.arena.network.message.Message;
+import com.arena.network.response.Response;
 import com.arena.player.Player;
+import com.arena.player.ResponseEnum;
 import com.arena.utils.Logger;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Server {
 
@@ -32,23 +36,46 @@ public class Server {
         return instance;
     }
 
-    public synchronized void createGame(GameNameEnum gameNameEnum) {
-        if (!creatingGame) {
-            if (games.size() < MAX_GAMES) {
-                creatingGame = true;
+    public boolean isCreatingGame () {
+        return creatingGame;
+    }
 
-                Game game = gameExists(gameNameEnum);
+    public synchronized void createGame(Message message) {
+        if (creatingGame) {
+            Logger.warn("A game is already being created, please wait.");
+            return;
+        }
 
-                if (game != null) {
-                    Logger.info("Game already exists : " + gameNameEnum.getGameName());
-                } else {
-                    game = new Game(gameNameEnum);
-                    games.add(game);
-                    Logger.server("Created game : " + gameNameEnum.getGameName());
-                }
-            } else {
-                Logger.failure("Cannot create more games, maximum reached : " + MAX_GAMES);
+        creatingGame = true;
+        try {
+            Server.getInstance().getGames().removeIf(Objects::isNull);
+
+            GameNameEnum gameNameEnum = message.getGameName();
+            Game game = gameExists(gameNameEnum);
+
+            Response response = new Response();
+
+            if (game != null) {
+                Logger.warn(gameNameEnum.getGameName() + " already exists.");
+                response.setResponse(ResponseEnum.GameAlreadyExists);
+                response.Send(message.getUuid());
+                return;
             }
+
+            if (games.size() >= MAX_GAMES) {
+                Logger.warn("Cannot create more than " + MAX_GAMES + " games.");
+                response.setResponse(ResponseEnum.GamesLimitReached);
+                response.Send(message.getUuid());
+                return;
+            }
+
+            Logger.game("Creating " + gameNameEnum.getGameName());
+            games.add(new Game(gameNameEnum));
+            response.setResponse(ResponseEnum.GameCreated);
+            response.setGameName(gameNameEnum);
+            response.Send();
+        } finally {
+            creatingGame = false;
         }
     }
 

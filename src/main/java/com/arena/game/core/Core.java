@@ -1,5 +1,6 @@
 package com.arena.game.core;
 
+import com.arena.game.handler.CloseGameHandler;
 import com.arena.game.handler.CreateGameHandler;
 import com.arena.game.handler.IMessageHandler;
 import com.arena.game.handler.JoinHandler;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class Core {
 
     private static Core core;
+    private static boolean _isEnteringTick;
 
     public static Core getInstance() {
         if (core == null) {
@@ -38,8 +40,11 @@ public class Core {
     public Core() {
         handlers.put(ActionEnum.CreateGame, new CreateGameHandler());
         handlers.put(ActionEnum.Join, new JoinHandler());
+        handlers.put(ActionEnum.CloseGame, new CloseGameHandler());
+
         // Traitement toutes les 50ms
-        //scheduler.scheduleAtFixedRate(this::processMessages, 0, 50, TimeUnit.MILLISECONDS);
+        _isEnteringTick = false;
+        scheduler.scheduleAtFixedRate(this::processMessages, 0, 50, TimeUnit.MILLISECONDS);
     }
 
     public void receive(Message message) {
@@ -48,18 +53,27 @@ public class Core {
 
     private void processMessages() {
         long now = System.currentTimeMillis();
+        //Logger.info("Processing " + messageQueue.size() + " messages");
 
         // On peut fixer une tolérance (ex: 2 ticks max d'écart, soit 100 ms)
         long tolerance = 100;
+        _isEnteringTick = true;
 
-        while (!messageQueue.isEmpty() && !Server.getInstance().getGames().isEmpty()) {
+        while (!messageQueue.isEmpty()) {
+            if (_isEnteringTick) {
+                StringBuilder stringBuilder = new StringBuilder("Actions in queue (" + messageQueue.size() + ") : ");
+                for (Message message : messageQueue) {
+                    stringBuilder.append(message.getAction()).append(" ");
+                }
+                _isEnteringTick = false;
+            }
+
             Message next = messageQueue.peek(); // pas encore retiré
 
             if (next.getTimeStamp() <= now + tolerance) {
                 messageQueue.poll(); // on retire car il est dans la bonne fenêtre
+                //Logger.info("Processing message: " + next.getAction());
                 handleMessage(next); // traitement de l'action
-            } else {
-                break; // les autres messages sont pour plus tard
             }
         }
 
@@ -69,12 +83,13 @@ public class Core {
 
     private void handleMessage(Message message) {
         // Logique spécifique à ton jeu : mouvement, attaque, etc.
-        Logger.info("Traitement du message : " + message.toString());
+        //Logger.info("Traitement du message : " + message.toString());
 
         IMessageHandler handler = handlers.get(message.getAction());
 
         if (handler != null) {
             handler.handle(message);
+            //Logger.info("Handled action: " + message.getAction() + " for player: " + message.getUuid());
         } else {
             Logger.failure("Couldn't find handler for action " + message.getAction());
         }

@@ -15,12 +15,21 @@ public class Game {
     private ArrayList<Player> BlueTeam;
     private ArrayList<Player> RedTeam;
 
+    private ArrayList<Player> Spectators;
+
+
+    /**
+     * TODO: Faire que ce soit le constructeur qui envoie creating game puis un all to when created
+     * @param gameNameEnum
+     */
     public Game(GameNameEnum gameNameEnum) {
         this.gameStatusEnum = GameStatusEnum.Creating;
         this.gameNameEnum = gameNameEnum;
 
         this.BlueTeam = new ArrayList<>();
         this.RedTeam = new ArrayList<>();
+
+        this.Spectators = new ArrayList<>();
 
         this.gameStatusEnum = GameStatusEnum.Created;
     }
@@ -41,6 +50,14 @@ public class Game {
         return false;
     }
 
+    public boolean addSpectator(Player player) {
+        if (!BlueTeam.contains(player) && !RedTeam.contains(player)) {
+            Spectators.add(player);
+            return true;
+        }
+        return false;
+    }
+
     // Getters and Setters
     public GameNameEnum getGameNameEnum() {
         return gameNameEnum;
@@ -55,5 +72,9 @@ public class Game {
 
     public ArrayList<Player> getRedTeam() {
         return RedTeam;
+    }
+
+    public ArrayList<Player> getSpectators() {
+        return Spectators;
     }
 }
