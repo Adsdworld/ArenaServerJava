@@ -1,5 +1,7 @@
 package com.arena.utils;
 
+import com.arena.game.GameNameEnum;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -21,7 +23,7 @@ public class Logger {
 
 
     /// <summary>
-    /// For logging System, Websocket, Server, Game and Player events.
+    /// For logging System, Websocket, Server and Player events.
     /// example: "Player joined the game", "Game created", "Websocket connection established".
     /// </summary>
     public static void info(String message) {
@@ -35,6 +37,20 @@ public class Logger {
     /// </summary>
     public static void server(String message) {
         enqueueLog("info", message, "...___---{([||| SERVER |||]})---<___... >>>");
+    }
+
+    /// <summary>
+    /// For logging General Games actions that have been processed successfully.
+    /// </summary>
+    public static  void game(String message) {
+        enqueueLog("info", message, "...___---{([||| GAME |||]})---<___... >>>");
+    }
+
+    /// <summary>
+    /// For logging Game actions that have been processed successfully.
+    /// </summary>
+    public static  void game(String message, GameNameEnum gameName) {
+        enqueueLog("info", message, "...___---{([|| " + gameName.getGameName() + " ||]})---<___... >>>");
     }
 
     /// <summary>
