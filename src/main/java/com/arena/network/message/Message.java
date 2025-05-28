@@ -11,8 +11,6 @@ public class Message implements Comparable<Message> {
     private ActionEnum _action;
     private GameNameEnum _gameName;
     private String _ability;
-    private Float _x;
-    private Float _z;
     private long _timestamp;
 
     // Constructeur vide nécessaire pour Gson
