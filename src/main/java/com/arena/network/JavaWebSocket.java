@@ -1,8 +1,8 @@
 package com.arena.network;
 
-import com.arena.game.GameNameEnum;
+import com.arena.game.Game;
 import com.arena.game.core.Core;
-import com.arena.network.message.BroadcastMessage;
+import com.arena.network.response.ResponseService;
 import com.arena.player.ActionEnum;
 import com.arena.player.Player;
 import com.arena.server.Server;
@@ -32,6 +32,9 @@ public class JavaWebSocket extends WebSocketServer {
 
     private JavaWebSocket() {
         super(new InetSocketAddress(PORT));
+
+        ResponseService.setResponseSender(new JavaWebSocketResponseSender());
+
         Logger.info("JavaWebSocket created on port " + PORT);
         webSocketToUuid = new HashMap<WebSocket, Player>();
         uuidToWebSocket = new HashMap<Player, WebSocket>();
@@ -57,7 +60,8 @@ public class JavaWebSocket extends WebSocketServer {
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + " Reason: " + reason);
+        String reason_ = reason != null && !reason.isEmpty() ? reason : "No reason provided";
+        Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason_);
     }
 
     @Override
@@ -75,6 +79,14 @@ public class JavaWebSocket extends WebSocketServer {
                 JavaWebSocket.getInstance().uuidToWebSocket.put(player, conn);
 
                 Server.getInstance().registerPlayer(player);
+
+                // TODO: design a spectator message on join
+                /* for (Game game : Server.getInstance().getGames()) {
+                    game.addSpectator(player);
+                    //Message message = new Message();
+                    //message.setAction();
+
+                }*/
                 return;
             }
 
