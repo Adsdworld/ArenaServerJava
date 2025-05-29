@@ -21,6 +21,8 @@ public class Main {
         Logger.info("\n\n******************************************");
         Logger.info("Démarrage du serveur");
 
+        KBSJB
+
         // Démarrage du serveur WebSocket
         JavaWebSocket.getInstance().start();
 
