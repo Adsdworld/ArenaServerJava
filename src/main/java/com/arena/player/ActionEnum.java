@@ -10,7 +10,10 @@ public enum ActionEnum {
     CreateGame("Create Game"),
 
     @SerializedName("Join")
-    Join("Join");
+    Join("Join"),
+
+    @SerializedName("Close Game")
+    CloseGame("Close Game");
 
     private final String action;
 
