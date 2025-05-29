@@ -12,7 +12,9 @@ public class JoinHandler implements IMessageHandler {
         if (game != null) {
             Player player = new Player(message.getUuid());
             game.addPlayerToBlueTeam(player);
-            Logger.info("Player " + player.getUuid() + " joined game " + message.getGameName());
+            Logger.server("Player " + player.getUuid() + " joined game " + message.getGameName());
+
+
         } else {
             Logger.failure("Couldn't find game " + message.getGameName());
         }
