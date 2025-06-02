@@ -3,6 +3,13 @@ package com.arena.player;
 import com.google.gson.annotations.SerializedName;
 
 public enum ResponseEnum {
+
+    /**
+     * Info : success
+     */
+    @SerializedName("Info")
+    Info("Info"),
+
     // Login
     @SerializedName("Logged")
     Logged("Logged"),
@@ -24,14 +31,25 @@ public enum ResponseEnum {
     GamesLimitReached("Games Limit Reached"),
 
 
-
-    // Join
+    /**
+     * JoinGame : success
+     */
     @SerializedName("Joined")
     Joined("Joined"),
 
-    // CloseGame
+    /**
+     * CloseGame : success
+     */
     @SerializedName("Game Closed")
-    GameClosed("Game Closed"),;
+    GameClosed("Game Closed"),
+    /**
+     * CloseGame : failure
+     */
+    @SerializedName("Game Not Found")
+    GameNotFound("Game Not Found")
+
+
+    ;
 
     private final String response;
 

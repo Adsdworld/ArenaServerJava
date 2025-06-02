@@ -10,13 +10,17 @@ public class Response {
     private ResponseEnum _reponse;
     private GameNameEnum _gameName;
     private String _ability;
+    private String _text;
+    private String _notify;
 
     // Constructeur vide nécessaire pour Gson
-    public Response() {}
+    public Response() {
+    }
 
     public GameNameEnum getGameName() {
         return _gameName;
     }
+
     public void setGameName(GameNameEnum gameName) {
         this._gameName = gameName;
     }
@@ -24,6 +28,7 @@ public class Response {
     public ResponseEnum getReponse() {
         return _reponse;
     }
+
     public void setResponse(ResponseEnum response) {
         this._reponse = response;
     }
@@ -31,8 +36,17 @@ public class Response {
     public String getUuid() {
         return _uuid;
     }
+
     public void setUuid(String uuid) {
         this._uuid = uuid;
+    }
+
+    public void setText(String text) {
+        this._text = text;
+    }
+
+    public void setNotify(String notify) {
+        this._notify = notify;
     }
 
     @Override

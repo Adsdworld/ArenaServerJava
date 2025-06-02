@@ -100,6 +100,14 @@ public class Core {
         // TODO: construire et envoyer l'état du jeu aux clients
     }
 
+    public void retryLater(Message message) {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.schedule(() -> {
+            Core.getInstance().receive(message);
+            scheduler.shutdown();
+        }, 100, TimeUnit.MILLISECONDS);
+    }
+
     public void shutdown() {
         scheduler.shutdown();
     }

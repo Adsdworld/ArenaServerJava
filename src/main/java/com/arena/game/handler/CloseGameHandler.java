@@ -1,11 +1,13 @@
 package com.arena.game.handler;
 
+import com.arena.game.core.Core;
 import com.arena.network.message.Message;
-import com.arena.utils.Logger;
+import com.arena.server.Server;
 
 public class CloseGameHandler implements IMessageHandler {
     public void handle(Message message) {
-        // TODO: Implement the logic to handle closing a game
-        Logger.warn("Please implement CloseGameHandler.handle() method");
+        Server server = Server.getInstance();
+
+        server.closeGame(message);
     }
 }
