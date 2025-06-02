@@ -1,10 +1,11 @@
 package com.arena.network;
 
-import com.arena.game.Game;
 import com.arena.game.core.Core;
+import com.arena.network.response.Response;
 import com.arena.network.response.ResponseService;
 import com.arena.player.ActionEnum;
 import com.arena.player.Player;
+import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
 import com.arena.network.message.Message;
@@ -62,6 +63,8 @@ public class JavaWebSocket extends WebSocketServer {
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         String reason_ = reason != null && !reason.isEmpty() ? reason : "No reason provided";
         Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason_);
+
+        // TODO: remove the player from the server using the connection linked to uuid of the player
     }
 
     @Override
@@ -79,6 +82,12 @@ public class JavaWebSocket extends WebSocketServer {
                 JavaWebSocket.getInstance().uuidToWebSocket.put(player, conn);
 
                 Server.getInstance().registerPlayer(player);
+
+                Response response = new Response();
+                response.setResponse(ResponseEnum.Logged);
+                response.setUuid(player.getUuid());
+                response.setNotify("Connected to the server ! Welcome to Arena!");
+                response.Send();
 
                 // TODO: design a spectator message on join
                 /* for (Game game : Server.getInstance().getGames()) {
@@ -102,6 +111,20 @@ public class JavaWebSocket extends WebSocketServer {
     }
 
 
+
+    // TODO: move it to Utils
+    // TODO: improve it to
+    /**
+     * Enum not found error : enum value present in the message but not in the Java enum
+     * field not found error : field present in the message but not in the Java class
+     */
+
+    /**
+     *
+     *
+     * @param messageJson
+     * @param clazz
+     */
     public static void validateJson(String messageJson, Class<?> clazz) {
         Gson gson = new Gson();
 

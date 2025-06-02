@@ -41,4 +41,21 @@ public class Player {
     public void setName(String name) {
         this.name = name;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Player player = (Player) o;
+
+        return uuid != null ? uuid.equals(player.uuid) : player.uuid == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid != null ? uuid.hashCode() : 0;
+    }
+
 }

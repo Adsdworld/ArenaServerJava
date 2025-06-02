@@ -2,6 +2,7 @@ package com.arena.server;
 
 import com.arena.game.Game;
 import com.arena.game.GameNameEnum;
+import com.arena.game.core.Core;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
 import com.arena.player.Player;
@@ -20,6 +21,7 @@ public class Server {
     public ArrayList<Game> games;
 
     private boolean creatingGame;
+    private boolean closingGame;
 
     private final int MAX_GAMES = 5;
 
@@ -40,9 +42,14 @@ public class Server {
         return creatingGame;
     }
 
+    public boolean isClosingGame () {
+        return closingGame;
+    }
+
     public synchronized void createGame(Message message) {
         if (creatingGame) {
             Logger.warn("A game is already being created, please wait.");
+            Core.getInstance().retryLater(message);
             return;
         }
 
@@ -58,6 +65,7 @@ public class Server {
             if (game != null) {
                 Logger.warn(gameNameEnum.getGameName() + " already exists.");
                 response.setResponse(ResponseEnum.GameAlreadyExists);
+                response.setNotify(gameNameEnum.getGameName() + " already exists.");
                 response.Send(message.getUuid());
                 return;
             }
@@ -65,6 +73,7 @@ public class Server {
             if (games.size() >= MAX_GAMES) {
                 Logger.warn("Cannot create more than " + MAX_GAMES + " games.");
                 response.setResponse(ResponseEnum.GamesLimitReached);
+                response.setNotify("Cannot create more than " + MAX_GAMES + " games.");
                 response.Send(message.getUuid());
                 return;
             }
@@ -72,12 +81,49 @@ public class Server {
             Logger.game("Creating " + gameNameEnum.getGameName());
             games.add(new Game(gameNameEnum));
             response.setResponse(ResponseEnum.GameCreated);
+            response.setNotify(gameNameEnum.getGameName() + " created successfully.");
             response.setGameName(gameNameEnum);
             response.Send();
         } finally {
             creatingGame = false;
         }
     }
+
+    public synchronized void closeGame(Message message) {
+        if (closingGame) {
+            Logger.warn("A game is already being closed, please wait.");
+            Core.getInstance().retryLater(message);
+            return;
+        }
+
+        closingGame = true;
+        try {
+            Server.getInstance().getGames().removeIf(Objects::isNull);
+
+            GameNameEnum gameNameEnum = message.getGameName();
+            Game game = gameExists(gameNameEnum);
+
+            Response response = new Response();
+
+            if (game == null) {
+                Logger.warn(gameNameEnum.getGameName() + " does not exist.");
+                response.setResponse(ResponseEnum.GameNotFound);
+                response.setNotify(gameNameEnum.getGameName() + " does not exist.");
+                response.Send(message.getUuid());
+                return;
+            }
+
+            Logger.game("Closing " + gameNameEnum.getGameName());
+            games.remove(game);
+            response.setResponse(ResponseEnum.GameClosed);
+            response.setGameName(gameNameEnum);
+            response.setNotify(gameNameEnum.getGameName() + " closed successfully.");
+            response.Send();
+        } finally {
+            closingGame = false;
+        }
+    }
+
 
     // Getters and Setters
     public ArrayList<Game> getGames() {
@@ -92,6 +138,12 @@ public class Server {
     }
 
     public void registerPlayer(Player player) {
+
+        if (players.contains(player)) {
+            Logger.warn("Player " + player.getUuid() + " is already registered.");
+            return;
+        }
+
         if (player == null) {
             Logger.failure("Could not register a null player.");
             return;
