@@ -105,7 +105,7 @@ public class Core {
             response.setResponse(ResponseEnum.GameState);
             response.setGameName(game.getGameNameEnum());
             response.setLivingEntities(game.getLivingEntities());
-            response.Send(game.getGameNameEnum());
+            response.Send(game.getGameNameEnum(), true);
         }
 
         // TODO: construire et envoyer l'état du jeu aux clients

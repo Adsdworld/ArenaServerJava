@@ -34,10 +34,6 @@ public class JoinHandler implements IMessageHandler {
                     break;
             }
 
-
-            Logger.server("Player " + player.getUuid() + " joined game " + message.getGameName());
-
-
         } else {
 
             // TODO: improve this response create a special ResponseEnum for this case and handle it in the client unity

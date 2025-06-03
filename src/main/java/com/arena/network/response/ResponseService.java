@@ -14,25 +14,25 @@ public class ResponseService {
         return responseSender;
     }
 
-    public static void send(Response response, GameNameEnum gameName) {
+    public static void send(Response response, boolean silent) {
         if (responseSender != null) {
-            responseSender.sendResponse(response);
+            responseSender.sendResponse(response, silent);
         } else {
             System.err.println("⚠ No ResponseSender is set in MessageService.");
         }
     }
 
-    public static void sendToGame(Response response, GameNameEnum gameName) {
+    public static void sendToGame(Response response, GameNameEnum gameName, boolean silent) {
         if (responseSender != null) {
-            responseSender.sendGameResponse(response, gameName);
+            responseSender.sendGameResponse(response, gameName, silent);
         } else {
             System.err.println("⚠ No ResponseSender is set in MessageService.");
         }
     }
 
-    public static void sendToUuid(String uuid, Response response) {
+    public static void sendToUuid(String uuid, Response response, boolean silent) {
         if (responseSender != null) {
-            responseSender.sendUuidResponse(uuid, response);
+            responseSender.sendUuidResponse(uuid, response, silent);
         } else {
             System.err.println("⚠ No ResponseSender is set in MessageService.");
         }

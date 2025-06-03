@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 public class Response {
-    private String _uuid;
+    private String _uuid;   // Unique id
     private ResponseEnum _reponse;
     private GameNameEnum _gameName;
     private String _ability;
@@ -62,16 +62,51 @@ public class Response {
         return new Gson().toJson(this);
     }
 
+    /**
+     * send to server.
+     */
     public void Send() {
-        ResponseService.getResponseSender().sendResponse(this);
+        ResponseService.send(this, false);
     }
 
-    // TODO: insert a silent send (ideally a bool set to true, for Core.sendGameState each 50ms)
+    /**
+     * send to server silently
+     * @param silent
+     */
+    public void Send(boolean silent) {
+        ResponseService.send(this, silent);
+    }
+
+
+    /**
+     * send to game.
+     * @param gameName
+     */
     public void Send(GameNameEnum gameName) {
-        ResponseService.getResponseSender().sendGameResponse(this, gameName);
+        ResponseService.sendToGame(this, gameName, false);
     }
 
+    /**
+     * send to game silently.
+     * @param gameName
+     */
+    public void Send(GameNameEnum gameName, boolean silent) {
+        ResponseService.sendToGame(this, gameName, silent);
+    }
+
+    /**
+     * send to uuid.
+     * @param uuid
+     */
     public void Send(String uuid) {
-        ResponseService.getResponseSender().sendUuidResponse(uuid, this);
+        ResponseService.sendToUuid(uuid, this, false);
+    }
+
+    /**
+     * send to uuid silently
+     * @param uuid
+     */
+    public void Send(String uuid, boolean silent) {
+        ResponseService.sendToUuid(uuid, this, silent);
     }
 }

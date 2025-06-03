@@ -10,7 +10,7 @@ public interface IResponseSender {
      * @param message   The message to send.
      * @param gameName  The name of the game to which the message should be sent.
      */
-    void sendResponse(Response response);
+    void sendResponse(Response response, boolean silent);
 
     /**
      * Sends a game-specific response response to all players in the specified game.
@@ -18,7 +18,7 @@ public interface IResponseSender {
      * @param response   The response to send.
      * @param gameName  The name of the game to which the response should be sent.
      */
-    void sendGameResponse(Response response, GameNameEnum gameName);
+    void sendGameResponse(Response response, GameNameEnum gameName, boolean silent);
 
     /**
      * Sends a response message to a specific player identified by their UUID.
@@ -26,5 +26,5 @@ public interface IResponseSender {
      * @param uuid      The UUID of the player to whom the message should be sent.
      * @param response  The response message to send.
      */
-    void sendUuidResponse(String uuid, Response response);
+    void sendUuidResponse(String uuid, Response response, boolean silent);
 }
