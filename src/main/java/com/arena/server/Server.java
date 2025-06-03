@@ -107,6 +107,8 @@ public class Server {
 
             if (game == null) {
                 Logger.warn(gameNameEnum.getGameName() + " does not exist.");
+
+                // TODO: create the unity handler for this case game not found
                 response.setResponse(ResponseEnum.GameNotFound);
                 response.setNotify(gameNameEnum.getGameName() + " does not exist.");
                 response.Send(message.getUuid());

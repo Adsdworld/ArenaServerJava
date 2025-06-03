@@ -39,6 +39,8 @@ public class JoinHandler implements IMessageHandler {
 
 
         } else {
+
+            // TODO: improve this response create a special ResponseEnum for this case and handle it in the client unity
             Response response = new Response();
             response.setResponse(ResponseEnum.Joined);
             response.setNotify("Couldn't find game " + message.getGameName().getGameName());
