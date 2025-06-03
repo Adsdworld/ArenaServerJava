@@ -1,6 +1,7 @@
 package com.arena.network.response;
 
 import com.arena.game.GameNameEnum;
+import com.arena.game.entity.LivingEntity;
 import com.arena.player.ActionEnum;
 import com.arena.player.ResponseEnum;
 import com.google.gson.Gson;
@@ -12,6 +13,7 @@ public class Response {
     private String _ability;
     private String _text;
     private String _notify;
+    private LivingEntity _livingEntity;
 
     // Constructeur vide nécessaire pour Gson
     public Response() {
@@ -47,6 +49,10 @@ public class Response {
 
     public void setNotify(String notify) {
         this._notify = notify;
+    }
+
+    public LivingEntity setLivingEntity(LivingEntity livingEntity) {
+        return _livingEntity = livingEntity;
     }
 
     @Override

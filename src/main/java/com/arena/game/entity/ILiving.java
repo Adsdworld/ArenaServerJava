@@ -34,4 +34,6 @@ public interface ILiving {
 
     int getTeam();
     void setTeam(int team);
+
+    String getName();
 }
