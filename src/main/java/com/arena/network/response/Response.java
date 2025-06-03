@@ -6,6 +6,8 @@ import com.arena.player.ActionEnum;
 import com.arena.player.ResponseEnum;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
 public class Response {
     private String _uuid;
     private ResponseEnum _reponse;
@@ -13,7 +15,7 @@ public class Response {
     private String _ability;
     private String _text;
     private String _notify;
-    private LivingEntity _livingEntity;
+    private ArrayList<LivingEntity> _livingEntities;
 
     // Constructeur vide nécessaire pour Gson
     public Response() {
@@ -51,8 +53,8 @@ public class Response {
         this._notify = notify;
     }
 
-    public LivingEntity setLivingEntity(LivingEntity livingEntity) {
-        return _livingEntity = livingEntity;
+    public ArrayList<LivingEntity> setLivingEntities(ArrayList<LivingEntity> livingEntities) {
+        return _livingEntities = livingEntities;
     }
 
     @Override
@@ -64,6 +66,7 @@ public class Response {
         ResponseService.getResponseSender().sendResponse(this);
     }
 
+    // TODO: insert a silent send (ideally a bool set to true, for Core.sendGameState each 50ms)
     public void Send(GameNameEnum gameName) {
         ResponseService.getResponseSender().sendGameResponse(this, gameName);
     }
