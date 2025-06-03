@@ -1,13 +1,17 @@
 package com.arena.game.core;
 
+import com.arena.game.Game;
+import com.arena.game.entity.LivingEntity;
 import com.arena.game.handler.CloseGameHandler;
 import com.arena.game.handler.CreateGameHandler;
 import com.arena.game.handler.IMessageHandler;
 import com.arena.game.handler.JoinHandler;
 import com.arena.network.JavaWebSocket;
 import com.arena.network.message.Message;
+import com.arena.network.response.Response;
 import com.arena.player.ActionEnum;
 import com.arena.player.Player;
+import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
 
@@ -63,7 +67,7 @@ public class Core {
             if (_isEnteringTick) {
                 StringBuilder stringBuilder = new StringBuilder("Actions in queue (" + messageQueue.size() + ") : ");
                 for (Message message : messageQueue) {
-                    stringBuilder.append(message.getAction()).append(" ");
+                    stringBuilder.append(message.getAction()).append(", ");
                 }
                 _isEnteringTick = false;
             }
@@ -96,8 +100,17 @@ public class Core {
     }
 
     private void sendGameState() {
+        for (Game game : Server.getInstance().getGames()) {
+            Response response = new Response();
+            response.setResponse(ResponseEnum.GameState);
+            response.setGameName(game.getGameNameEnum());
+            response.setLivingEntities(game.getLivingEntities());
+            response.Send(game.getGameNameEnum());
+        }
 
         // TODO: construire et envoyer l'état du jeu aux clients
+
+
     }
 
     public void retryLater(Message message) {

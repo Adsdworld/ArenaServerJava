@@ -58,6 +58,8 @@ public enum ResponseEnum {
     Spawned("Spawned"),
 
 
+    @SerializedName("Game State")
+    GameState("Game State"),
 
     ;
 

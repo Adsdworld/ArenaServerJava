@@ -111,4 +111,8 @@ public class Game {
     public ArrayList<Player> getPlayers() {
         return players;
     }
+
+    public ArrayList<LivingEntity> getLivingEntities() {
+        return livingEntities;
+    }
 }
