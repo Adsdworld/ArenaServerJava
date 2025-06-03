@@ -1,6 +1,7 @@
 package com.arena.game;
 
 import com.arena.game.entity.Entity;
+import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.champion.Garen;
 import com.arena.network.response.Response;
 import com.arena.player.Player;
@@ -18,7 +19,7 @@ public class Game {
     GameStatusEnum gameStatusEnum;
 
     /* Teams in the game */
-    private ArrayList<Entity> entities;
+    private ArrayList<LivingEntity> livingEntities;
 
     private ArrayList<Player> players;
 
@@ -32,7 +33,7 @@ public class Game {
         this.gameStatusEnum = GameStatusEnum.Creating;
         this.gameNameEnum = gameNameEnum;
 
-        this.entities = new ArrayList<>();
+        this.livingEntities = new ArrayList<>();
         this.players = new ArrayList<>();
 
         this.gameStatusEnum = GameStatusEnum.Created;
@@ -46,45 +47,57 @@ public class Game {
      */
     public void addPlayer(Player player, int team) {
 
+        LivingEntity existsInGame = LivingEntityAlreadyExists(player.getUuid());
+
         Response response = new Response();
-        response.setResponse(ResponseEnum.Joined);
         response.setGameName(gameNameEnum);
 
-        if (!isUUIDAlreadyInGame(player.getUuid())) {
+        if (existsInGame == null) {
             Garen garen = new Garen(player.getUuid(), team);
             addEntity(garen);
             players.add(player);
+            response.setNotify(garen.getName() + " " + garen.getId()  + " Joined "+ gameNameEnum.getGameName() + " in team " + team);
+            response.setResponse(ResponseEnum.Joined);
+            response.Send(gameNameEnum);
+            Logger.game(garen.getName() + " " + garen.getId()  + " Joined "+ gameNameEnum.getGameName() + " in team " + team, gameNameEnum);
         } else {
-            Logger.warn("Player with UUID " + player.getUuid() + " is already in the game " + gameNameEnum.getGameName());
+            response.setNotify(existsInGame.getName() + " " + existsInGame.getId()  + " Rejoined "+ gameNameEnum.getGameName() + " in team " + existsInGame.getTeam());
+            response.setResponse(ResponseEnum.PlayerAlreadyInGame);
+            Logger.game(existsInGame.getName() + " " + existsInGame.getId()  + " Rejoined "+ gameNameEnum.getGameName() + " in team " + existsInGame.getTeam(), gameNameEnum);
         }
 
         // TODO : improve message add possibility to choose team and champion
-        response.setNotify("Joined " + gameNameEnum.getGameName() + " as Garen in team " + team);
-        response.Send(gameNameEnum);
 
-        Logger.game("Player with UUID " + player.getUuid() + " added to game " + gameNameEnum.getGameName(), gameNameEnum);
     }
 
     /**
      * Create a new entity in the game, with a uuid non exitent
      * @return the created entity
      */
-    public void addEntity(Entity entity) {
-        if (!isUUIDAlreadyInGame(entity.getId())) {
-            entities.add(entity);
-            Logger.info("Entity with ID " + entity.getId() + " added to game " + gameNameEnum.getGameName());
+    public void addEntity(LivingEntity livingEntity) {
+
+        LivingEntity existsInGame = LivingEntityAlreadyExists(livingEntity.getId());
+
+        if (existsInGame == null) {
+            if (livingEntity != null) {
+                livingEntities.add(livingEntity);
+                Logger.game(livingEntity.getName() + " " + livingEntity.getId() + " added to game " + gameNameEnum.getGameName(), gameNameEnum);
+            } else {
+                // TODO: add a failure for game Logger.failure("some failure message", gameNameEnum);
+                Logger.failure("Cannot add null entity to game " + gameNameEnum.getGameName());
+            }
         } else {
-            Logger.warn("Entity with ID " + entity.getId() + " is already in the game " + gameNameEnum.getGameName());
+            Logger.warn(livingEntity.getName() + " " + livingEntity.getId() + " already exists in game " + gameNameEnum.getGameName());
         }
     }
 
-    public boolean isUUIDAlreadyInGame(String uuid) {
-        for (Entity entity : entities) {
-            if (entity.getId().equals(uuid)) {
-                return true;
+    public LivingEntity LivingEntityAlreadyExists(String uuid) {
+        for (LivingEntity livingEntity : livingEntities) {
+            if (livingEntity.getId().equals(uuid)) {
+                return livingEntity;
             }
         }
-        return false;
+        return null;
     }
 
     // Getters and Setters

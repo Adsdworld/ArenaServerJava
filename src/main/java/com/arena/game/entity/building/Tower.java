@@ -5,7 +5,7 @@ import com.arena.game.entity.LivingEntity;
 
 public class Tower extends LivingEntity {
     public Tower(String id) {
-        super(id, 2000, 0);
+        super(id, 2000, 0, "Tower");
         this.attackDamage = 100;
     }
 

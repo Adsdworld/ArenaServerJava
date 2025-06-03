@@ -36,6 +36,11 @@ public enum ResponseEnum {
      */
     @SerializedName("Joined")
     Joined("Joined"),
+    /**
+     * JoinGame : failure
+     */
+    @SerializedName("Player Already In Game")
+    PlayerAlreadyInGame("Player Already In Game"),
 
     /**
      * CloseGame : success
@@ -51,6 +56,7 @@ public enum ResponseEnum {
     
     @SerializedName("Spawned")
     Spawned("Spawned"),
+
 
 
     ;

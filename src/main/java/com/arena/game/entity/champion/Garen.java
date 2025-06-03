@@ -4,7 +4,7 @@ import com.arena.game.entity.LivingEntity;
 
 public class Garen extends LivingEntity {
     public Garen(String id, int team) {
-        super(id, 600, team); // maxHealth
+        super(id, 600, team, "Garen"); // maxHealth
         this.armor = 30;
         this.attackDamage = 60;
         this.moveSpeed = 3.5f;

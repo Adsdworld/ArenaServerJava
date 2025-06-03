@@ -6,14 +6,16 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected float moveSpeed;
     protected boolean moving;
     protected float posX, posZ, posXDesired, posZDesired;
+    protected String name;
 
     protected int team;
 
-    public LivingEntity(String id, int maxHealth, int team) {
+    public LivingEntity(String id, int maxHealth, int team, String name) {
         super(id);
         this.maxHealth = maxHealth;
         this.health = maxHealth;
         this.team = team;
+        this.name = name;
     }
 
     @Override public int getHealth() { return health; }
@@ -70,5 +72,10 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override
     public void setTeam(int team) {
         this.team = team;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }
