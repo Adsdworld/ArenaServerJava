@@ -14,9 +14,6 @@ public class JoinHandler implements IMessageHandler {
     public void handle(Message message) {
         Game game = Server.getInstance().gameExists(message.getGameName());
 
-        Response response = new Response();
-        response.setResponse(ResponseEnum.Info);
-
         if (game != null) {
             Player player = new Player(message.getUuid());
 
@@ -26,38 +23,14 @@ public class JoinHandler implements IMessageHandler {
 
 
 
-            int team = ThreadLocalRandom.current().nextInt(3);
+            int team = ThreadLocalRandom.current().nextInt(2);
 
             switch (team) {
                 case 0:
-                    if (game.getSpectators().contains(player)) {
-                        game.getBlueTeam().removeIf(p -> p.getUuid().equals(player.getUuid()));
-                        game.getRedTeam().removeIf(p -> p.getUuid().equals(player.getUuid()));
-                        response.setNotify("You are already spectating the game " + message.getGameName().getGameName());
-                        return;
-                    }
-                    game.addSpectator(player);
-                    response.setNotify("You are now spectating the game " + message.getGameName().getGameName());
+                    game.addPlayer(player, 1);
                     break;
                 case 1:
-                    if (game.getBlueTeam().contains(player)) {
-                        game.getRedTeam().removeIf(p -> p.getUuid().equals(player.getUuid()));
-                        game.getSpectators().removeIf(p -> p.getUuid().equals(player.getUuid()));
-                        response.setNotify("You are already in the blue team of the game " + message.getGameName().getGameName());
-                        return;
-                    }
-                    game.addPlayerToBlueTeam(player);
-                    response.setNotify("You are now in the blue team of the game " + message.getGameName().getGameName());
-                    break;
-                case 2:
-                    if (game.getRedTeam().contains(player)) {
-                        game.getBlueTeam().removeIf(p -> p.getUuid().equals(player.getUuid()));
-                        game.getSpectators().removeIf(p -> p.getUuid().equals(player.getUuid()));
-                        response.setNotify("You are already in the red team of the game " + message.getGameName().getGameName());
-                        return;
-                    }
-                    game.addPlayerToRedTeam(player);
-                    response.setNotify("You are now in the red team of the game " + message.getGameName().getGameName());
+                    game.addPlayer(player, 2);
                     break;
             }
 
@@ -66,7 +39,12 @@ public class JoinHandler implements IMessageHandler {
 
 
         } else {
+            Response response = new Response();
+            response.setResponse(ResponseEnum.Joined);
             response.setNotify("Couldn't find game " + message.getGameName().getGameName());
+            response.setGameName(message.getGameName());
+            response.Send(message.getUuid());
+
             Logger.failure("Couldn't find game " + message.getGameName());
         }
     }
