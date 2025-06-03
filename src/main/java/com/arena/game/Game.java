@@ -1,8 +1,14 @@
 package com.arena.game;
 
+import com.arena.game.entity.Entity;
+import com.arena.game.entity.champion.Garen;
+import com.arena.network.response.Response;
 import com.arena.player.Player;
+import com.arena.player.ResponseEnum;
+import com.arena.utils.Logger;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Game {
     /* Identifier for the game */
@@ -12,10 +18,10 @@ public class Game {
     GameStatusEnum gameStatusEnum;
 
     /* Teams in the game */
-    private ArrayList<Player> BlueTeam;
-    private ArrayList<Player> RedTeam;
+    private ArrayList<Entity> entities;
 
-    private ArrayList<Player> Spectators;
+    private ArrayList<Player> players;
+
 
 
     /**
@@ -26,34 +32,57 @@ public class Game {
         this.gameStatusEnum = GameStatusEnum.Creating;
         this.gameNameEnum = gameNameEnum;
 
-        this.BlueTeam = new ArrayList<>();
-        this.RedTeam = new ArrayList<>();
-
-        this.Spectators = new ArrayList<>();
+        this.entities = new ArrayList<>();
+        this.players = new ArrayList<>();
 
         this.gameStatusEnum = GameStatusEnum.Created;
     }
 
-    public boolean addPlayerToBlueTeam(Player player) {
-        if (BlueTeam.size() < 5) {
-            BlueTeam.add(player);
-            return true;
+
+    /**
+     * Add a player to the game Entity should have the player's UUID
+     * default champion is Garen
+     * @param player
+     */
+    public void addPlayer(Player player, int team) {
+
+        Response response = new Response();
+        response.setResponse(ResponseEnum.Joined);
+        response.setGameName(gameNameEnum);
+
+        if (!isUUIDAlreadyInGame(player.getUuid())) {
+            Garen garen = new Garen(player.getUuid(), team);
+            addEntity(garen);
+            players.add(player);
+        } else {
+            Logger.warn("Player with UUID " + player.getUuid() + " is already in the game " + gameNameEnum.getGameName());
         }
-        return false;
+
+        // TODO : improve message add possibility to choose team and champion
+        response.setNotify("Joined " + gameNameEnum.getGameName() + " as Garen in team " + team);
+        response.Send(gameNameEnum);
+
+        Logger.game("Player with UUID " + player.getUuid() + " added to game " + gameNameEnum.getGameName(), gameNameEnum);
     }
 
-    public boolean addPlayerToRedTeam(Player player) {
-        if (RedTeam.size() < 5) {
-            RedTeam.add(player);
-            return true;
+    /**
+     * Create a new entity in the game, with a uuid non exitent
+     * @return the created entity
+     */
+    public void addEntity(Entity entity) {
+        if (!isUUIDAlreadyInGame(entity.getId())) {
+            entities.add(entity);
+            Logger.info("Entity with ID " + entity.getId() + " added to game " + gameNameEnum.getGameName());
+        } else {
+            Logger.warn("Entity with ID " + entity.getId() + " is already in the game " + gameNameEnum.getGameName());
         }
-        return false;
     }
 
-    public boolean addSpectator(Player player) {
-        if (!BlueTeam.contains(player) && !RedTeam.contains(player)) {
-            Spectators.add(player);
-            return true;
+    public boolean isUUIDAlreadyInGame(String uuid) {
+        for (Entity entity : entities) {
+            if (entity.getId().equals(uuid)) {
+                return true;
+            }
         }
         return false;
     }
@@ -66,15 +95,7 @@ public class Game {
         this.gameNameEnum = gameNameEnum;
     }
 
-    public ArrayList<Player> getBlueTeam() {
-        return BlueTeam;
-    }
-
-    public ArrayList<Player> getRedTeam() {
-        return RedTeam;
-    }
-
-    public ArrayList<Player> getSpectators() {
-        return Spectators;
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 }

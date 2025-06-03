@@ -30,15 +30,7 @@ public class JavaWebSocketResponseSender implements IResponseSender {
     public void sendGameResponse(Response response, GameNameEnum gameName) {
         for (Game game : Server.getInstance().getGames()) {
             if (game.getGameNameEnum().equals(gameName)) {
-                for (Player player : game.getBlueTeam()){
-                    response.setUuid(player.getUuid());
-                    sendToConn(getConnByUuid(player.getUuid()), response);
-                }
-                for (Player player : game.getRedTeam()) {
-                    response.setUuid(player.getUuid());
-                    sendToConn(getConnByUuid(player.getUuid()), response);
-                }
-                for (Player player : game.getSpectators()) {
+                for (Player player : game.getPlayers()){
                     response.setUuid(player.getUuid());
                     sendToConn(getConnByUuid(player.getUuid()), response);
                 }

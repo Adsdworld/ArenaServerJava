@@ -46,7 +46,11 @@ public enum ResponseEnum {
      * CloseGame : failure
      */
     @SerializedName("Game Not Found")
-    GameNotFound("Game Not Found")
+    GameNotFound("Game Not Found"),
+    
+    
+    @SerializedName("Spawned")
+    Spawned("Spawned"),
 
 
     ;
