@@ -32,17 +32,28 @@ public interface ILiving {
     float getPosZ();
     void setPosZ(float z);
 
+    void setRotation(float rotation);
+    float getRotation();
+
     int getTeam();
     void setTeam(int team);
 
     String getName();
 
-    void setCooldownQ(long cooldownQ);
-    long getCooldownQ();
-    void setCooldownW(long cooldownW);
-    long getCooldownW();
-    void setCooldownE(long cooldownE);
-    long getCooldownE();
-    void setCooldownR(long cooldownR);
-    long getCooldownR();
+    void setCooldownQStart(long cooldownQStart);
+    long getCooldownQStart();
+    void setCooldownWStart(long cooldownWStart);
+    long getCooldownWStart();
+    void setCooldownEStart(long cooldownEStart);
+    long getCooldownEStart();
+    void setCooldownRStart(long cooldownRStart);
+    long getCooldownRStart();
+    void setCooldownQEnd(long cooldownQEnd);
+    long getCooldownQEnd();
+    void setCooldownWEnd(long cooldownWEnd);
+    long getCooldownWEnd();
+    void setCooldownEEnd(long cooldownEEnd);
+    long getCooldownEEnd();
+    void setCooldownREnd(long cooldownREnd);
+    long getCooldownREnd();
 }

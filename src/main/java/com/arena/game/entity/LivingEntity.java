@@ -3,12 +3,12 @@ package com.arena.game.entity;
 public abstract class LivingEntity extends Entity implements ILiving {
     protected int health, maxHealth;
     protected int armor, magicResist, attackDamage, abilityPower;
-    protected float moveSpeed;
+    protected float moveSpeed, rotation;
     protected boolean moving;
     protected float posX, posZ, posXDesired, posZDesired;
     protected String name;
     protected int team;
-    protected long cooldownQ, cooldownW, cooldownE, cooldownR;
+    protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd;
 
     public LivingEntity(String id, int maxHealth, int team, String name) {
         super(id);
@@ -65,6 +65,9 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public float getPosZ() { return posZ; }
     @Override public void setPosZ(float z) { this.posZ = z; }
 
+    @Override public void setRotation(float rotation) { this.rotation = rotation; }
+    @Override public float getRotation() { return rotation; }
+
     @Override
     public int getTeam() {
         return team;
@@ -79,28 +82,52 @@ public abstract class LivingEntity extends Entity implements ILiving {
         return name;
     }
 
-    @Override public void setCooldownQ(long cooldownQ) {
-        this.cooldownQ = cooldownQ;
+    @Override public void setCooldownQStart(long cooldownQStart) {
+        this.cooldownQStart = cooldownQStart;
     }
-    @Override public long getCooldownQ() {
-        return cooldownQ;
+    @Override public long getCooldownQStart() {
+        return cooldownQStart;
     }
-    @Override public void setCooldownW(long cooldownW) {
-        this.cooldownW = cooldownW;
+    @Override public void setCooldownWStart(long cooldownWStart) {
+        this.cooldownWStart = cooldownWStart;
     }
-    @Override public long getCooldownW() {
-        return cooldownW;
+    @Override public long getCooldownWStart() {
+        return cooldownWStart;
     }
-    @Override public void setCooldownE(long cooldownE) {
-        this.cooldownE = cooldownE;
+    @Override public void setCooldownEStart(long cooldownEStart) {
+        this.cooldownEStart = cooldownEStart;
     }
-    @Override public long getCooldownE() {
-        return cooldownE;
+    @Override public long getCooldownEStart() {
+        return cooldownEStart;
     }
-    @Override public void setCooldownR(long cooldownR) {
-        this.cooldownR = cooldownR;
+    @Override public void setCooldownRStart(long cooldownRStart) {
+        this.cooldownRStart = cooldownRStart;
     }
-    @Override public long getCooldownR() {
-        return cooldownR;
-        }
+    @Override public long getCooldownRStart() {
+        return cooldownRStart;
+    }
+    @Override public void setCooldownQEnd(long cooldownQEnd) {
+        this.cooldownQEnd = cooldownQEnd;
+    }
+    @Override public long getCooldownQEnd() {
+        return cooldownQEnd;
+    }
+    @Override public void setCooldownWEnd(long cooldownWEnd) {
+        this.cooldownWEnd = cooldownWEnd;
+    }
+    @Override public long getCooldownWEnd() {
+        return cooldownWEnd;
+    }
+    @Override public void setCooldownEEnd(long cooldownEEnd) {
+        this.cooldownEEnd = cooldownEEnd;
+    }
+    @Override public long getCooldownEEnd() {
+        return cooldownEEnd;
+    }
+    @Override public void setCooldownREnd(long cooldownREnd) {
+        this.cooldownREnd = cooldownREnd;
+    }
+    @Override public long getCooldownREnd() {
+        return cooldownREnd;
+    }
 }
