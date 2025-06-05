@@ -63,6 +63,9 @@ public class JavaWebSocket extends WebSocketServer {
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         String reason_ = reason != null && !reason.isEmpty() ? reason : "No reason provided";
         Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason_);
+        Player player = webSocketToUuid.get(conn);
+        uuidToWebSocket.remove(player);
+        webSocketToUuid.remove(conn);
 
         // TODO: remove the player from the server using the connection linked to uuid of the player
     }
@@ -87,7 +90,7 @@ public class JavaWebSocket extends WebSocketServer {
                 response.setResponse(ResponseEnum.Logged);
                 response.setUuid(player.getUuid());
                 response.setNotify("Connected to the server ! Welcome to Arena!");
-                response.Send();
+                response.Send(player.getUuid());
 
                 // TODO: design a spectator message on join
                 /* for (Game game : Server.getInstance().getGames()) {

@@ -61,6 +61,14 @@ public enum ResponseEnum {
     @SerializedName("Game State")
     GameState("Game State"),
 
+    /**
+     * What is my entity
+     */
+    @SerializedName("Your Entity Is")
+    YourEntityIs("Your Entity Is"),
+
+
+
     ;
 
     private final String response;

@@ -113,6 +113,8 @@ public class Logger {
         }
     }
 
+    //TODO: Create a mecanism of 15262772x <text> for avoiding heavy files and console flooding
+
     private static void processLogQueue() {
         while (!logQueue.isEmpty()) {
             String logEntry = logQueue.poll();

@@ -15,6 +15,7 @@ import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -100,6 +101,7 @@ public class Core {
     }
 
     private void sendGameState() {
+        //Logger.info("Starting to send game state to all clients..." + new Date());
         for (Game game : Server.getInstance().getGames()) {
             Response response = new Response();
             response.setResponse(ResponseEnum.GameState);
@@ -107,6 +109,7 @@ public class Core {
             response.setLivingEntities(game.getLivingEntities());
             response.Send(game.getGameNameEnum(), true);
         }
+        //Logger.server("Game state sent to all clients at " + new Date());
 
         // TODO: construire et envoyer l'état du jeu aux clients
 

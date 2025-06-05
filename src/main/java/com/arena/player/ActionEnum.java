@@ -13,7 +13,14 @@ public enum ActionEnum {
     Join("Join"),
 
     @SerializedName("Close Game")
-    CloseGame("Close Game");
+    CloseGame("Close Game"),
+
+    @SerializedName("What Is My Entity")
+    WhatIsMyEntity("What Is My Entity"),
+    
+
+
+    ;
 
     private final String action;
 

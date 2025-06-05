@@ -66,8 +66,9 @@ public class JavaWebSocketResponseSender implements IResponseSender {
         if (conn != null && conn.isOpen()) {
             Gson gson = new Gson();
             conn.send(gson.toJson(response));
-        } else {
-            Logger.failure("Connection is null or closed for conn: " + conn);
-        }
+        }// else {
+            // A player have left the server
+            //Logger.failure("Connection is null or closed for conn: " + conn);
+        //}
     }
 }
