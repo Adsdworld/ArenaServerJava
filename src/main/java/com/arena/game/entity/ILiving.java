@@ -36,4 +36,13 @@ public interface ILiving {
     void setTeam(int team);
 
     String getName();
+
+    void setCooldownQ(long cooldownQ);
+    long getCooldownQ();
+    void setCooldownW(long cooldownW);
+    long getCooldownW();
+    void setCooldownE(long cooldownE);
+    long getCooldownE();
+    void setCooldownR(long cooldownR);
+    long getCooldownR();
 }

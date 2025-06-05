@@ -4,8 +4,6 @@ import com.arena.game.GameNameEnum;
 import com.arena.player.ActionEnum;
 import com.google.gson.Gson;
 
-import java.util.Date;
-
 public class Message implements Comparable<Message> {
     private String _uuid;
     private ActionEnum _action;
@@ -18,6 +16,10 @@ public class Message implements Comparable<Message> {
 
     public long getTimeStamp() {
         return _timestamp;
+    }
+
+    public void setTimeStamp(long timestamp) {
+        this._timestamp = timestamp;
     }
 
     public GameNameEnum getGameName() {

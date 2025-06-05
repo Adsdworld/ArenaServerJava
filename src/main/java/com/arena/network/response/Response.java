@@ -2,19 +2,21 @@ package com.arena.network.response;
 
 import com.arena.game.GameNameEnum;
 import com.arena.game.entity.LivingEntity;
+import com.arena.network.message.Message;
 import com.arena.player.ActionEnum;
 import com.arena.player.ResponseEnum;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class Response {
+public class Response implements Comparable<Response>{
     private String _uuid;   // Unique id
     private ResponseEnum _reponse;
     private GameNameEnum _gameName;
     private String _ability;
     private String _text;
     private String _notify;
+    private long _timestamp;
     private ArrayList<LivingEntity> _livingEntities;
 
     // Constructeur vide nécessaire pour Gson
@@ -53,8 +55,21 @@ public class Response {
         this._notify = notify;
     }
 
+    public void setTimestamp(long timestamp) {
+        this._timestamp = timestamp;
+    }
+
+    public long getTimestamp() {
+        return _timestamp;
+    }
+
     public ArrayList<LivingEntity> setLivingEntities(ArrayList<LivingEntity> livingEntities) {
         return _livingEntities = livingEntities;
+    }
+
+    @Override
+    public int compareTo(Response other) {
+        return Long.compare(this._timestamp, other._timestamp);
     }
 
     @Override
@@ -66,6 +81,7 @@ public class Response {
      * send to server.
      */
     public void Send() {
+        _timestamp = System.currentTimeMillis();
         ResponseService.send(this, false);
     }
 
@@ -74,6 +90,7 @@ public class Response {
      * @param silent
      */
     public void Send(boolean silent) {
+        _timestamp = System.currentTimeMillis();
         ResponseService.send(this, silent);
     }
 
@@ -83,6 +100,7 @@ public class Response {
      * @param gameName
      */
     public void Send(GameNameEnum gameName) {
+        _timestamp = System.currentTimeMillis();
         ResponseService.sendToGame(this, gameName, false);
     }
 
@@ -91,6 +109,7 @@ public class Response {
      * @param gameName
      */
     public void Send(GameNameEnum gameName, boolean silent) {
+        _timestamp = System.currentTimeMillis();
         ResponseService.sendToGame(this, gameName, silent);
     }
 
@@ -99,6 +118,7 @@ public class Response {
      * @param uuid
      */
     public void Send(String uuid) {
+        _timestamp = System.currentTimeMillis();
         ResponseService.sendToUuid(uuid, this, false);
     }
 
@@ -107,6 +127,7 @@ public class Response {
      * @param uuid
      */
     public void Send(String uuid, boolean silent) {
+        _timestamp = System.currentTimeMillis();
         ResponseService.sendToUuid(uuid, this, silent);
     }
 }

@@ -79,6 +79,14 @@ public class Logger {
         enqueueLog("error", message);
     }
 
+    /// <summary>
+    /// For logging all test messages.
+    /// example: Cient connected
+    /// </summary>
+    public static void test(String message) {
+        enqueueLog("@TEST", message);
+    }
+
     private static void enqueueLog(String level, String message, String customBefore) {
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
 

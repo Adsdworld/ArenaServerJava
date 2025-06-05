@@ -7,8 +7,8 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected boolean moving;
     protected float posX, posZ, posXDesired, posZDesired;
     protected String name;
-
     protected int team;
+    protected long cooldownQ, cooldownW, cooldownE, cooldownR;
 
     public LivingEntity(String id, int maxHealth, int team, String name) {
         super(id);
@@ -78,4 +78,29 @@ public abstract class LivingEntity extends Entity implements ILiving {
     public String getName() {
         return name;
     }
+
+    @Override public void setCooldownQ(long cooldownQ) {
+        this.cooldownQ = cooldownQ;
+    }
+    @Override public long getCooldownQ() {
+        return cooldownQ;
+    }
+    @Override public void setCooldownW(long cooldownW) {
+        this.cooldownW = cooldownW;
+    }
+    @Override public long getCooldownW() {
+        return cooldownW;
+    }
+    @Override public void setCooldownE(long cooldownE) {
+        this.cooldownE = cooldownE;
+    }
+    @Override public long getCooldownE() {
+        return cooldownE;
+    }
+    @Override public void setCooldownR(long cooldownR) {
+        this.cooldownR = cooldownR;
+    }
+    @Override public long getCooldownR() {
+        return cooldownR;
+        }
 }

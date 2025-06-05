@@ -49,7 +49,7 @@ public class JavaWebSocketResponseSender implements IResponseSender {
         sendToConn(getConnByUuid(uuid), response);
 
         if (!silent) {
-            Logger.game("Send To " + uuid + " : " + response);
+            Logger.server("Send To " + uuid + " : " + response);
         }
     }
 
