@@ -8,6 +8,11 @@ public class Garen extends LivingEntity {
         this.armor = 30;
         this.attackDamage = 60;
         this.moveSpeed = 3.5f;
+
+        this.cooldownQMs = 1000;
+        this.cooldownWMs = 5000;
+        this.cooldownEMs = 20000;
+        this.cooldownRMs = 60000;
     }
 
     /*public void Q() {  }

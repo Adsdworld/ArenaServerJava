@@ -14,8 +14,13 @@ public class Message implements Comparable<Message> {
     private float posY;
     private float rotationY;
     private long cooldownQStart;
-    private long cooldownWEnd;
+    private long cooldownWStart;
     private long cooldownEStart;
+    private long cooldownRStart;
+
+    private long cooldownQEnd;
+    private long cooldownWEnd;
+    private long cooldownEEnd;
     private long cooldownREnd;
 
     // Constructeur vide nécessaire pour Gson
@@ -83,17 +88,43 @@ public class Message implements Comparable<Message> {
     public void setCooldownQStart(long cooldownQStart) {
         this.cooldownQStart = cooldownQStart;
     }
-    public long getCooldownWEnd() {
-        return cooldownWEnd;
+    public long getCooldownWStart() {
+        return cooldownWStart;
     }
-    public void setCooldownWEnd(long cooldownWEnd) {
-        this.cooldownWEnd = cooldownWEnd;
+    public void setCooldownWStart(long cooldownWStart) {
+        this.cooldownWStart = cooldownWStart;
     }
     public long getCooldownEStart() {
         return cooldownEStart;
     }
     public void setCooldownEStart(long cooldownEStart) {
         this.cooldownEStart = cooldownEStart;
+    }
+    public long getCooldownRStart() {
+        return cooldownRStart;
+    }
+    public void setCooldownRStart(long cooldownRStart) {
+        this.cooldownRStart = cooldownRStart;
+    }
+
+
+    public long getCooldownQEnd() {
+        return cooldownQEnd;
+    }
+    public void setCooldownQEnd(long cooldownQEnd) {
+        this.cooldownQEnd = cooldownQEnd;
+    }
+    public long getCooldownWEnd() {
+        return cooldownWEnd;
+    }
+    public void setCooldownWEnd(long cooldownWEnd) {
+        this.cooldownWEnd = cooldownWEnd;
+    }
+    public long getCooldownEEnd() {
+        return cooldownEEnd;
+    }
+    public void setCooldownEEnd(long cooldownEEnd) {
+        this.cooldownEEnd = cooldownEEnd;
     }
     public long getCooldownREnd() {
         return cooldownREnd;

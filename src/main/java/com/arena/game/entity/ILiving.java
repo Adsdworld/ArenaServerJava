@@ -26,6 +26,8 @@ public interface ILiving {
     void setPosXDesired(float x);
     float getPosZDesired();
     void setPosZDesired(float z);
+    float getPosYDesired();
+    void setPosYDesired(float y);
 
     float getPosX();
     void setPosX(float x);
@@ -58,4 +60,13 @@ public interface ILiving {
     long getCooldownEEnd();
     void setCooldownREnd(long cooldownREnd);
     long getCooldownREnd();
+
+    void setCooldownQMs(long cooldownQEnd);
+    long getCooldownQMs();
+    void setCooldownWMs(long cooldownWEnd);
+    long getCooldownWMs();
+    void setCooldownEMs(long cooldownEEnd);
+    long getCooldownEMs();
+    void setCooldownRMs(long cooldownREnd);
+    long getCooldownRMs();
 }

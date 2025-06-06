@@ -1,13 +1,15 @@
 package com.arena.game.entity;
 
+import com.arena.game.entity.champion.Garen;
+
 public abstract class LivingEntity extends Entity implements ILiving {
     protected int health, maxHealth;
     protected int armor, magicResist, attackDamage, abilityPower;
     protected boolean moving;
-    protected float moveSpeed, rotationY, posX, posZ, posY, posXDesired, posZDesired;
+    protected float moveSpeed, rotationY, posX, posZ, posY, posXDesired, posZDesired, posYDesired;
     protected String name;
     protected int team;
-    protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd;
+    protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd, cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs;
 
     public LivingEntity(String id, int maxHealth, int team, String name) {
         super(id);
@@ -58,6 +60,8 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public void setPosXDesired(float x) { this.posXDesired = x; }
     @Override public float getPosZDesired() { return posZDesired; }
     @Override public void setPosZDesired(float z) { this.posZDesired = z; }
+    @Override public float getPosYDesired() { return posYDesired; }
+    @Override public void setPosYDesired(float y) { this.posYDesired = y; }
 
     @Override public float getPosX() { return posX; }
     @Override public void setPosX(float x) { this.posX = x; }
@@ -130,5 +134,38 @@ public abstract class LivingEntity extends Entity implements ILiving {
     }
     @Override public long getCooldownREnd() {
         return cooldownREnd;
+    }
+    @Override public void setCooldownQMs(long cooldownQMs) {
+        this.cooldownQMs = cooldownQMs;
+    }
+    @Override public long getCooldownQMs() {
+        return cooldownQMs;
+    }
+    @Override public void setCooldownWMs(long cooldownWMs) {
+        this.cooldownWMs = cooldownWMs;
+    }
+    @Override public long getCooldownWMs() {
+        return cooldownWMs;
+    }
+    @Override public void setCooldownEMs(long cooldownEMs) {
+        this.cooldownEMs = cooldownEMs;
+    }
+    @Override public long getCooldownEMs() {
+        return cooldownEMs;
+    }
+    @Override public void setCooldownRMs(long cooldownRMs) {
+        this.cooldownRMs = cooldownRMs;
+    }
+    @Override public long getCooldownRMs() {
+        return cooldownRMs;
+    }
+
+    public static LivingEntity getLivingEntityFromName(String name) {
+        switch (name) {
+            case "Garen":
+                return new Garen("ServerGaren", 0);
+            default:
+                return null;
+        }
     }
 }

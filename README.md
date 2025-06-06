@@ -29,8 +29,8 @@ Pour vous aider dans votre choix du sujet et dans le développement du projet, l
 - [OK] @A.Sallier
 - file : Logger.java, Response.java
 
-**envoi des méthodes** : [TODO] c'est quoi?
-- [TODO]
+**envoi des méthodes** :
+- [OK] @A.Sallier
 - file :
 
 **Respect ds règles qualité Checkstyle** : 
@@ -59,20 +59,20 @@ Pour vous aider dans votre choix du sujet et dans le développement du projet, l
 - file : Server.java, Game.java, Response.java, Message.java, Player.java, Core.java
 
 **Explication du ou des algorithmes les plus complexes** :
-- [TODO]
+- [TODO] dans le rapport à fournir
 - On a pas d'algorithme complexe.
 
 **Justification des choix des structures de données**
-- [TODO]
+- [TODO] LivvingEntity quoi et poourquoi Une livingentity
 - Justifier : Iliving?
 
 ## @Modélisation
 Diagramme de classes détaillé (hors IHM) : attributs, méthodes, visibilités, relations
-- [TODO] On peut faire que un ou 2 diagrams ?
+- [TODO] Tout
 - 
 
 **Diagramme de séquences correspondant à un des tests "end to end"**
-- [TODO] On peut faire que un ou 2 diagrams ?
+- [TODO] okay faire un test simple si réalisable
 - 
 
 **Code source Java conforme aux diagrammes fournis**
@@ -89,15 +89,15 @@ Diagramme de classes détaillé (hors IHM) : attributs, méthodes, visibilités,
 - 
 
 **Tests Unitaires (JUnit)**
-- [TODO]
+- [TODO] Test consturcteur faire plusieurs classes et pas les test get set.
 - 
 
 **couvrant 100% des instructions et branches par méthode avec algorithmie**
-- [TODO] Négocier pour pas avoir à faire 100% 
+- [TODO] Trouver la fonction qui est complexe.
 - 
 
 **au moins 80% des instructions et branches pour les méthodes non élémentaires (hors IHM)**
-- [TODO] Négocier pour pas avoir à faire 80%
+- [TODO] 80% pour les méthodes élémentaires
 - 
 
 Last modified: Tuesday, 6 May 2025, 6:32 PM
