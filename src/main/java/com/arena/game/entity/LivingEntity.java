@@ -3,9 +3,8 @@ package com.arena.game.entity;
 public abstract class LivingEntity extends Entity implements ILiving {
     protected int health, maxHealth;
     protected int armor, magicResist, attackDamage, abilityPower;
-    protected float moveSpeed, rotation;
     protected boolean moving;
-    protected float posX, posZ, posXDesired, posZDesired;
+    protected float moveSpeed, rotationY, posX, posZ, posY, posXDesired, posZDesired;
     protected String name;
     protected int team;
     protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd;
@@ -64,9 +63,11 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public void setPosX(float x) { this.posX = x; }
     @Override public float getPosZ() { return posZ; }
     @Override public void setPosZ(float z) { this.posZ = z; }
+    @Override public float getPosY() { return posY; }
+    @Override public void setPosY(float y) { this.posY = y; }
 
-    @Override public void setRotation(float rotation) { this.rotation = rotation; }
-    @Override public float getRotation() { return rotation; }
+    @Override public void setRotationY(float rotationY) { this.rotationY = rotationY; }
+    @Override public float getRotationY() { return rotationY; }
 
     @Override
     public int getTeam() {

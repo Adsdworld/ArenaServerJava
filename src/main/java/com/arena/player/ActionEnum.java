@@ -17,6 +17,9 @@ public enum ActionEnum {
 
     @SerializedName("What Is My Entity")
     WhatIsMyEntity("What Is My Entity"),
+
+    @SerializedName("Cooldown Start")
+    CooldownStart("Cooldown Start"),
     
 
 

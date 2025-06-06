@@ -31,9 +31,11 @@ public interface ILiving {
     void setPosX(float x);
     float getPosZ();
     void setPosZ(float z);
+    float getPosY();
+    void setPosY(float y);
 
-    void setRotation(float rotation);
-    float getRotation();
+    void setRotationY(float rotation);
+    float getRotationY();
 
     int getTeam();
     void setTeam(int team);
