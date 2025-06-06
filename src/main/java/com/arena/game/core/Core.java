@@ -2,10 +2,7 @@ package com.arena.game.core;
 
 import com.arena.game.Game;
 import com.arena.game.entity.LivingEntity;
-import com.arena.game.handler.CloseGameHandler;
-import com.arena.game.handler.CreateGameHandler;
-import com.arena.game.handler.IMessageHandler;
-import com.arena.game.handler.JoinHandler;
+import com.arena.game.handler.*;
 import com.arena.network.JavaWebSocket;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
@@ -46,6 +43,7 @@ public class Core {
         handlers.put(ActionEnum.CreateGame, new CreateGameHandler());
         handlers.put(ActionEnum.Join, new JoinHandler());
         handlers.put(ActionEnum.CloseGame, new CloseGameHandler());
+        handlers.put(ActionEnum.CooldownStart, new CooldownStartHandler());
 
         // Traitement toutes les 50ms
         _isEnteringTick = false;
