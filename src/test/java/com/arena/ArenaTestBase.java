@@ -7,17 +7,23 @@ public abstract class ArenaTestBase {
 
     public static TestClientJava client_test;
 
+    private static boolean serverStarted = false;
+
+
     @BeforeAll
     public static void globalSetup() throws Exception {
-        // Démarre le serveur une seule fois pour tous les tests
-        new Thread(() -> Main.main(new String[]{})).start();
-        Thread.sleep(1000); // Laisser le temps au serveur de se lancer
+        if (!serverStarted) {
+            // Démarre le serveur une seule fois pour tous les tests
+            new Thread(() -> Main.main(new String[]{})).start();
+            Thread.sleep(1000); // Laisser le temps au serveur de se lancer
 
-        // Connexion du client_test WebSocket
-        client_test = TestClientJava.getInstance();
+            // Connexion du client_test WebSocket
+            client_test = TestClientJava.getInstance();
 
-                //new TestClientJava(new URI("ws://localhost:54099"));
-        client_test.connectBlocking(); // Bloque jusqu'à la connexion
+            //new TestClientJava(new URI("ws://localhost:54099"));
+            client_test.connectBlocking(); // Bloque jusqu'à la connexion
+            serverStarted = true;
+        }
     }
 
     /*protected void sendAndAwaitResponse(String json) throws InterruptedException {
