@@ -1,0 +1,131 @@
+@startuml
+' Configuration
+skinparam classAttributeIconSize 0
+
+' ==== ENUMS (représentés comme stéréotypes ici pour simplifier) ====
+class GameNameEnum <<enum>>
+class ActionEnum <<enum>>
+class ResponseEnum <<enum>>
+
+' ==== ENTITY ====
+class LivingEntity
+
+' ==== MESSAGE SYSTEM ====
+class Message {
+  - String _uuid
+  - ActionEnum _action
+  - GameNameEnum _gameName
+  - String _ability
+  - long _timestamp
+  + getUuid(): String
+  + setUuid(String)
+  + getAction(): ActionEnum
+  + setAction(ActionEnum)
+  + getGameName(): GameNameEnum
+  + setGameName(GameNameEnum)
+  + getTimeStamp(): long
+  + compareTo(Message): int
+  + toString(): String
+}
+
+interface IMessageSender {
+  + sendMessage(Message, GameNameEnum)
+}
+
+class MessageService {
+  - static IMessageSender messageSender
+  + setMessageSender(IMessageSender)
+  + getMessageSender(): IMessageSender
+  + send(Message, GameNameEnum)
+}
+
+MessageService --|> IMessageSender
+MessageService --> Message
+Message --> ActionEnum
+Message --> GameNameEnum
+
+' ==== RESPONSE SYSTEM ====
+class Response {
+  - String _uuid
+  - ResponseEnum _reponse
+  - GameNameEnum _gameName
+  - String _ability
+  - String _text
+  - String _notify
+  - ArrayList<LivingEntity> _livingEntities
+  + getUuid(): String
+  + setUuid(String)
+  + getGameName(): GameNameEnum
+  + setGameName(GameNameEnum)
+  + getReponse(): ResponseEnum
+  + setResponse(ResponseEnum)
+  + setText(String)
+  + setNotify(String)
+  + setLivingEntities(ArrayList<LivingEntity>)
+  + Send()
+  + Send(boolean)
+  + Send(GameNameEnum)
+  + Send(GameNameEnum, boolean)
+  + Send(String)
+  + Send(String, boolean)
+  + toString(): String
+}
+
+interface IResponseSender {
+  + sendResponse(Response, boolean)
+  + sendGameResponse(Response, GameNameEnum, boolean)
+  + sendUuidResponse(String, Response, boolean)
+}
+
+class ResponseService {
+  - static IResponseSender responseSender
+  + setResponseSender(IResponseSender)
+  + getResponseSender(): IResponseSender
+  + send(Response, boolean)
+  + sendToGame(Response, GameNameEnum, boolean)
+  + sendToUuid(String, Response, boolean)
+}
+
+ResponseService --|> IResponseSender
+ResponseService --> Response
+Response --> ResponseEnum
+Response --> GameNameEnum
+Response --> LivingEntity
+
+' ==== WEBSOCKET SERVER ====
+class JavaWebSocket {
+  - static JavaWebSocket instance
+  - final Gson gson
+  - Map<WebSocket, Player> webSocketToUuid
+  - Map<Player, WebSocket> uuidToWebSocket
+  + getInstance(): JavaWebSocket
+  + onStart()
+  + onOpen(WebSocket, ClientHandshake)
+  + onClose(WebSocket, int, String, boolean)
+  + onMessage(WebSocket, String)
+  + onError(WebSocket, Exception)
+  + validateJson(String, Class<?>)
+}
+
+JavaWebSocket --> ResponseService
+JavaWebSocket --> WebSocket
+JavaWebSocket --> Player
+JavaWebSocket --> Message
+JavaWebSocket --> Gson
+JavaWebSocket --> Core
+JavaWebSocket --> Server
+
+class JavaWebSocketResponseSender {
+  + sendResponse(Response, boolean)
+  + sendGameResponse(Response, GameNameEnum, boolean)
+  + sendUuidResponse(String, Response, boolean)
+}
+
+JavaWebSocketResponseSender --|> IResponseSender
+JavaWebSocketResponseSender --> Response
+JavaWebSocketResponseSender --> WebSocket
+JavaWebSocketResponseSender --> GameNameEnum
+JavaWebSocketResponseSender --> Server
+JavaWebSocketResponseSender --> Player
+
+@enduml

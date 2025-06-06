@@ -21,6 +21,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AllTest extends ArenaTestBase {
 
+    /**
+     * Test Unity : Join
+     * This test simulates a player joining a game by sending a login message to the server.
+     * <p>
+     * The expected behavior is that the server responds with a "Logged" response.
+     * <p>
+     * [2025-06-05 17:27:41.677][UnityWebSocket][SendMessage][info] Message envoyé au serveur : {"_uuid":"8fe884b1-ac53-4f23-b4ab-f0a3e09d1029","_ability":null,"_x":null,"_z":null,"_timestamp":1749137261557,"_action":"Login","_gameName":"Game 1"}
+     *
+     * @throws InterruptedException
+     */
+
     @Test
     @Order(1)
     void testUnityLogin() throws InterruptedException {
@@ -47,15 +58,22 @@ public class AllTest extends ArenaTestBase {
                 "Player with UUID '" + TestClientJava.testUuid + "' should be registered on server");
     }
 
+    /**
+     * Test Unity : Create Game
+     * This test simulates a player creating a game by sending a create game message to the server.
+     * <p>
+     * The expected behavior is that the server responds with a "GameCreated" response.
+     *
+     * @throws InterruptedException
+     */
+
 
     @Test
     @Order(2)
     void testUnityCreateGame() throws InterruptedException {
         Message message = new Message();
-        //message.setTimeStamp(System.currentTimeMillis());
-        message.setGameName(GameNameEnum.Game1);
         message.setAction(ActionEnum.CreateGame);
-        //message.setUuid(TestClientJava.testUuid);
+        message.setGameName(GameNameEnum.Game1);
 
         MessageService.Send(message);
 
@@ -67,7 +85,34 @@ public class AllTest extends ArenaTestBase {
 
         assertNotNull(response, "Response should not be null");
         assertEquals(ResponseEnum.GameCreated, response.getReponse(), "Expected response to be " + ResponseEnum.GameCreated);
+    }
 
-}
+    /**
+     * Test Unity : Join Game
+     * This test simulates a player joining a game by sending a join game message to the server.
+     * <p>
+     * The expected behavior is that the server responds with a "Joined" response.
+     *
+     * @throws InterruptedException
+     */
+
+//    @Test
+//    @Order(3)
+//    void testUnityJoinGame() throws InterruptedException {
+//        Message message = TestClientJava.CreateMessageStatic();
+//        message.setAction(ActionEnum.Join);
+//        message.setGameName(GameNameEnum.Game1);
+//
+//
+//        MessageService.Send(message);
+//
+//        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+//
+//        Response response = TestClientJava.filterResponseStatic(ResponseEnum.Joined, responses);
+//
+//        assertNotNull(response, "Response should not be null After Join");
+//        assertEquals(ResponseEnum.Joined, response.getReponse(), "Expected response to be " + ResponseEnum.Joined);
+//    }
+
 
 }

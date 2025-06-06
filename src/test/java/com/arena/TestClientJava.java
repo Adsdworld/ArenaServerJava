@@ -1,6 +1,8 @@
 package com.arena;
 
+import com.arena.network.message.Message;
 import com.arena.network.response.Response;
+import com.arena.player.ActionEnum;
 import com.arena.player.ResponseEnum;
 import com.arena.utils.Logger;
 import com.google.gson.Gson;
@@ -159,5 +161,16 @@ public  class TestClientJava extends WebSocketClient {
 
     public static ArrayList<Response> filterResponseStatic(List<ResponseEnum> responsesEnum, ArrayList<Response> responses) {
         return getInstance().filterResponse(responsesEnum, responses);
+    }
+
+    public Message CreateMessage() {
+        Message message = new Message();
+        message.setUuid(testUuid);
+        message.setTimeStamp(System.currentTimeMillis());
+        return message;
+    }
+
+    public static Message CreateMessageStatic() {
+        return getInstance().CreateMessage();
     }
 }
