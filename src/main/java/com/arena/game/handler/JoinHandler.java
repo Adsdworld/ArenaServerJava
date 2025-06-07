@@ -38,8 +38,8 @@ public class JoinHandler implements IMessageHandler {
 
             // TODO: improve this response create a special ResponseEnum for this case and handle it in the client unity
             Response response = new Response();
-            response.setResponse(ResponseEnum.Joined);
-            response.setNotify("Couldn't find game " + message.getGameName().getGameName());
+            response.setResponse(ResponseEnum.GameNotFound); /* Basic GameNotFound, bad for context */
+            response.setNotify("Couldn't not " + message.getAction() + " game " + message.getGameName().getGameName());
             response.setGameName(message.getGameName());
             response.Send(message.getUuid());
 

@@ -39,6 +39,7 @@ public enum ResponseEnum {
 
     /**
      * JoinGame : success
+     * @note: Notify players
      */
     @SerializedName("Joined")
     Joined("Joined"),
@@ -59,7 +60,11 @@ public enum ResponseEnum {
     @SerializedName("Game Not Found")
     GameNotFound("Game Not Found"),
     
-    
+
+    /**
+     * Spawn : success
+     * @note: Notify players that and entity (not a player) has been spawned.
+     */
     @SerializedName("Spawned")
     Spawned("Spawned"),
 
@@ -68,7 +73,8 @@ public enum ResponseEnum {
     GameState("Game State"),
 
     /**
-     * What is my entity
+     * Join : success
+     * @note: Send gameNameEnum and entityId.
      */
     @SerializedName("Your Entity Is")
     YourEntityIs("Your Entity Is"),

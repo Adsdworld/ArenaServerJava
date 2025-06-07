@@ -6,10 +6,10 @@ import com.arena.game.entity.champion.Garen;
 import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
+import com.arena.server.Server;
 import com.arena.utils.Logger;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Game {
     /* Identifier for the game */
@@ -41,42 +41,88 @@ public class Game {
 
 
     /**
-     * Add a player to the game Entity should have the player's UUID
-     * default champion is Garen
-     * @param player
+     * Add a player to the {@link Game} .
+     *
+     * @param player the {@link Player} to add.
+     * @param team {@code int}.
+     * @implNote This method checks if the {@link Player} already exists in the {@link Game} , if not, it creates a new {@link Entity} , notifies all players of the {@link Game} , and sends a {@link Response}  to the player indicating the {@link Entity}  he is controlling else it notifies all players that the player has rejoined the {@link Game}  and sends a {@link Response}  to the player indicating that he has rejoined the {@link Game} .
+     * @author A.SALLIER
+     * @date 2025-06-07
      */
     public void addPlayer(Player player, int team) {
 
-        LivingEntity existsInGame = LivingEntityAlreadyExists(player.getUuid());
+        LivingEntity existsInGame = livingEntityAlreadyExists(player.getUuid());
 
         Response response = new Response();
         response.setGameName(gameNameEnum);
 
         if (existsInGame == null) {
+            /* Create entity  and add it to game */
             Garen garen = new Garen(player.getUuid(), team);
             addEntity(garen);
+
+            /* Register player to the game */
             players.add(player);
+
+            /* Notify all players of the game */
             response.setNotify(garen.getName() + " " + garen.getId()  + " Joined "+ gameNameEnum.getGameName() + " in team " + team);
             response.setResponse(ResponseEnum.Joined);
             response.Send(gameNameEnum);
+
             Logger.game(garen.getName() + " " + garen.getId()  + " Joined "+ gameNameEnum.getGameName() + " in team " + team, gameNameEnum);
         } else {
+            /* Notify all players of the game */
             response.setNotify(existsInGame.getName() + " " + existsInGame.getId()  + " Rejoined "+ gameNameEnum.getGameName() + " in team " + existsInGame.getTeam());
+
+            //TODO: it might be better to send a ResponseEnum.ReJoined instead PlayerAlreadyInGame
             response.setResponse(ResponseEnum.PlayerAlreadyInGame);
+
             Logger.game(existsInGame.getName() + " " + existsInGame.getId()  + " Rejoined "+ gameNameEnum.getGameName() + " in team " + existsInGame.getTeam(), gameNameEnum);
         }
+
+        /* Assign the new entity to the player */
+        yourEntityIs(response.getUuid(), response.getGameName());
 
         // TODO : improve message add possibility to choose team and champion
 
     }
 
     /**
-     * Create a new entity in the game, with a uuid non exitent
-     * @return the created entity
+     * Send a response to the client indicating the entity he is controlling in the game.
+     *
+     * @param entityId the {@link String}  of the entity.
+     * @param gameName the {@link GameNameEnum}  to which the entity belongs.
+     * @implNote This method checks if the {@link Game}  exists and sends a response with the {@code entityId} .
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
+    private void yourEntityIs(String entityId, GameNameEnum gameName) {
+
+        Game game = Server.getInstance().gameExists(gameNameEnum);
+
+        Response response = new Response();
+        response.setGameName(gameNameEnum);
+
+        if (game != null) {
+            response.setResponse(ResponseEnum.YourEntityIs);
+            response.setUuid(entityId);
+        } else {
+            response.setUuid("Entity_default");
+        }
+        response.Send(entityId);
+    }
+
+    /**
+     * Adds a {@link LivingEntity} to the game.
+     *
+     * @param livingEntity the {@link LivingEntity} to add.
+     * @implNote This method checks if the {@link LivingEntity} already exists in the {@link Game} . If it does not, it adds the {@link LivingEntity}  to the game and logs the action. If it does exist, it logs a warning message.
+     * @author A.SALLIER
+     * @date 2025-06-07
      */
     public void addEntity(LivingEntity livingEntity) {
 
-        LivingEntity existsInGame = LivingEntityAlreadyExists(livingEntity.getId());
+        LivingEntity existsInGame = livingEntityAlreadyExists(livingEntity.getId());
 
         if (existsInGame == null) {
             if (livingEntity != null) {
@@ -91,13 +137,32 @@ public class Game {
         }
     }
 
-    public LivingEntity LivingEntityAlreadyExists(String uuid) {
-        for (LivingEntity livingEntity : livingEntities) {
-            if (livingEntity.getId().equals(uuid)) {
-                return livingEntity;
+    /**
+     * Checks if a {@link LivingEntity} with the given {@code id} already exists in the game.
+     *
+     * @param id the {@code String} identifier of the LivingEntity to check
+     * @return the {@link LivingEntity} if it exists; {@code null} otherwise
+     * @implNote This method iterates through the list of living entities in the game to find a match.
+     * @author A.Sallier
+     * @date 2025-06-07
+     */
+    public LivingEntity livingEntityAlreadyExists(String id) {
+        LivingEntity result = null;
+
+        Game game = Server.getInstance().gameExists(gameNameEnum);
+
+        if (game == null) {
+            Logger.warn("Game " + gameNameEnum.getGameName() + " does not exist.");
+        } else {
+            for (LivingEntity livingEntity : livingEntities) {
+                if (livingEntity.getId().equals(id)) {
+                    result = livingEntity;
+                    break; // on peut sortir dès qu'on a trouvé
+                }
             }
         }
-        return null;
+
+        return result;
     }
 
     // Getters and Setters

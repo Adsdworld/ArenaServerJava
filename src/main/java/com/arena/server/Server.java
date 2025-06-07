@@ -31,6 +31,14 @@ public class Server {
         players = new ArrayList<>();
     }
 
+    /**
+     * Singleton pattern to ensure only one instance of Server exists.
+     * jc
+     * @return {@link Server} instance
+     * @implNote This method initializes the {@link Server} instance if it is not already created.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
     public static synchronized Server getInstance() {
         if (instance == null) {
             instance = new Server();
@@ -132,11 +140,49 @@ public class Server {
         return games;
     }
 
+    /**
+     * Checks if the {@link Server} instance exists.
+     *
+     * @return the {@link Server} instance if it exists; {@code null} otherwise.
+     * @implNote This method checks if the {@link Server} instance is initialized and returns {@code null} if not.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
+    public Server serverExists() {
+        Server server = Server.getInstance();
+
+        if (server == null) {
+            Logger.failure("Server instance is null.");
+            return null;
+        }
+        return server;
+    }
+
+    /**
+     * Checks if a game with the given {@link GameNameEnum} exists.
+     *
+     * @param gameNameEnum the game name to check
+     * @return the {@link Game} instance if it exists; {@code null} otherwise.
+     * @implNote @implNote This method checks if the {@link Server} instance is initialized and returns {@code null} if not.
+     * @author A.Sallier
+     * @date 2025-06-07
+     */
     public Game gameExists(GameNameEnum gameNameEnum) {
+
+        Server server = serverExists();
+
+        if (server == null) {
+            Logger.failure("Server instance is null.");
+            return null;
+        }
+
         return games.stream()
                 .filter(game -> game.getGameNameEnum() == gameNameEnum)
                 .findFirst()
-                .orElse(null);
+                .orElseGet(() -> {
+                    Logger.warn("Game " + gameNameEnum.getGameName() + " does not exist.");
+                    return null;
+                });
     }
 
     public void registerPlayer(Player player) {
@@ -154,6 +200,15 @@ public class Server {
         Logger.server("Registering player : " + player.getUuid());
     }
 
+    /**
+     * Unregisters a player from the server.
+     *
+     * @param player the player to unregister
+     * @return {@code void}
+     * @implNote This method checks if the {@code player} is already registered on the {@code Server.Instance} before attempting to remove him.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
     public void unregisterPlayer(Player player) {
         if (player != null && players.contains(player)) {
             players.remove(player);
@@ -166,4 +221,6 @@ public class Server {
     public ArrayList<Player> getPlayers() {
         return players;
     }
+
+
 }
