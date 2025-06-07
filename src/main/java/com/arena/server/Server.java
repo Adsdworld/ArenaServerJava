@@ -137,6 +137,22 @@ public class Server {
 
                 } else {
                     Logger.game("Closing " + gameNameEnum.getGameName());
+
+                    /* Switch view to default entity for all players in the game */
+                    Response response1 = new Response();
+                    response1.setResponse(ResponseEnum.YourEntityIs);
+                    response1.setText("default");
+                    response1.setGameName(gameNameEnum);
+                    response1.Send(gameNameEnum);
+
+                    /* Send a clear game state to all players before closing for removing all entities */
+                    game.clearLivingEntities();
+                    Response response2 = new Response();
+                    response2.setResponse(ResponseEnum.GameState);
+                    response2.setGameName(gameNameEnum);
+                    response2.setLivingEntities(game.getLivingEntities());
+                    response2.Send(game.getGameNameEnum(), true);
+
                     games.remove(game);
                     response.setResponse(ResponseEnum.GameClosed);
                     response.setGameName(gameNameEnum);

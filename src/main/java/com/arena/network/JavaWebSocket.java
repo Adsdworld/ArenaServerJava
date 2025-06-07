@@ -61,10 +61,12 @@ public class JavaWebSocket extends WebSocketServer {
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        String reason_ = reason != null && !reason.isEmpty() ? reason : "No reason provided";
+        String reason_ = reason != null && !reason.isEmpty() ? reason : " No reason provided";
         Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason_);
         Player player = webSocketToUuid.get(conn);
-        uuidToWebSocket.remove(player);
+        if (player != null) {
+            uuidToWebSocket.remove(player);
+        }
         webSocketToUuid.remove(conn);
 
         // TODO: remove the player from the server using the connection linked to uuid of the player

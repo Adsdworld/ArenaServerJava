@@ -147,9 +147,9 @@ public class Game {
 
         if (game != null) {
             response.setResponse(ResponseEnum.YourEntityIs);
-            response.setUuid(entityId);
+            response.setText(entityId);
         } else {
-            response.setUuid("Entity_default");
+            response.setText("default");
         }
         response.Send(entityId);
     }
@@ -205,6 +205,11 @@ public class Game {
         }
 
         return result;
+    }
+
+    public void clearLivingEntities() {
+        livingEntities.clear();
+        Logger.game("Living entities cleared in game " + gameNameEnum.getGameName(), gameNameEnum);
     }
 
     // Getters and Setters
