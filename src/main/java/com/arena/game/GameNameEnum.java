@@ -16,7 +16,11 @@ public enum GameNameEnum {
     Game4("Game 4"),
 
     @SerializedName("Game 5")
-    Game5("Game 5");
+    Game5("Game 5"),
+
+    /* Only for trigger the GamesLimitReached response */
+    @SerializedName("Game 6")
+    Game6("Game 6");
 
     private final String gameName;
 

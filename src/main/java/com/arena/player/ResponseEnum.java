@@ -10,7 +10,11 @@ public enum ResponseEnum {
     @SerializedName("Info")
     Info("Info"),
 
-    // Login
+    /**
+     * Login : success
+     * When a player connect to the server class, not when he join a game
+     * @author: @A.Sallier
+     */
     @SerializedName("Logged")
     Logged("Logged"),
 
@@ -26,6 +30,8 @@ public enum ResponseEnum {
     GameAlreadyExists("Game Already Exists"),
     /**
      * CreateGame : failure
+     * @note: Use gameNameEnum Game 6 to test this
+     * @author: @A.Sallier
      */
     @SerializedName("Games Limit Reached")
     GamesLimitReached("Games Limit Reached"),

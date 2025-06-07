@@ -1,11 +1,14 @@
 package com.arena;
 
+import com.arena.game.entity.LivingEntity;
+import com.arena.game.entity.champion.Garen;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
-import com.arena.player.ActionEnum;
 import com.arena.player.ResponseEnum;
 import com.arena.utils.Logger;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -23,7 +26,18 @@ public  class TestClientJava extends WebSocketClient {
 
     public static final String testUuid = "test-uuid-12345-abcde-67890-fghij";
 
-    public static final Gson gson = new Gson();
+    // A simple Gson could not deserialize abstract classes such as LivingEntity.
+    //public static final Gson gson = new Gson();
+
+    /* * A Gson with a RuntimeTypeAdapterFactory to handle polymorphic types.
+     * This allows us to deserialize LivingEntity and its subclasses correctly.
+     */
+    public static final Gson gson = new GsonBuilder()
+            .registerTypeAdapterFactory(
+                    com.google.gson.typeadapters.RuntimeTypeAdapterFactory.of(LivingEntity.class, "name")
+                            .registerSubtype(Garen.class, "Garen")
+            )
+            .create();
 
     private static TestClientJava instance;
 

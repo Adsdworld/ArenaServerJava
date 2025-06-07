@@ -1,8 +1,6 @@
 package com.arena.game.entity;
 
-import com.arena.game.entity.champion.Garen;
-
-public abstract class LivingEntity extends Entity implements ILiving {
+public class LivingEntityBase extends Entity implements ILiving {
     protected int health, maxHealth;
     protected int armor, magicResist, attackDamage, abilityPower;
     protected boolean moving;
@@ -11,7 +9,7 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected int team;
     protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd, cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs;
 
-    public LivingEntity(String id, int maxHealth, int team, String name) {
+    public LivingEntityBase(String id, int maxHealth, int team, String name) {
         super(id);
         this.maxHealth = maxHealth;
         this.health = maxHealth;

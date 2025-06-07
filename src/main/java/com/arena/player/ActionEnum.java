@@ -18,6 +18,11 @@ public enum ActionEnum {
     @SerializedName("What Is My Entity")
     WhatIsMyEntity("What Is My Entity"),
 
+    /*
+     * Cooldown Start :
+     * @note: Response through auto GameState
+     * @author: @A.Sallier
+     */
     @SerializedName("Cooldown Start")
     CooldownStart("Cooldown Start"),
     
