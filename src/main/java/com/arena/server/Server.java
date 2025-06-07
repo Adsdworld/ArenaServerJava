@@ -196,7 +196,7 @@ public class Server {
                 .filter(game -> game.getGameNameEnum() == gameNameEnum)
                 .findFirst()
                 .orElseGet(() -> {
-                    Logger.warn("Game " + gameNameEnum.getGameName() + " does not exist.");
+                    //Logger.warn("Game " + gameNameEnum.getGameName() + " does not exist.");
                     return null;
                 });
     }

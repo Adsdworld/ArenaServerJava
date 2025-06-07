@@ -7,7 +7,7 @@ public class Garen extends LivingEntity {
         super(id, 600, team, "Garen"); // maxHealth
         this.armor = 30;
         this.attackDamage = 60;
-        this.moveSpeed = 3.5f;
+        this.moveSpeed = 10.03f;
 
         this.cooldownQMs = 1000;
         this.cooldownWMs = 5000;

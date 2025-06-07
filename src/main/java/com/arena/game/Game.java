@@ -8,6 +8,7 @@ import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,24 @@ public class Game {
     private ArrayList<LivingEntity> livingEntities;
 
     private ArrayList<Player> players;
+
+    private static final float X_BLUE = 272.9823f;
+    private static final float Y_BLUE = 5.0f;
+    private static final float Z_BLUE = 300.6143f;
+
+    private static final float X_RED = 723.0251f;
+    private static final float Y_RED = 5.0f;
+    private static final float Z_RED = 752.9824f;
+
+
+    /*
+        Ou définir les tours hinibiteurs, nexus
+
+        Ou les sbires ?*/
+
+    private static final float X_TOWER = 534.0f;
+    private static final float Y_TOWER = 5.0f;
+    private static final float Z_TOWER = 558.0f;
 
 
 
@@ -59,6 +78,29 @@ public class Game {
         if (existsInGame == null) {
             /* Create entity  and add it to game */
             Garen garen = new Garen(player.getUuid(), team);
+
+
+            switch (team) {
+                case 1:
+                    garen.setPosX(X_BLUE);
+                    garen.setPosY(Y_BLUE);
+                    garen.setPosZ(Z_BLUE);
+                    break;
+                case 2:
+                    garen.setPosX(X_RED);
+                    garen.setPosY(Y_RED);
+                    garen.setPosZ(Z_RED);
+                    break;
+                default:
+                    garen.setPosX(X_TOWER);
+                    garen.setPosY(Y_TOWER);
+                    garen.setPosZ(Z_TOWER);
+            }
+
+
+            Gson gson = new Gson();
+            Logger.info(gson.toJson(garen));
+
             addEntity(garen);
 
             /* Register player to the game */
@@ -142,7 +184,7 @@ public class Game {
      *
      * @param id the {@code String} identifier of the LivingEntity to check
      * @return the {@link LivingEntity} if it exists; {@code null} otherwise
-     * @implNote This method iterates through the list of living entities in the game to find a match.
+     * @implNote This method iterates through the list of {@code livingEntities}  in the game to find a match.
      * @author A.Sallier
      * @date 2025-06-07
      */
