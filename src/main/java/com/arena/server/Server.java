@@ -23,7 +23,7 @@ public class Server {
     private boolean creatingGame;
     private boolean closingGame;
 
-    private final int MAX_GAMES = 5;
+    private final int maxGames = 5;
 
     private Server() {
         games = new ArrayList<>();
@@ -34,6 +34,7 @@ public class Server {
     /**
      * Singleton pattern to ensure only one instance of Server exists.
      * jc
+     *
      * @return {@link Server} instance
      * @implNote This method initializes the {@link Server} instance if it is not already created.
      * @author A.SALLIER
@@ -46,91 +47,106 @@ public class Server {
         return instance;
     }
 
-    public boolean isCreatingGame () {
+    public boolean isCreatingGame() {
         return creatingGame;
     }
 
-    public boolean isClosingGame () {
+    public boolean isClosingGame() {
         return closingGame;
     }
 
+    /**
+     * Creates a new game based on the provided {@link Message}.
+     *
+     * @param message the {@link Message}  containing the {@link GameNameEnum}  to create the {@link Game}.
+     * @implNote This method checks if a {@link Game}  is already being created. If so, it logs a warning and retries later. If not, it proceeds to create the {@link Game} , checking if it already exists or if the maximum number of games has been reached. It sends a {@link Response}  back to the client with the result of the operation.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
     public synchronized void createGame(Message message) {
         if (creatingGame) {
             Logger.warn("A game is already being created, please wait.");
             Core.getInstance().retryLater(message);
-            return;
-        }
 
-        creatingGame = true;
-        try {
-            Server.getInstance().getGames().removeIf(Objects::isNull);
+        } else {
+            creatingGame = true;
 
-            GameNameEnum gameNameEnum = message.getGameName();
-            Game game = gameExists(gameNameEnum);
+            try {
+                Server.getInstance().getGames().removeIf(Objects::isNull);
 
-            Response response = new Response();
+                GameNameEnum gameNameEnum = message.getGameName();
+                Game game = gameExists(gameNameEnum);
 
-            if (game != null) {
-                Logger.warn(gameNameEnum.getGameName() + " already exists.");
-                response.setResponse(ResponseEnum.GameAlreadyExists);
-                response.setNotify(gameNameEnum.getGameName() + " already exists.");
+                Response response = new Response();
+
+                if (game != null) {
+                    Logger.warn(gameNameEnum.getGameName() + " already exists.");
+                    response.setResponse(ResponseEnum.GameAlreadyExists);
+                    response.setNotify(gameNameEnum.getGameName() + " already exists.");
+
+                } else if (games.size() >= maxGames) {
+                    Logger.warn("Cannot create more than " + maxGames + " games.");
+                    response.setResponse(ResponseEnum.GamesLimitReached);
+                    response.setNotify("Cannot create more than " + maxGames + " games.");
+
+                } else {
+                    Logger.game("Creating " + gameNameEnum.getGameName());
+                    games.add(new Game(gameNameEnum));
+                    response.setResponse(ResponseEnum.GameCreated);
+                    response.setNotify(gameNameEnum.getGameName() + " created successfully.");
+                    response.setGameName(gameNameEnum);
+                }
+
                 response.Send(message.getUuid());
-                return;
-            }
 
-            if (games.size() >= MAX_GAMES) {
-                Logger.warn("Cannot create more than " + MAX_GAMES + " games.");
-                response.setResponse(ResponseEnum.GamesLimitReached);
-                response.setNotify("Cannot create more than " + MAX_GAMES + " games.");
-                response.Send(message.getUuid());
-                return;
+            } finally {
+                creatingGame = false;
             }
-
-            Logger.game("Creating " + gameNameEnum.getGameName());
-            games.add(new Game(gameNameEnum));
-            response.setResponse(ResponseEnum.GameCreated);
-            response.setNotify(gameNameEnum.getGameName() + " created successfully.");
-            response.setGameName(gameNameEnum);
-            response.Send();
-        } finally {
-            creatingGame = false;
         }
     }
 
+    /**
+     * Closes a game based on the provided {@link Message}.
+     *
+     * @param message the {@link Message} containing the {@link GameNameEnum} to close the {@link Game}.
+     * @implNote This method checks if a {@link Game}  is already being closed. If so, it logs a warning and retries later. If not, it proceeds to close the {@link Game}, checking if it exists. It sends a {@link Response} back to the client with the result of the operation.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
     public synchronized void closeGame(Message message) {
         if (closingGame) {
             Logger.warn("A game is already being closed, please wait.");
             Core.getInstance().retryLater(message);
-            return;
-        }
+        } else {
 
-        closingGame = true;
-        try {
-            Server.getInstance().getGames().removeIf(Objects::isNull);
+            closingGame = true;
+            try {
+                Server.getInstance().getGames().removeIf(Objects::isNull);
 
-            GameNameEnum gameNameEnum = message.getGameName();
-            Game game = gameExists(gameNameEnum);
+                GameNameEnum gameNameEnum = message.getGameName();
+                Game game = gameExists(gameNameEnum);
 
-            Response response = new Response();
+                Response response = new Response();
 
-            if (game == null) {
-                Logger.warn(gameNameEnum.getGameName() + " does not exist.");
+                if (game == null) {
+                    Logger.warn(gameNameEnum.getGameName() + " does not exist.");
+                    // TODO: create the unity handler for this case game not found
+                    response.setResponse(ResponseEnum.GameNotFound);
+                    response.setNotify(gameNameEnum.getGameName() + " does not exist.");
+                    response.Send(message.getUuid());
 
-                // TODO: create the unity handler for this case game not found
-                response.setResponse(ResponseEnum.GameNotFound);
-                response.setNotify(gameNameEnum.getGameName() + " does not exist.");
-                response.Send(message.getUuid());
-                return;
+                } else {
+                    Logger.game("Closing " + gameNameEnum.getGameName());
+                    games.remove(game);
+                    response.setResponse(ResponseEnum.GameClosed);
+                    response.setGameName(gameNameEnum);
+                    response.setNotify(gameNameEnum.getGameName() + " closed successfully.");
+                    response.Send();
+                }
+
+            } finally {
+                closingGame = false;
             }
-
-            Logger.game("Closing " + gameNameEnum.getGameName());
-            games.remove(game);
-            response.setResponse(ResponseEnum.GameClosed);
-            response.setGameName(gameNameEnum);
-            response.setNotify(gameNameEnum.getGameName() + " closed successfully.");
-            response.Send();
-        } finally {
-            closingGame = false;
         }
     }
 
@@ -185,27 +201,33 @@ public class Server {
                 });
     }
 
+    /**
+     * Registers a {@link Player} to the {@link Server}.
+     *
+     * @param player the {@link Player} to register
+     * @implNote This method checks if the {@link  Player} is already registered on the {@link  Server}. If so, it logs a warning. If the {@code player}  is {@code null} , it logs a failure. Otherwise, it adds the {@code player}  to the list of registered {@code players}  and logs the registration.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
     public void registerPlayer(Player player) {
 
         if (players.contains(player)) {
             Logger.warn("Player " + player.getUuid() + " is already registered.");
-            return;
-        }
 
-        if (player == null) {
+        } else if (player == null) {
             Logger.failure("Could not register a null player.");
-            return;
+
+        } else {
+            players.add(player);
+            Logger.server("Registering player : " + player.getUuid());
         }
-        players.add(player);
-        Logger.server("Registering player : " + player.getUuid());
     }
 
     /**
      * Unregisters a player from the server.
      *
      * @param player the player to unregister
-     * @return {@code void}
-     * @implNote This method checks if the {@code player} is already registered on the {@code Server.Instance} before attempting to remove him.
+     * @implNote This method checks if the {@code player} is already registered on the {@link Server} before attempting to remove him.
      * @author A.SALLIER
      * @date 2025-06-07
      */
