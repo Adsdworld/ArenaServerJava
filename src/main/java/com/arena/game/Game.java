@@ -124,6 +124,13 @@ public class Game {
             Logger.game(existsInGame.getName() + " " + existsInGame.getId()  + " Rejoined "+ gameNameEnum.getGameName() + " in team " + existsInGame.getTeam(), gameNameEnum);
         }
 
+        /* Send a clear game state to player before joining to remove all entities */
+        Response response2 = new Response();
+        response2.setResponse(ResponseEnum.GameState);
+        response2.setGameName(gameNameEnum);
+        response2.setLivingEntities(new ArrayList<LivingEntity>());
+        response2.Send(player.getUuid(), false);
+
         /* Assign the new entity to the player */
         yourEntityIs(response.getUuid(), response.getGameName());
 
