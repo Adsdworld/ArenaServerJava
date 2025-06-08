@@ -61,11 +61,12 @@ public class JavaWebSocketResponseSender implements IResponseSender {
     }
 
     private WebSocket getConnByUuid(String uuid) {
-        for (WebSocket conn : JavaWebSocket.getInstance().getConnections()) {
-            if (JavaWebSocket.getInstance().webSocketToUuid.get(conn).getUuid().equals(uuid)) {
-                return conn;
-            }
+        Player player = new Player(uuid);
+        WebSocket conn = JavaWebSocket.getInstance().uuidToWebSocket.get(player);
+        if (conn != null) {
+            return conn;
         }
+        Logger.failure("Player " + uuid + " not found in connections.");
         return null;
     }
 

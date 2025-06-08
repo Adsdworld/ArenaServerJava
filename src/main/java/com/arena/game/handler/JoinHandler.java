@@ -1,6 +1,9 @@
 package com.arena.game.handler;
 
 import com.arena.game.Game;
+import com.arena.game.entity.Entity;
+import com.arena.game.entity.LivingEntity;
+import com.arena.game.entity.champion.Garen;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
 import com.arena.player.Player;
@@ -18,26 +21,31 @@ public class JoinHandler implements IMessageHandler {
         Game game = Server.getInstance().gameExists(message.getGameName());
 
         if (game != null) {
-            Player player = new Player(message.getUuid());
 
-            // TODO: Permettre au joueur de choisir son équipe
-            // rajouter un propriété dans le message
-            // rajouter un élément dans l'interface ServerSelector pour choisir BLEU ROUGE SPECTATEUR
+            // TODO: check si un player était pas déjà dans la game pour ne pas le rajouter deux fois
+
+            LivingEntity livingEntity = new Garen(message.getUuid(), 1);
+            if (game.getLivingEntities().contains(livingEntity)) {
+                Player player = new Player(message.getUuid());
+
+                // TODO: Permettre au joueur de choisir son équipe
+                // rajouter un propriété dans le message
+                // rajouter un élément dans l'interface ServerSelector pour choisir BLEU ROUGE SPECTATEUR
 
 
+                int team = ThreadLocalRandom.current().nextInt(2);
 
-            int team = ThreadLocalRandom.current().nextInt(2);
-
-            switch (team) {
-                case 0:
-                    game.addPlayer(player, 1);
-                    break;
-                case 1:
-                    game.addPlayer(player, 2);
-                    break;
-                default:
-                    game.addPlayer(player, 0);
-                    break;
+                switch (team) {
+                    case 0:
+                        game.addPlayer(player, 1);
+                        break;
+                    case 1:
+                        game.addPlayer(player, 2);
+                        break;
+                    default:
+                        game.addPlayer(player, 0);
+                        break;
+                }
             }
 
         } else {

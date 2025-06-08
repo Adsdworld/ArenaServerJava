@@ -1,6 +1,8 @@
 package com.arena.game.entity;
 
 import com.arena.game.entity.champion.Garen;
+import com.arena.utils.Position;
+import com.arena.utils.Vector3f;
 
 public abstract class LivingEntity extends Entity implements ILiving {
     protected int health, maxHealth;
@@ -17,6 +19,33 @@ public abstract class LivingEntity extends Entity implements ILiving {
         this.health = maxHealth;
         this.team = team;
         this.name = name;
+    }
+
+    public void setPos(Vector3f vector3f) {
+        this.posX = vector3f.x;
+        this.posY = vector3f.y;
+        this.posZ = vector3f.z;
+    }
+
+    public void setPos(Position position) {
+        this.posX = position.pos.x;
+        this.posY = position.pos.y;
+        this.posZ = position.pos.z;
+        this.rotationY = position.rotY;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LivingEntity that = (LivingEntity) o;
+
+        return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
     }
 
     @Override public int getHealth() { return health; }

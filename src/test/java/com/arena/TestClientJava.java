@@ -1,6 +1,7 @@
 package com.arena;
 
 import com.arena.game.entity.LivingEntity;
+import com.arena.game.entity.building.Tower;
 import com.arena.game.entity.champion.Garen;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
@@ -34,8 +35,9 @@ public  class TestClientJava extends WebSocketClient {
      */
     public static final Gson gson = new GsonBuilder()
             .registerTypeAdapterFactory(
-                    com.google.gson.typeadapters.RuntimeTypeAdapterFactory.of(LivingEntity.class, "name")
+                    RuntimeTypeAdapterFactory.of(LivingEntity.class, "name")
                             .registerSubtype(Garen.class, "Garen")
+                            .registerSubtype(Tower.class, "Tower")
             )
             .create();
 

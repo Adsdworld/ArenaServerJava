@@ -3,14 +3,21 @@ package com.arena.server;
 import com.arena.game.Game;
 import com.arena.game.GameNameEnum;
 import com.arena.game.core.Core;
+import com.arena.game.entity.LivingEntity;
+import com.arena.game.entity.building.Tower;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.utils.Logger;
+import com.arena.utils.Position;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+
+import static com.arena.game.entity.EntityPositions.BLUE_TOWERS;
 
 public class Server {
 
@@ -72,8 +79,6 @@ public class Server {
             creatingGame = true;
 
             try {
-                Server.getInstance().getGames().removeIf(Objects::isNull);
-
                 GameNameEnum gameNameEnum = message.getGameName();
                 Game game = gameExists(gameNameEnum);
 
@@ -91,7 +96,19 @@ public class Server {
 
                 } else {
                     Logger.game("Creating " + gameNameEnum.getGameName());
-                    games.add(new Game(gameNameEnum));
+                    Game newGame = new Game(gameNameEnum);
+
+                    for (Map.Entry<String, Position> map : BLUE_TOWERS.entrySet()) {
+                        String id = map.getKey();
+                        Position position = map.getValue();
+
+                        LivingEntity livingEntity = new Tower(id);
+                        livingEntity.setPos(position);
+                        newGame.addEntity(livingEntity);
+                    }
+
+                    games.add(newGame);
+
                     response.setResponse(ResponseEnum.GameCreated);
                     response.setNotify(gameNameEnum.getGameName() + " created successfully.");
                     response.setGameName(gameNameEnum);

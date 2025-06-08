@@ -8,9 +8,11 @@ import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
+import static com.arena.game.entity.EntityPositions.*;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class Game {
     /* Identifier for the game */
@@ -23,28 +25,6 @@ public class Game {
     private ArrayList<LivingEntity> livingEntities;
 
     private ArrayList<Player> players;
-
-    private static final float X_BLUE = 272.9823f;
-    private static final float Y_BLUE = 5.0f;
-    private static final float Z_BLUE = 300.6143f;
-
-    private static final float X_RED = 723.0251f;
-    private static final float Y_RED = 5.0f;
-    private static final float Z_RED = 752.9824f;
-
-
-
-
-    /*
-        Ou définir les tours hinibiteurs, nexus
-
-        Ou les sbires ?*/
-
-    private static final float X_TOWER = 534.0f;
-    private static final float Y_TOWER = 5.0f;
-    private static final float Z_TOWER = 558.0f;
-
-
 
     /**
      * TODO: Faire que ce soit le constructeur qui envoie creating game puis un all to when created
@@ -84,19 +64,15 @@ public class Game {
 
             switch (team) {
                 case 1:
-                    garen.setPosX(X_BLUE);
-                    garen.setPosY(Y_BLUE);
-                    garen.setPosZ(Z_BLUE);
+                    garen.setPos(BLUE_SPAWN);
                     break;
                 case 2:
-                    garen.setPosX(X_RED);
-                    garen.setPosY(Y_RED);
-                    garen.setPosZ(Z_RED);
+                    garen.setPos(RED_SPAWN);
                     break;
                 default:
-                    garen.setPosX(X_TOWER);
-                    garen.setPosY(Y_TOWER);
-                    garen.setPosZ(Z_TOWER);
+                    garen.setPos(CENTER_SPAWN);
+                    Logger.warn("Team not specified for player " + player.getUuid() + ", defaulting to CENTER_SPAWN.");
+                    break;
             }
 
 

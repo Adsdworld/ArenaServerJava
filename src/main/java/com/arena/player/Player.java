@@ -7,7 +7,7 @@ public class Player {
     /**
      * The unique identifier for the player.
      */
-    private String uuid;
+    private final String uuid;
 
     public Player(String uuid) {
         this.uuid = uuid;
