@@ -66,90 +66,105 @@ public class Core {
 
 
     private void processMessages() {
-        long now = System.currentTimeMillis();
-        //Logger.info("Processing " + messageQueue.size() + " messages");
+        try {
+            long now = System.currentTimeMillis();
+            //Logger.info("Processing " + messageQueue.size() + " messages");
 
 
-        /* Raspberry Pi 3b+ (1 Go) : max 178ms for a CreateGame action
-         * VivoBook A.SALLIER (16 Go) : max 9ms for a CreateGame action
-         *
-         */
-        long tolerance = 1000;
-        _isEnteringTick = true;
-        boolean _isEmpty = messageQueue.isEmpty();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
-                .withZone(ZoneOffset.UTC);
+            /* Raspberry Pi 3b+ (1 Go) : max 178ms for a CreateGame action
+             * VivoBook A.SALLIER (16 Go) : max 9ms for a CreateGame action
+             *
+             */
+            long tolerance = 1000;
+            _isEnteringTick = true;
+            boolean _isEmpty = messageQueue.isEmpty();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+                    .withZone(ZoneOffset.UTC);
 
-        while (!messageQueue.isEmpty()) {
-            if (_isEnteringTick) {
-                StringBuilder stringBuilder = new StringBuilder("Actions in queue (" + messageQueue.size() + ") : ");
-                for (Message message : messageQueue) {
-                    stringBuilder.append(message.getAction()).append(", ");
+            while (!messageQueue.isEmpty()) {
+                if (_isEnteringTick) {
+                    StringBuilder stringBuilder = new StringBuilder("Actions in queue (" + messageQueue.size() + ") : ");
+                    for (Message message : messageQueue) {
+                        stringBuilder.append(message.getAction()).append(", ");
+                    }
+                    Logger.server(stringBuilder.toString());
+                    _isEnteringTick = false;
+                    if (!_isEmpty) {
+                        Logger.server("Processing messages at " + formatter.format(Instant.ofEpochMilli(now)) + " with tolerance: " + tolerance + "ms");
+                    }
                 }
-                Logger.server(stringBuilder.toString());
-                _isEnteringTick = false;
-                if (!_isEmpty) {
-                    Logger.server("Processing messages at " + formatter.format(Instant.ofEpochMilli(now)) + " with tolerance: " + tolerance + "ms");
+
+
+
+                Message next = messageQueue.peek(); // pas encore retiré
+                if (next == null) {
+                    break;
+                }
+
+                assert next != null;
+                if (next.getTimeStamp() < now - tolerance) {
+                    Logger.server("Skipping message: " + next.getUuid() + " >>> "+ next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
+                    messageQueue.poll();
+                } else if (next.getTimeStamp() <= now) {
+                    Logger.server("Processing message: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
+                    handleMessage(next);
+                    messageQueue.poll();
+                } else {
+                    Logger.server("Message not ready yet: " + next.getUuid() + " >>> " + next.getAction() + "...");
+                    break;
                 }
             }
 
+            // Une fois les messages traités, on renvoie l’état du jeu
+            sendGameState();
 
-
-            Message next = messageQueue.peek(); // pas encore retiré
-            if (next == null) {
-                break;
+            if (!_isEmpty) {
+                long endTime = System.currentTimeMillis();
+                long duration = endTime - now;
+                Logger.info("processMessages total duration: " + duration + " ms");
             }
-
-            assert next != null;
-            if (next.getTimeStamp() < now - tolerance) {
-                Logger.server("Skipping message: " + next.getUuid() + " >>> "+ next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
-                messageQueue.poll();
-            } else if (next.getTimeStamp() <= now) {
-                Logger.server("Processing message: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
-                handleMessage(next);
-                messageQueue.poll();
-            } else {
-                Logger.server("Message not ready yet: " + next.getUuid() + " >>> " + next.getAction() + "...");
-                break;
-            }
-        }
-
-        // Une fois les messages traités, on renvoie l’état du jeu
-        sendGameState();
-
-        if (!_isEmpty) {
-            long endTime = System.currentTimeMillis();
-            long duration = endTime - now;
-            Logger.info("processMessages total duration: " + duration + " ms");
+        } catch (Exception e) {
+            Logger.error("Exception while processing messages: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private void handleMessage(Message message) {
-        // Logique spécifique à ton jeu : mouvement, attaque, etc.
-        //Logger.info("Traitement du message : " + message.toString());
+        try {
+            // Logique spécifique à ton jeu : mouvement, attaque, etc.
+            //Logger.info("Traitement du message : " + message.toString());
 
-        IMessageHandler handler = handlers.get(message.getAction());
+            IMessageHandler handler = handlers.get(message.getAction());
 
-        if (handler != null) {
-            handler.handle(message);
-            //Logger.info("Handled action: " + message.getAction() + " for player: " + message.getUuid());
-        } else {
-            Logger.failure("Couldn't find handler for action " + message.getAction());
+            if (handler != null) {
+                handler.handle(message);
+                //Logger.info("Handled action: " + message.getAction() + " for player: " + message.getUuid());
+            } else {
+                Logger.failure("Couldn't find handler for action " + message.getAction());
+            }
+        } catch (Exception e) {
+            Logger.error("Exception while handling message: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private void sendGameState() {
-        //Logger.info("Starting to send game state to all clients..." + new Date());
-        for (Game game : Server.getInstance().getGames()) {
-            Response response = new Response();
-            response.setResponse(ResponseEnum.GameState);
-            response.setGameName(game.getGameNameEnum());
-            response.setLivingEntities(game.getLivingEntities());
-            response.Send(game.getGameNameEnum(), true);
-        }
-        //Logger.server("Game state sent to all clients at " + new Date());
+        try {
+            //Logger.info("Starting to send game state to all clients..." + new Date());
+            for (Game game : Server.getInstance().getGames()) {
+                Response response = new Response();
+                response.setResponse(ResponseEnum.GameState);
+                response.setGameName(game.getGameNameEnum());
+                response.setLivingEntities(game.getLivingEntities());
+                response.Send(game.getGameNameEnum(), true);
+            }
+            //Logger.server("Game state sent to all clients at " + new Date());
 
-        // TODO: construire et envoyer l'état du jeu aux clients
+            // TODO: construire et envoyer l'état du jeu aux clients
+        } catch (Exception e) {
+            Logger.error("Exception while sending game state: " + e.getMessage());
+            e.printStackTrace();
+        }
 
 
     }

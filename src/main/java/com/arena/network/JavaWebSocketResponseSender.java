@@ -30,11 +30,14 @@ public class JavaWebSocketResponseSender implements IResponseSender {
 
     @Override
     public void sendGameResponse(Response response, GameNameEnum gameName, boolean silent) {
-        for (Game game : Server.getInstance().getGames()) {
+        Server server = Server.getInstance();
+        for (Game game :server.getGames()) {
             if (game.getGameNameEnum().equals(gameName)) {
                 for (Player player : game.getPlayers()){
-                    response.setUuid(player.getUuid());
-                    sendToConn(getConnByUuid(player.getUuid()), response);
+                    if (server.getPlayers().contains(player)) {
+                        response.setUuid(player.getUuid());
+                        sendToConn(getConnByUuid(player.getUuid()), response);
+                    }
                 }
                 if (!silent) {
                     Logger.game("Send "+ gameName +" : " + response, gameName);
@@ -45,8 +48,12 @@ public class JavaWebSocketResponseSender implements IResponseSender {
 
     @Override
     public void sendUuidResponse(String uuid, Response response, boolean silent) {
-        response.setUuid(uuid);
-        sendToConn(getConnByUuid(uuid), response);
+        Player player = new Player(uuid);
+
+        if (Server.getInstance().getPlayers().contains(player)) {
+            response.setUuid(uuid);
+            sendToConn(getConnByUuid(uuid), response);
+        }
 
         if (!silent) {
             Logger.server("Send To " + uuid + " : " + response);

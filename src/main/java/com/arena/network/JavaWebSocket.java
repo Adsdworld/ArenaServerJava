@@ -69,20 +69,31 @@ public class JavaWebSocket extends WebSocketServer {
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
 
-        /* Reason for closing the connection:
-         * - code: the WebSocket close code.
-         * - reason: a string explaining why the connection was closed.
-         * - remote: true if the close was initiated by the remote peer, false if it was initiated by the server.
-         */
-        String reason_ = reason != null && !reason.isEmpty() ? reason : " No reason provided";
-        Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason_ + " (code: " + code + ", remote: " + remote + ")");
-        Player player = webSocketToUuid.get(conn);
-        if (player != null) {
-            uuidToWebSocket.remove(player);
-        }
-        webSocketToUuid.remove(conn);
+        try {
+            /* Reason for closing the connection:
+             * - code: the WebSocket close code.
+             * - reason: a string explaining why the connection was closed.
+             * - remote: true if the close was initiated by the remote peer, false if it was initiated by the server.
+             */
+            String reason_ = reason != null && !reason.isEmpty() ? reason : " No reason provided";
+            Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason_ + " (code: " + code + ", remote: " + remote + ")");
+            Player player = webSocketToUuid.get(conn);
+            if (player != null) {
+                uuidToWebSocket.remove(player);
+                synchronized(Server.getInstance().getPlayers()) {
+                    Server.getInstance().getPlayers().remove(player);
+                }
+            }
+            webSocketToUuid.remove(conn);
 
-        // TODO: remove the player from the server using the connection linked to uuid of the player
+
+            // TODO: remove the player from the server using the connection linked to uuid of the player
+        } catch (Exception e) {
+            Logger.error("Exception while closing connection: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            Logger.server("Connection closed successfully: " + conn.getRemoteSocketAddress() + " (code: " + code + ", remote: " + remote + ")");
+        }
     }
 
     @Override
