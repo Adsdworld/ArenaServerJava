@@ -69,8 +69,12 @@ public class Core {
         long now = System.currentTimeMillis();
         //Logger.info("Processing " + messageQueue.size() + " messages");
 
-        // On peut fixer une tolérance (ex: 2 ticks max d'écart, soit 100 ms)
-        long tolerance = 150;
+
+        /* Raspberry Pi 3b+ (1 Go) : max 178ms for a CreateGame action
+         * VivoBook A.SALLIER (16 Go) : max 9ms for a CreateGame action
+         *
+         */
+        long tolerance = 1000;
         _isEnteringTick = true;
         boolean _isEmpty = messageQueue.isEmpty();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
