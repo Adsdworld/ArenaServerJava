@@ -68,8 +68,14 @@ public class JavaWebSocket extends WebSocketServer {
 
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+
+        /* Reason for closing the connection:
+         * - code: the WebSocket close code.
+         * - reason: a string explaining why the connection was closed.
+         * - remote: true if the close was initiated by the remote peer, false if it was initiated by the server.
+         */
         String reason_ = reason != null && !reason.isEmpty() ? reason : " No reason provided";
-        Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason_);
+        Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason_ + " (code: " + code + ", remote: " + remote + ")");
         Player player = webSocketToUuid.get(conn);
         if (player != null) {
             uuidToWebSocket.remove(player);
