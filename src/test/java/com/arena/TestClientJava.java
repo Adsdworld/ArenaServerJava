@@ -43,7 +43,7 @@ public  class TestClientJava extends WebSocketClient {
 
     public static TestClientJava getInstance() {
         if (instance == null) {
-            instance = new TestClientJava(URI.create("ws://localhost:54099"));
+            instance = new TestClientJava(URI.create("ws://localhost:" + ArenaTestBase.TEST_PORT));
         }
         return instance;
     }

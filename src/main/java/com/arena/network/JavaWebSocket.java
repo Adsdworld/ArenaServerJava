@@ -24,19 +24,20 @@ import java.util.*;
  */
 public class JavaWebSocket extends WebSocketServer {
 
-    private static final int PORT = 54099;
+    public int port;
     private static JavaWebSocket instance;
     private final Gson gson = new Gson();
 
     public Map<WebSocket, Player> webSocketToUuid;
     public Map<Player, WebSocket> uuidToWebSocket;
 
-    private JavaWebSocket() {
-        super(new InetSocketAddress(PORT));
+    private JavaWebSocket(int port) {
+        super(new InetSocketAddress(port));
+        this.port = port;
 
         ResponseService.setResponseSender(new JavaWebSocketResponseSender());
 
-        Logger.info("JavaWebSocket created on port " + PORT);
+        Logger.info("JavaWebSocket created on port " + port);
         webSocketToUuid = new HashMap<WebSocket, Player>();
         uuidToWebSocket = new HashMap<Player, WebSocket>();
     }
@@ -44,14 +45,20 @@ public class JavaWebSocket extends WebSocketServer {
     // Méthode d'accès au singleton
     public static synchronized JavaWebSocket getInstance() {
         if (instance == null) {
-            instance = new JavaWebSocket();
+            throw new IllegalStateException("JavaWebSocket not initialized. Call initialize(port) first.");
         }
         return instance;
     }
 
+    public static synchronized void initialize(int port) {
+        if (instance == null) {
+            instance = new JavaWebSocket(port);
+        }
+    }
+
     @Override
     public void onStart() {
-        Logger.info("JavaWebSocket started and listening on port " + PORT);
+        Logger.info("JavaWebSocket started and listening on port " + port);
     }
 
     @Override

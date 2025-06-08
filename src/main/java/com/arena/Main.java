@@ -18,10 +18,22 @@ public class Main {
          * //System.setErr(new PrintStream(System.err, true, StandardCharsets.UTF_8));
          */
 
+        /* Port configuration */
+        int port = 54099;
+
+        if (args.length > 0) {
+            try {
+                port = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                Logger.error("Port number must be an integer. Using default port: " + port);
+            }
+        }
+
         Logger.info("\n\n******************************************");
-        Logger.info("Démarrage du serveur");
+        Logger.info("Starting Arena...");
 
         // Démarrage du serveur WebSocket
+        JavaWebSocket.initialize(port);
         JavaWebSocket.getInstance().start();
 
         // Démarrage du serveur Arena
