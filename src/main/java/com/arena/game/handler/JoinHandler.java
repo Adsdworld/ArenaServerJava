@@ -12,6 +12,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class JoinHandler implements IMessageHandler {
     public void handle(Message message) {
+
+        Logger.info("JoinHandler: Handling message: " + message);
+
         Game game = Server.getInstance().gameExists(message.getGameName());
 
         if (game != null) {
@@ -31,6 +34,9 @@ public class JoinHandler implements IMessageHandler {
                     break;
                 case 1:
                     game.addPlayer(player, 2);
+                    break;
+                default:
+                    game.addPlayer(player, 0);
                     break;
             }
 

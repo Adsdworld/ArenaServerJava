@@ -2,6 +2,8 @@ package com.arena;
 
 import com.arena.network.message.Message;
 
+import static com.arena.TestClientJava.testUuid;
+
 // TODO: class inutilisé, on à considéré qu'un meessage du serveur est un Reponse.java mais pas Message.java.
 public class MessageService {
 
@@ -17,8 +19,13 @@ public class MessageService {
 
     public static void Send(Message message) {
         if (messageSender != null) {
-            TestClientJava.getInstance().setLastSentTimestamp(System.currentTimeMillis());
+            long now = System.currentTimeMillis();
+            message.setUuid(testUuid);
+            message.setTimeStamp(now);
+
+            TestClientJava.getInstance().setLastSentTimestamp(now);
             //TestClientJava.getInstance().clearMessages();
+
             MessageService.getMessageSender().sendMessage(message);
         } else {
             System.err.println("⚠ No MessageSender is set in MessageService.");

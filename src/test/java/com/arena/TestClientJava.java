@@ -176,15 +176,4 @@ public  class TestClientJava extends WebSocketClient {
     public static ArrayList<Response> filterResponseStatic(List<ResponseEnum> responsesEnum, ArrayList<Response> responses) {
         return getInstance().filterResponse(responsesEnum, responses);
     }
-
-    public Message CreateMessage() {
-        Message message = new Message();
-        message.setUuid(testUuid);
-        message.setTimeStamp(System.currentTimeMillis());
-        return message;
-    }
-
-    public static Message CreateMessageStatic() {
-        return getInstance().CreateMessage();
-    }
 }

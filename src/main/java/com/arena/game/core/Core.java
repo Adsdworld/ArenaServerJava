@@ -12,6 +12,9 @@ import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,16 +54,27 @@ public class Core {
     }
 
     public void receive(Message message) {
-        messageQueue.offer(message); // ajoute à la queue triée
+        if (message == null) {
+            Logger.failure("Received null message");
+        } else if (message.getAction() == null) {
+            Logger.failure("Unknown or invalid action in message: " + message);
+        } else {
+            messageQueue.offer(message);
+            Logger.info("Offered message to queue: " + message.getAction() + " with timestamp: " + message.getTimeStamp());
+        }
     }
+
 
     private void processMessages() {
         long now = System.currentTimeMillis();
         //Logger.info("Processing " + messageQueue.size() + " messages");
 
         // On peut fixer une tolérance (ex: 2 ticks max d'écart, soit 100 ms)
-        long tolerance = 100;
+        long tolerance = 150;
         _isEnteringTick = true;
+        boolean _isEmpty = messageQueue.isEmpty();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+                .withZone(ZoneOffset.UTC);
 
         while (!messageQueue.isEmpty()) {
             if (_isEnteringTick) {
@@ -68,20 +82,42 @@ public class Core {
                 for (Message message : messageQueue) {
                     stringBuilder.append(message.getAction()).append(", ");
                 }
+                Logger.server(stringBuilder.toString());
                 _isEnteringTick = false;
+                if (!_isEmpty) {
+                    Logger.server("Processing messages at " + formatter.format(Instant.ofEpochMilli(now)) + " with tolerance: " + tolerance + "ms");
+                }
             }
 
-            Message next = messageQueue.peek(); // pas encore retiré
 
-            if (next.getTimeStamp() <= now + tolerance) {
-                messageQueue.poll(); // on retire car il est dans la bonne fenêtre
-                //Logger.info("Processing message: " + next.getAction());
-                handleMessage(next); // traitement de l'action
+
+            Message next = messageQueue.peek(); // pas encore retiré
+            if (next == null) {
+                break;
+            }
+
+            assert next != null;
+            if (next.getTimeStamp() < now - tolerance) {
+                Logger.server("Skipping message: " + next.getUuid() + " >>> "+ next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
+                messageQueue.poll();
+            } else if (next.getTimeStamp() <= now) {
+                Logger.server("Processing message: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
+                handleMessage(next);
+                messageQueue.poll();
+            } else {
+                Logger.server("Message not ready yet: " + next.getUuid() + " >>> " + next.getAction() + "...");
+                break;
             }
         }
 
         // Une fois les messages traités, on renvoie l’état du jeu
         sendGameState();
+
+        if (!_isEmpty) {
+            long endTime = System.currentTimeMillis();
+            long duration = endTime - now;
+            Logger.info("processMessages total duration: " + duration + " ms");
+        }
     }
 
     private void handleMessage(Message message) {

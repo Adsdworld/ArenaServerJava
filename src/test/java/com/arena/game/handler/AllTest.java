@@ -46,7 +46,7 @@ public class AllTest extends ArenaTestBase {
     @Test
     @Order(1)
     void testUnityLogin() throws InterruptedException {
-        Message message = TestClientJava.CreateMessageStatic();
+        Message message = new Message();
         message.setAction(ActionEnum.Login);
 
         MessageService.Send(message);
@@ -86,7 +86,7 @@ public class AllTest extends ArenaTestBase {
     @Test
     @Order(2)
     void testUnityCreateGame() throws InterruptedException {
-        Message message = TestClientJava.CreateMessageStatic();
+        Message message = new Message();
         message.setAction(ActionEnum.CreateGame);
         message.setGameName(GameNameEnum.Game1);
 
@@ -114,6 +114,38 @@ public class AllTest extends ArenaTestBase {
                 "Game with name '" + GameNameEnum.Game1 + "' should be created on server");
     }
 
+
+    @Test
+    @Order(3)
+    void testUnityGameAlreadyExists() throws InterruptedException {
+        Message message = new Message();
+        message.setAction(ActionEnum.CreateGame);
+        message.setGameName(GameNameEnum.Game1);
+
+        MessageService.Send(message);
+
+        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+        Response response = TestClientJava.filterResponseStatic(ResponseEnum.GameAlreadyExists, responses);
+
+        assertNotNull(response, "Response should not be null");
+        assertEquals(ResponseEnum.GameAlreadyExists, response.getReponse(), "Expected response to be " + ResponseEnum.GameAlreadyExists);
+
+        /**
+         * Check if the game is created on the server
+         * This checks if the game with the specified name is present in the server's game list.
+         */
+        assertTrue(Server.getInstance().getGames()
+                        .stream()
+                        .anyMatch(game -> {
+                                    if (game.getGameNameEnum().equals(GameNameEnum.Game1)) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                        ),
+                "Game with name '" + GameNameEnum.Game1 + "' should be created on server");
+    }
+
     /**
      * Test Unity : Join Game
      * This test simulates a player joining a game by sending a join game message to the server.
@@ -126,7 +158,7 @@ public class AllTest extends ArenaTestBase {
     @Test
     @Order(5)
     void testUnityJoin() throws InterruptedException { //TODO: rename Action
-        Message message = TestClientJava.CreateMessageStatic();
+        Message message = new Message();
         message.setAction(ActionEnum.Join);
         message.setGameName(GameNameEnum.Game1);
 
