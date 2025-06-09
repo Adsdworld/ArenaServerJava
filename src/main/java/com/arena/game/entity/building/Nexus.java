@@ -1,6 +1,7 @@
 package com.arena.game.entity.building;
 
 import com.arena.game.entity.*;
+import com.arena.utils.Vector3f;
 
 public class Nexus extends LivingEntity {
     public Nexus(String id, int team) {
@@ -24,6 +25,9 @@ public class Nexus extends LivingEntity {
         transform.setScale(10f);
         this.setTransform(transform);
 
-        this.posY = 5f * getTransform().getScale();
+        this.posY = 5f;
+
+        this.setSkinScale(0.005f);
+        this.setSkinPos(new Vector3f(0.0f, -1.03f, 0.0f));
     }
 }

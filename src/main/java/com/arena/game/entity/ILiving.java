@@ -43,6 +43,9 @@ public interface ILiving {
     float getPosSkinY();
     void setPosSkinY(float y);
 
+    float getSkinScale();
+    void setSkinScale(float scale);
+
     void setRotationY(float rotation);
     float getRotationY();
 

@@ -1,12 +1,16 @@
 package com.arena.game.entity.building;
 
 import com.arena.game.entity.*;
+import com.arena.utils.Vector3f;
 
 public class Inhibitor extends LivingEntity {
     public Inhibitor(String id, int team) {
         super(id, 3000, team, "Inhibitor");
 
         this.posY = 1.15f;
+
+        this.setSkinScale(0.005f);
+        this.setSkinPos(new Vector3f(0.0f, -1.03f, 0.0f));
 
         this.attackDamage = 0;
 
@@ -23,7 +27,7 @@ public class Inhibitor extends LivingEntity {
         this.navMeshAgent = navMeshAgent;
 
         EntityTransform transform = new EntityTransform();
-        transform.setScale(10f);
+        transform.setScale(14f);
         this.setTransform(transform);
     }
 }

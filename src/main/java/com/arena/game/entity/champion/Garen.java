@@ -1,6 +1,7 @@
 package com.arena.game.entity.champion;
 
 import com.arena.game.entity.*;
+import com.arena.utils.Vector3f;
 
 public class Garen extends LivingEntity {
     public Garen(String id, int team) {
@@ -13,6 +14,9 @@ public class Garen extends LivingEntity {
         this.cooldownWMs = 5000;
         this.cooldownEMs = 20000;
         this.cooldownRMs = 60000;
+
+        this.setSkinScale(0.005f);
+        this.setSkinPos(new Vector3f(0.0f, 0.0f, 0.0f));
 
         EntityRigidbody rigidbody = new EntityRigidbody();
         rigidbody.setKinematic(false);
