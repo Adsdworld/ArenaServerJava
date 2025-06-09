@@ -8,8 +8,9 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected int health, maxHealth;
     protected int armor, magicResist, attackDamage, abilityPower;
     protected boolean moving;
-    protected float moveSpeed, rotationY, posX, posZ, posY, posXDesired, posZDesired, posYDesired;
+    protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, posXDesired, posZDesired, posYDesired;
     protected String name;
+    /* Team 1 = Blue Team, Team 2 = Red Team */
     protected int team;
     protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd, cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs;
     protected EntityCollider collider;
@@ -37,6 +38,18 @@ public abstract class LivingEntity extends Entity implements ILiving {
         this.posY = position.pos.y;
         this.posZ = position.pos.z;
         this.rotationY = position.rotY;
+    }
+
+    public void setSkinPos(Vector3f vector3f) {
+        this.posSkinX = vector3f.x;
+        this.posSkinY = vector3f.y;
+        this.posSkinZ = vector3f.z;
+    }
+
+    public void setSkinPos(Position position) {
+        this.posSkinX = position.pos.x;
+        this.posSkinY = position.pos.y;
+        this.posSkinZ = position.pos.z;
     }
 
     public void setRigidbody(EntityRigidbody rigidbody) {
@@ -128,6 +141,13 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public void setPosZ(float z) { this.posZ = z; }
     @Override public float getPosY() { return posY; }
     @Override public void setPosY(float y) { this.posY = y; }
+
+    @Override public float getPosSkinX() { return posSkinX; }
+    @Override public void setPosSkinX(float x) { this.posSkinX = x; }
+    @Override public float getPosSkinZ() { return posSkinZ; }
+    @Override public void setPosSkinZ(float z) { this.posSkinZ = z; }
+    @Override public float getPosSkinY() { return posSkinY; }
+    @Override public void setPosSkinY(float y) { this.posSkinY = y; }
 
     @Override public void setRotationY(float rotationY) { this.rotationY = rotationY; }
     @Override public float getRotationY() { return rotationY; }

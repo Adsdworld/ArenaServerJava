@@ -36,6 +36,13 @@ public interface ILiving {
     float getPosY();
     void setPosY(float y);
 
+    float getPosSkinX();
+    void setPosSkinX(float x);
+    float getPosSkinZ();
+    void setPosSkinZ(float z);
+    float getPosSkinY();
+    void setPosSkinY(float y);
+
     void setRotationY(float rotation);
     float getRotationY();
 

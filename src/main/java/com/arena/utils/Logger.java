@@ -139,7 +139,7 @@ public class Logger {
                             System.err.println("[Logger][WriteError] Failed to create log directory.");
                         }
                     }
-
+                    //TODO: test buffered input stream which can be faster
                     try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile, true), StandardCharsets.UTF_8))) {
                         writer.write(logEntry);
                         writer.newLine();
