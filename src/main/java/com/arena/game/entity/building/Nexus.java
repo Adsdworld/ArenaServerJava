@@ -22,12 +22,11 @@ public class Nexus extends LivingEntity {
         this.navMeshAgent = navMeshAgent;
 
         EntityTransform transform = new EntityTransform();
-        transform.setScale(10f);
+        transform.setScale(26f);
         this.setTransform(transform);
 
-        this.posY = 5f;
 
-        this.setSkinScale(0.005f);
-        this.setSkinPos(new Vector3f(0.0f, -1.03f, 0.0f));
+        this.setSkinScale(0.0015f);
+        this.setSkinPos(new Vector3f(0.0f, 1.7f, 0.0f));
     }
 }

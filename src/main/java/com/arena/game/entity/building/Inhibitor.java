@@ -7,9 +7,7 @@ public class Inhibitor extends LivingEntity {
     public Inhibitor(String id, int team) {
         super(id, 3000, team, "Inhibitor");
 
-        this.posY = 1.15f;
-
-        this.setSkinScale(0.005f);
+        this.setSkinScale(0.003f);
         this.setSkinPos(new Vector3f(0.0f, -1.03f, 0.0f));
 
         this.attackDamage = 0;
@@ -27,7 +25,7 @@ public class Inhibitor extends LivingEntity {
         this.navMeshAgent = navMeshAgent;
 
         EntityTransform transform = new EntityTransform();
-        transform.setScale(14f);
+        transform.setScale(17f);
         this.setTransform(transform);
     }
 }

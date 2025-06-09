@@ -7,9 +7,9 @@ import java.util.Map;
 public class EntityPositions {
 
     // Spawn joueurs
-    public static final Position BLUE_SPAWN = new Position(272.9823f, 5.0f, 300.6143f, 0f);
-    public static final Position RED_SPAWN = new Position(723.0251f, 5.0f, 752.9824f, 0f);
-    public static final Position CENTER_SPAWN = new Position(493.0f, 5.0f, 530.0f, 0f);
+    public static final Position BLUE_SPAWN = new Position(272.9823f, 15.0f, 300.6143f, 0f);
+    public static final Position RED_SPAWN = new Position(723.0251f, 15.0f, 752.9824f, 0f);
+    public static final Position CENTER_SPAWN = new Position(493.0f, 15.0f, 530.0f, 0f);
 
     /*
      * Nearest from the nexus from top to bottom
@@ -43,22 +43,22 @@ public class EntityPositions {
     );
 
     public static final Map<String, Position> BLUE_INHIBITORS = Map.of(
-            "INHIB_TOP_BLUE", new Position(295.19f, 5f, 400.44f, 0f),
-            "INHIB_MID_BLUE", new Position(360.45f, 5f, 389.32f, 0f),
-            "INHIB_BOT_BLUE", new Position(371.75f, 5f, 324.39f, 0f)
+            "INHIB_TOP_BLUE", new Position(295.19f, -7.36f, 400.44f, 0f),
+            "INHIB_MID_BLUE", new Position(360.45f, -7.36f, 389.32f, 0f),
+            "INHIB_BOT_BLUE", new Position(371.75f, -7.36f, 324.39f, 0f)
     );
 
     public static final Map<String, Position> RED_INHIBITORS = Map.of(
-            "INHIB_TOP_RED", new Position(623.69f, 5f, 726.13f, 0f),
-            "INHIB_MID_RED", new Position(632.51f, 5f, 662.37f, 0f),
-            "INHIB_BOT_RED", new Position(698.56f, 5f, 650.66f, 0f)
+            "INHIB_TOP_RED", new Position(623.69f, -7.36f, 726.13f, 0f),
+            "INHIB_MID_RED", new Position(632.51f, -7.36f, 662.37f, 0f),
+            "INHIB_BOT_RED", new Position(698.56f, -7.36f, 650.66f, 0f)
     );
 
     public static final Map<String, Position> BLUE_NEXUS = Map.of(
-            "NEXUS_BLUE", new Position(307.62f, 5f, 337.96f, 0f)
+            "NEXUS_BLUE", new Position(307.62f, -16f, 337.96f, 0f)
     );
 
     public static final Map<String, Position> RED_NEXUS = Map.of(
-            "NEXUS_RED", new Position(685.20f, 5f, 713.00f, 0f)
+            "NEXUS_RED", new Position(685.20f, -16f, 713.00f, 0f)
     );
 }
