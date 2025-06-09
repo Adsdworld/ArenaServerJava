@@ -31,16 +31,16 @@ public class JavaWebSocketResponseSender implements IResponseSender {
     @Override
     public void sendGameResponse(Response response, GameNameEnum gameName, boolean silent) {
         Server server = Server.getInstance();
-        for (Game game :server.getGames()) {
+        for (Game game : server.getGames()) {
             if (game.getGameNameEnum().equals(gameName)) {
-                for (Player player : game.getPlayers()){
+                for (Player player : game.getPlayers()) {
                     if (server.getPlayers().contains(player)) {
                         response.setUuid(player.getUuid());
                         sendToConn(getConnByUuid(player.getUuid()), response);
                     }
                 }
                 if (!silent) {
-                    Logger.game("Send "+ gameName +" : " + response, gameName);
+                    Logger.game("Send " + gameName + " : " + response, gameName);
                 }
             }
         }
@@ -70,13 +70,14 @@ public class JavaWebSocketResponseSender implements IResponseSender {
         return null;
     }
 
-    private void sendToConn (WebSocket conn, Response response) {
-        if (conn != null && conn.isOpen()) {
+    private void sendToConn(WebSocket conn, Response response) {
+        try {
             Gson gson = new Gson();
             conn.send(gson.toJson(response));
-        }// else {
-            // A player have left the server
-            //Logger.failure("Connection is null or closed for conn: " + conn);
-        //}
+        } catch (Exception e) {
+            Logger.error("Error sending response to connection: " + conn.getRemoteSocketAddress());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }

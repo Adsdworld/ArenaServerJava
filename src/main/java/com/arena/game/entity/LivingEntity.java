@@ -12,6 +12,10 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected String name;
     protected int team;
     protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd, cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs;
+    protected EntityCollider collider;
+    protected EntityNavMeshAgent navMeshAgent;
+    protected EntityRigidbody rigidbody;
+
 
     public LivingEntity(String id, int maxHealth, int team, String name) {
         super(id);
@@ -32,6 +36,25 @@ public abstract class LivingEntity extends Entity implements ILiving {
         this.posY = position.pos.y;
         this.posZ = position.pos.z;
         this.rotationY = position.rotY;
+    }
+
+    public void setRigidbody(EntityRigidbody rigidbody) {
+        this.rigidbody = rigidbody;
+    }
+    public EntityRigidbody getRigidbody() {
+        return rigidbody;
+    }
+    public void setCollider(EntityCollider collider) {
+        this.collider = collider;
+    }
+    public EntityCollider getCollider() {
+        return collider;
+    }
+    public void setNavMeshAgent(EntityNavMeshAgent navMeshAgent) {
+        this.navMeshAgent = navMeshAgent;
+    }
+    public EntityNavMeshAgent getNavMeshAgent() {
+        return navMeshAgent;
     }
 
     @Override

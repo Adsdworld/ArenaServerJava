@@ -10,46 +10,42 @@ import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
+import com.google.gson.Gson;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class JoinHandler implements IMessageHandler {
     public void handle(Message message) {
 
-        Logger.info("JoinHandler: Handling message: " + message);
+        //Logger.info("JoinHandler: Handling message: " + message);
 
+        /* Get the game by GameNameEnum */
         Game game = Server.getInstance().gameExists(message.getGameName());
 
         if (game != null) {
 
-            // TODO: check si un player était pas déjà dans la game pour ne pas le rajouter deux fois
+            Player player = new Player(message.getUuid());
 
-            LivingEntity livingEntity = new Garen(message.getUuid(), 1);
-            if (game.getLivingEntities().contains(livingEntity)) {
-                Player player = new Player(message.getUuid());
-
-                // TODO: Permettre au joueur de choisir son équipe
-                // rajouter un propriété dans le message
-                // rajouter un élément dans l'interface ServerSelector pour choisir BLEU ROUGE SPECTATEUR
+            // TODO: Permettre au joueur de choisir son équipe
+            // rajouter un propriété dans le message
+            // rajouter un élément dans l'interface ServerSelector pour choisir BLEU ROUGE SPECTATEUR
 
 
-                int team = ThreadLocalRandom.current().nextInt(2);
+            int team = ThreadLocalRandom.current().nextInt(2);
 
-                switch (team) {
-                    case 0:
-                        game.addPlayer(player, 1);
-                        break;
-                    case 1:
-                        game.addPlayer(player, 2);
-                        break;
-                    default:
-                        game.addPlayer(player, 0);
-                        break;
-                }
+            switch (team) {
+                case 0:
+                    game.addPlayer(player, 1);
+                    break;
+                case 1:
+                    game.addPlayer(player, 2);
+                    break;
+                default:
+                    game.addPlayer(player, 0);
+                    break;
             }
 
         } else {
-
             // TODO: improve this response create a special ResponseEnum for this case and handle it in the client unity
             Response response = new Response();
             response.setResponse(ResponseEnum.GameNotFound); /* Basic GameNotFound, bad for context */

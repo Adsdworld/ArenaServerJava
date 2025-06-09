@@ -1,5 +1,8 @@
 package com.arena.game.entity.champion;
 
+import com.arena.game.entity.EntityCollider;
+import com.arena.game.entity.EntityNavMeshAgent;
+import com.arena.game.entity.EntityRigidbody;
 import com.arena.game.entity.LivingEntity;
 
 public class Garen extends LivingEntity {
@@ -13,6 +16,18 @@ public class Garen extends LivingEntity {
         this.cooldownWMs = 5000;
         this.cooldownEMs = 20000;
         this.cooldownRMs = 60000;
+
+        EntityRigidbody rigidbody = new EntityRigidbody();
+        rigidbody.setKinematic(false);
+        this.rigidbody = rigidbody;
+
+        EntityCollider collider = new EntityCollider();
+        collider.setEnabled(true);
+        this.collider = collider;
+
+        EntityNavMeshAgent navMeshAgent = new EntityNavMeshAgent();
+        navMeshAgent.setEnabled(true);
+        this.navMeshAgent = navMeshAgent;
     }
 
     /*public void Q() {  }
