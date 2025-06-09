@@ -7,8 +7,9 @@ import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
+import com.arena.utils.json.JsonService;
 import org.java_websocket.WebSocket;
-import com.google.gson.Gson;
+import org.java_websocket.exceptions.WebsocketNotConnectedException;
 
 
 public class JavaWebSocketResponseSender implements IResponseSender {
@@ -72,12 +73,12 @@ public class JavaWebSocketResponseSender implements IResponseSender {
 
     private void sendToConn(WebSocket conn, Response response) {
         try {
-            Gson gson = new Gson();
-            conn.send(gson.toJson(response));
-        } catch (Exception e) {
-            Logger.error("Error sending response to connection: " + conn.getRemoteSocketAddress());
+            if (conn != null && conn.isOpen()) {
+                conn.send(new JsonService().toJson(response));
+            }
+        } catch (WebsocketNotConnectedException e) {
+            Logger.error("WebSocket not connected while sending response to: " + conn.getRemoteSocketAddress());
             e.printStackTrace();
-            throw new RuntimeException(e);
         }
     }
 }

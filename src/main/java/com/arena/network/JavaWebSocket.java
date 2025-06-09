@@ -10,6 +10,7 @@ import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
 import com.arena.network.message.Message;
+import com.arena.utils.json.JsonService;
 import com.google.gson.*;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -21,13 +22,13 @@ import java.util.*;
 /**
  * JavaWebSocket is a singleton WebSocket server that listens for incoming connections
  * and processes messages in JSON format.
- * It uses Gson for JSON serialization/deserialization.
+ * It uses the JsonService for JSON serialization/deserialization.
  */
 public class JavaWebSocket extends WebSocketServer {
 
     public int port;
     private static JavaWebSocket instance;
-    private final Gson gson = new Gson();
+    private final JsonService jsonService = new JsonService();
 
     public Map<WebSocket, Player> webSocketToUuid;
     public Map<Player, WebSocket> uuidToWebSocket;
@@ -98,8 +99,6 @@ public class JavaWebSocket extends WebSocketServer {
             }
             webSocketToUuid.remove(conn);
 
-
-            // TODO: remove the player from the server using the connection linked to uuid of the player
         } catch (Exception e) {
             Logger.error("Exception while closing connection: " + e.getMessage());
             e.printStackTrace();
@@ -111,12 +110,15 @@ public class JavaWebSocket extends WebSocketServer {
     @Override
     public void onMessage(WebSocket conn, String messageJson) {
         try {
-            validateJson(messageJson, Message.class);
+            jsonService.fromJson(messageJson, Message.class);
 
-            Message message = gson.fromJson(messageJson, Message.class);
+            Message message = jsonService.fromJson(messageJson, Message.class);
 
             Logger.info(message.getUuid() + " >>> " + message.getAction() + " : " + messageJson);
 
+            /* Check if the message is a login action
+             * This logic could not be pass to the Core because we need the conn/Websocket to register the Player
+             */
             if (message.getAction() == ActionEnum.Login) {
                 Player player = new Player(message.getUuid());
                 JavaWebSocket.getInstance().webSocketToUuid.put(conn, player);
@@ -130,13 +132,6 @@ public class JavaWebSocket extends WebSocketServer {
                 response.setNotify("Connected to the server ! Welcome to Arena!");
                 response.Send(player.getUuid());
 
-                // TODO: design a spectator message on join
-                /* for (Game game : Server.getInstance().getGames()) {
-                    game.addSpectator(player);
-                    //Message message = new Message();
-                    //message.setAction();
-
-                }*/
                 return;
             }
 
@@ -149,45 +144,5 @@ public class JavaWebSocket extends WebSocketServer {
     @Override
     public void onError(WebSocket conn, Exception ex) {
         Logger.error("WebSocket error: " + ex.getMessage());
-    }
-
-
-
-    // TODO: move it to Utils
-    // TODO: improve it to
-    /**
-     * Enum not found error : enum value present in the message but not in the Java enum
-     * field not found error : field present in the message but not in the Java class
-     */
-
-    /**
-     *
-     *
-     * @param messageJson
-     * @param clazz
-     */
-    public static void validateJson(String messageJson, Class<?> clazz) {
-        Gson gson = new Gson();
-
-        JsonObject jsonRaw = JsonParser.parseString(messageJson).getAsJsonObject();
-
-        Object parsedObject = gson.fromJson(messageJson, clazz);
-
-        JsonObject jsonParsed = gson.toJsonTree(parsedObject).getAsJsonObject();
-
-        for (Map.Entry<String, JsonElement> entry : jsonRaw.entrySet()) {
-            String key = entry.getKey();
-            JsonElement rawValue = entry.getValue();
-
-            // Ignore les champs null dans le JSON brut
-            if (rawValue == null || rawValue.isJsonNull()) {
-                continue;
-            }
-
-            // Si le champ n'existe pas dans l'objet Java ou est devenu null → problème
-            if (!jsonParsed.has(key) || jsonParsed.get(key).isJsonNull()) {
-                Logger.warn("Donnée transmise ignorée ou enum non reconnue : '" + key + "' = " + rawValue);
-            }
-        }
     }
 }

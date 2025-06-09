@@ -45,7 +45,7 @@ public class JoinHandler implements IMessageHandler {
 
             if (existsInGame == null) {
 
-                // TODO: Permettre au joueur de choisir son équipe
+                // TODO: Permettre au joueur de choisir son équipe : bien pour faire une demo, car aucun outil pour forcer une équipe
                 // rajouter un propriété dans le message
                 // rajouter un élément dans l'interface ServerSelector pour choisir BLEU ROUGE SPECTATEUR
                 int team = ThreadLocalRandom.current().nextInt(2) + 1;

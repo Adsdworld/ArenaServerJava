@@ -157,7 +157,7 @@ public class AllTest extends ArenaTestBase {
 
     @Test
     @Order(5)
-    void testUnityJoin() throws InterruptedException { //TODO: rename Action
+    void testUnityJoin() throws InterruptedException {
         Message message = new Message();
         message.setAction(ActionEnum.Join);
         message.setGameName(GameNameEnum.Game1);

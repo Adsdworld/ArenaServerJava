@@ -73,7 +73,7 @@ public class Response implements Comparable<Response>{
     }
 
     @Override
-    public String toString() {
+    public String toString() { //TODO: replace all Gson, gson() usages in code with new JsonService().toJson(class) or JsonService.fromJson(json, class) the service integrate exeptions managment
         return new Gson().toJson(this);
     }
 

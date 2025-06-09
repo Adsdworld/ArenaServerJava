@@ -27,7 +27,6 @@ public class Game {
     private ArrayList<Player> players;
 
     /**
-     * TODO: Faire que ce soit le constructeur qui envoie creating game puis un all to when created
      * @param gameNameEnum
      */
     public Game(GameNameEnum gameNameEnum) {

@@ -159,8 +159,6 @@ public class Core {
                 response.Send(game.getGameNameEnum(), true);
             }
             //Logger.server("Game state sent to all clients at " + new Date());
-
-            // TODO: construire et envoyer l'état du jeu aux clients
         } catch (Exception e) {
             Logger.error("Exception while sending game state: " + e.getMessage());
             e.printStackTrace();
