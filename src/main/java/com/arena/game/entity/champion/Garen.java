@@ -1,9 +1,6 @@
 package com.arena.game.entity.champion;
 
-import com.arena.game.entity.EntityCollider;
-import com.arena.game.entity.EntityNavMeshAgent;
-import com.arena.game.entity.EntityRigidbody;
-import com.arena.game.entity.LivingEntity;
+import com.arena.game.entity.*;
 
 public class Garen extends LivingEntity {
     public Garen(String id, int team) {
@@ -28,6 +25,10 @@ public class Garen extends LivingEntity {
         EntityNavMeshAgent navMeshAgent = new EntityNavMeshAgent();
         navMeshAgent.setEnabled(true);
         this.navMeshAgent = navMeshAgent;
+
+        EntityTransform transform = new EntityTransform();
+        transform.setScale(5f);
+        this.setTransform(transform);
     }
 
     /*public void Q() {  }

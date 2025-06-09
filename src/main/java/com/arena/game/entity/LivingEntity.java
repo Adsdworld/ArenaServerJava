@@ -15,6 +15,7 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected EntityCollider collider;
     protected EntityNavMeshAgent navMeshAgent;
     protected EntityRigidbody rigidbody;
+    protected EntityTransform transform;
 
 
     public LivingEntity(String id, int maxHealth, int team, String name) {
@@ -55,6 +56,12 @@ public abstract class LivingEntity extends Entity implements ILiving {
     }
     public EntityNavMeshAgent getNavMeshAgent() {
         return navMeshAgent;
+    }
+    public void setTransform(EntityTransform transform) {
+        this.transform = transform;
+    }
+    public EntityTransform getTransform() {
+        return transform;
     }
 
     @Override

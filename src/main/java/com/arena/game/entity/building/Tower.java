@@ -19,5 +19,9 @@ public class Tower extends LivingEntity {
         EntityNavMeshAgent navMeshAgent = new EntityNavMeshAgent();
         navMeshAgent.setEnabled(false);
         this.navMeshAgent = navMeshAgent;
+
+        EntityTransform transform = new EntityTransform();
+        transform.setScale(10f);
+        this.setTransform(transform);
     }
 }
