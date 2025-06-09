@@ -1,5 +1,6 @@
 package com.arena.network;
 
+import com.arena.game.Game;
 import com.arena.game.core.Core;
 import com.arena.network.response.Response;
 import com.arena.network.response.ResponseService;
@@ -79,9 +80,20 @@ public class JavaWebSocket extends WebSocketServer {
             Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason_ + " (code: " + code + ", remote: " + remote + ")");
             Player player = webSocketToUuid.get(conn);
             if (player != null) {
+                Server server = Server.getInstance();
+
+                /* Unregister player from the server, it avoids sending response to null connections */
                 uuidToWebSocket.remove(player);
-                synchronized(Server.getInstance().getPlayers()) {
+                synchronized(server.getPlayers()) {
                     Server.getInstance().getPlayers().remove(player);
+                }
+
+                /* Remove player from all games, player entity still exists in the game if he rejoins later,
+                * It avoids sending multiples 'Game State' to one Player */
+                for (Game game : server.getGames()) {
+                    if (game.getPlayers().contains(player)) {
+                        game.getPlayers().remove(player);
+                    }
                 }
             }
             webSocketToUuid.remove(conn);

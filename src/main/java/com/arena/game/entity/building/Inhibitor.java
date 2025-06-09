@@ -2,13 +2,13 @@ package com.arena.game.entity.building;
 
 import com.arena.game.entity.*;
 
-public class Tower extends LivingEntity {
-    public Tower(String id, int team) {
-        super(id, 2000, team, "Tower");
+public class Inhibitor extends LivingEntity {
+    public Inhibitor(String id, int team) {
+        super(id, 3000, team, "Inhibitor");
 
         this.posY = 1.15f;
 
-        this.attackDamage = 100;
+        this.attackDamage = 0;
 
         EntityRigidbody rigidbody = new EntityRigidbody();
         rigidbody.setKinematic(true);

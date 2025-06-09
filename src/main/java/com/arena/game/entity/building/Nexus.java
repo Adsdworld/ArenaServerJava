@@ -2,13 +2,11 @@ package com.arena.game.entity.building;
 
 import com.arena.game.entity.*;
 
-public class Tower extends LivingEntity {
-    public Tower(String id, int team) {
-        super(id, 2000, team, "Tower");
+public class Nexus extends LivingEntity {
+    public Nexus(String id, int team) {
+        super(id, 10000, team, "Nexus");
 
-        this.posY = 1.15f;
-
-        this.attackDamage = 100;
+        this.attackDamage = 0;
 
         EntityRigidbody rigidbody = new EntityRigidbody();
         rigidbody.setKinematic(true);
@@ -25,5 +23,7 @@ public class Tower extends LivingEntity {
         EntityTransform transform = new EntityTransform();
         transform.setScale(10f);
         this.setTransform(transform);
+
+        this.posY = 5f * getTransform().getScale();
     }
 }

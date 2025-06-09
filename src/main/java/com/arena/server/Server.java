@@ -4,6 +4,8 @@ import com.arena.game.Game;
 import com.arena.game.GameNameEnum;
 import com.arena.game.core.Core;
 import com.arena.game.entity.LivingEntity;
+import com.arena.game.entity.building.Inhibitor;
+import com.arena.game.entity.building.Nexus;
 import com.arena.game.entity.building.Tower;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
@@ -17,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.arena.game.entity.EntityPositions.BLUE_TOWERS;
+import static com.arena.game.entity.EntityPositions.*;
 
 public class Server {
 
@@ -98,14 +100,7 @@ public class Server {
                     Logger.game("Creating " + gameNameEnum.getGameName());
                     Game newGame = new Game(gameNameEnum);
 
-                    for (Map.Entry<String, Position> map : BLUE_TOWERS.entrySet()) {
-                        String id = map.getKey();
-                        Position position = map.getValue();
-
-                        LivingEntity livingEntity = new Tower(id);
-                        livingEntity.setPos(position);
-                        newGame.addEntity(livingEntity);
-                    }
+                    CreateNexusInhibitorAndTowers(newGame);
 
                     games.add(newGame);
 
@@ -119,6 +114,81 @@ public class Server {
             } finally {
                 creatingGame = false;
             }
+        }
+    }
+
+    /**
+     * Subscribe a player to a game.
+     * {@code Game.players} receive {@code ResponseEnum.GameState} events, that allow them to receive updates.
+     *
+     * @param player the {@link Player} to subscribe.
+     * @param game the {@link Game} to which the player is subscribing.
+     * @implNote This method iterates through all {@code Server.games}  in the {@link Server}  and removes the {@code player}  from any game they were previously subscribed to, then adds him to the specified game.
+     * @author A.SALLIER
+     * @date 2025-06-09
+     */
+    public void subscribePlayerToGame(Player player, Game game) {
+        Server server = Server.getInstance();
+
+        for (Game g : server.getGames()) {
+            g.getPlayers().removeIf(p -> p.equals(player));
+        }
+        game.getPlayers().add(player);
+    }
+
+    private void CreateNexusInhibitorAndTowers(Game game) {
+        /* Towers */
+        for (Map.Entry<String, Position> map : BLUE_TOWERS.entrySet()) {
+            String id = map.getKey();
+            Position position = map.getValue();
+
+            LivingEntity livingEntity = new Tower(id, 1);
+            livingEntity.setPos(position);
+            game.addEntity(livingEntity);
+        }
+        for (Map.Entry<String, Position> map : RED_TOWERS.entrySet()) {
+            String id = map.getKey();
+            Position position = map.getValue();
+
+            LivingEntity livingEntity = new Tower(id, 2);
+            livingEntity.setPos(position);
+            game.addEntity(livingEntity);
+        }
+
+        /* Inhibitors */
+        for (Map.Entry<String, Position> map : BLUE_INHIBITORS.entrySet()) {
+            String id = map.getKey();
+            Position position = map.getValue();
+
+            LivingEntity livingEntity = new Inhibitor(id, 1);
+            livingEntity.setPos(position);
+            game.addEntity(livingEntity);
+        }
+        for (Map.Entry<String, Position> map : RED_INHIBITORS.entrySet()) {
+            String id = map.getKey();
+            Position position = map.getValue();
+
+            LivingEntity livingEntity = new Inhibitor(id, 2);
+            livingEntity.setPos(position);
+            game.addEntity(livingEntity);
+        }
+
+        /* Nexus */
+        for (Map.Entry<String, Position> map : BLUE_NEXUS.entrySet()) {
+            String id = map.getKey();
+            Position position = map.getValue();
+
+            LivingEntity livingEntity = new Nexus(id, 1);
+            livingEntity.setPos(position);
+            game.addEntity(livingEntity);
+        }
+        for (Map.Entry<String, Position> map : RED_NEXUS.entrySet()) {
+            String id = map.getKey();
+            Position position = map.getValue();
+
+            LivingEntity livingEntity = new Nexus(id, 2);
+            livingEntity.setPos(position);
+            game.addEntity(livingEntity);
         }
     }
 
@@ -163,12 +233,7 @@ public class Server {
                     response1.Send(gameNameEnum);
 
                     /* Send a clear game state to all players before closing for removing all entities */
-                    game.clearLivingEntities();
-                    Response response2 = new Response();
-                    response2.setResponse(ResponseEnum.GameState);
-                    response2.setGameName(gameNameEnum);
-                    response2.setLivingEntities(game.getLivingEntities());
-                    response2.Send(game.getGameNameEnum(), true);
+                    game.clearUnityGame(game);
 
                     games.remove(game);
                     response.setResponse(ResponseEnum.GameClosed);

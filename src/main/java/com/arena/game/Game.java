@@ -40,80 +40,6 @@ public class Game {
         this.gameStatusEnum = GameStatusEnum.Created;
     }
 
-
-    /**
-     * Add a player to the {@link Game} .
-     *
-     * @param player the {@link Player} to add.
-     * @param team {@code int}.
-     * @implNote This method checks if the {@link Player} already exists in the {@link Game} , if not, it creates a new {@link Entity} , notifies all players of the {@link Game} , and sends a {@link Response}  to the player indicating the {@link Entity}  he is controlling else it notifies all players that the player has rejoined the {@link Game}  and sends a {@link Response}  to the player indicating that he has rejoined the {@link Game} .
-     * @author A.SALLIER
-     * @date 2025-06-07
-     */
-    public void addPlayer(Player player, int team) {
-
-        LivingEntity existsInGame = livingEntityAlreadyExists(player.getUuid());
-
-        Response response = new Response();
-        response.setGameName(gameNameEnum);
-
-        if (existsInGame == null) {
-            /* Create entity  and add it to game */
-            Garen garen = new Garen(player.getUuid(), team);
-
-
-            switch (team) {
-                case 1:
-                    garen.setPos(BLUE_SPAWN);
-                    break;
-                case 2:
-                    garen.setPos(RED_SPAWN);
-                    break;
-                default:
-                    garen.setPos(CENTER_SPAWN);
-                    Logger.warn("Team not specified for player " + player.getUuid() + ", defaulting to CENTER_SPAWN.");
-                    break;
-            }
-
-
-            Gson gson = new Gson();
-            Logger.info(gson.toJson(garen));
-
-            addEntity(garen);
-
-            /* Register player to the game */
-            players.add(player);
-
-            /* Notify all players of the game */
-            response.setNotify(garen.getName() + " " + garen.getId()  + " Joined "+ gameNameEnum.getGameName() + " in team " + team);
-            response.setResponse(ResponseEnum.Joined);
-            response.Send(gameNameEnum);
-
-            Logger.game(garen.getName() + " " + garen.getId()  + " Joined "+ gameNameEnum.getGameName() + " in team " + team, gameNameEnum);
-        } else {
-            /* Notify all players of the game */
-            response.setNotify(existsInGame.getName() + " " + existsInGame.getId()  + " Rejoined "+ gameNameEnum.getGameName() + " in team " + existsInGame.getTeam());
-
-            //TODO: it might be better to send a ResponseEnum.ReJoined instead PlayerAlreadyInGame
-            response.setResponse(ResponseEnum.PlayerAlreadyInGame);
-
-            Logger.game(existsInGame.getName() + " " + existsInGame.getId()  + " Rejoined "+ gameNameEnum.getGameName() + " in team " + existsInGame.getTeam(), gameNameEnum);
-        }
-
-        /* Send a clear game state to player before joining to remove all entities */
-        Response response2 = new Response();
-        response2.setResponse(ResponseEnum.GameState);
-        response2.setGameName(gameNameEnum);
-        response2.setLivingEntities(new ArrayList<LivingEntity>());
-        response2.Send(player.getUuid(), false);
-
-        /* Assign the new entity to the player */
-        yourEntityIs(response.getUuid(), response.getGameName());
-
-        // TODO : improve message add possibility to choose team and champion
-
-    }
-
     /**
      * Send a response to the client indicating the entity he is controlling in the game.
      *
@@ -123,7 +49,7 @@ public class Game {
      * @author A.SALLIER
      * @date 2025-06-07
      */
-    private void yourEntityIs(String entityId, GameNameEnum gameName) {
+    public void yourEntityIs(String entityId, GameNameEnum gameName) {
 
         Game game = Server.getInstance().gameExists(gameNameEnum);
 
@@ -195,6 +121,40 @@ public class Game {
     public void clearLivingEntities() {
         livingEntities.clear();
         Logger.game("Living entities cleared in game " + gameNameEnum.getGameName(), gameNameEnum);
+    }
+
+    /**
+     * Clears the Unity game state for a specific player.
+     * This method sends a response to the player to clear all entities in the Unity client game by sending an empty list of living entities.
+     *
+     * @param player the {@link Player} for whom the game state should be cleared.
+     * @implNote This method creates a new {@link Response} object, sets the response type to {@link ResponseEnum#GameState}, and sends an empty list of living entities to the specified player.
+     * @author A.SALLIER
+     * @date 2025-06-09
+     */
+    public void clearUnityGame(Player player) {
+        Response response = new Response();
+        response.setResponse(ResponseEnum.GameState);
+        response.setGameName(gameNameEnum);
+        response.setLivingEntities(new ArrayList<>());
+        response.Send(player.getUuid(), true);
+    }
+
+    /**
+     * Clears the Unity game state for all players in the game.
+     * This method sends a response to all players to clear all entities in the Unity client game by sending an empty list of living entities.
+     *
+     * @implNote This method creates a new {@link Response} object, sets the response type to {@link ResponseEnum#GameState}, and sends an empty list of living entities to all players in the game.
+     * @author A.SALLIER
+     * @date 2025-06-09
+     */
+    public void clearUnityGame(Game game) {
+        game.clearLivingEntities();
+        Response response = new Response();
+        response.setResponse(ResponseEnum.GameState);
+        response.setGameName(gameNameEnum);
+        response.setLivingEntities(new ArrayList<>());
+        response.Send(game.getGameNameEnum(), true);
     }
 
     // Getters and Setters
