@@ -67,6 +67,10 @@ public class Response implements Comparable<Response>{
         return _livingEntities = livingEntities;
     }
 
+    public ArrayList<LivingEntity> getLivingEntities() {
+        return _livingEntities;
+    }
+
     @Override
     public int compareTo(Response other) {
         return Long.compare(this._timestamp, other._timestamp);

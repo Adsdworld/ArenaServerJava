@@ -32,15 +32,15 @@ public class AllTest extends ArenaTestBase {
     }
 
 
-    /**
-     * Test Unity : Join
-     * This test simulates a player joining a game by sending a login message to the server.
+    /** Test Unity : Login
+     * This test simulates a player logging in by sending a login message to the server.
      * <p>
      * The expected behavior is that the server responds with a "Logged" response.
-     * <p>
-     * [2025-06-05 17:27:41.677][UnityWebSocket][SendMessage][info] Message envoyé au serveur : {"_uuid":"8fe884b1-ac53-4f23-b4ab-f0a3e09d1029","_ability":null,"_x":null,"_z":null,"_timestamp":1749137261557,"_action":"Login","_gameName":"Game 1"}
      *
-     * @throws InterruptedException
+     * @throws InterruptedException, Exception
+     * @implNote
+     * @author A.BENETREAU
+     * @date 2025-06-10
      */
 
     @Test
@@ -73,13 +73,16 @@ public class AllTest extends ArenaTestBase {
                 "Player with UUID '" + TestClientJava.testUuid + "' should be registered on server");
     }
 
-    /**
-     * Test Unity : Create Game
+
+    /** Test Unity : Create Game
      * This test simulates a player creating a game by sending a create game message to the server.
      * <p>
      * The expected behavior is that the server responds with a "GameCreated" response.
      *
-     * @throws InterruptedException
+     * @throws InterruptedException, Exception
+     * @implNote
+     * @author A.BENETREAU
+     * @date 2025-06-10
      */
 
 
@@ -115,6 +118,17 @@ public class AllTest extends ArenaTestBase {
     }
 
 
+    /**
+     * Test Unity : Game Already Exists
+     * This test simulates a player trying to create a game that already exists by sending a create game message to the server.
+     * <p>
+     * The expected behavior is that the server responds with a "GameAlreadyExists" response.
+     *
+     * @throws InterruptedException, Exception
+     * @implNote
+     * @author A.BENETREAU
+     * @date 2025-06-10
+     */
     @Test
     @Order(3)
     void testUnityGameAlreadyExists() throws InterruptedException {
@@ -146,18 +160,62 @@ public class AllTest extends ArenaTestBase {
                 "Game with name '" + GameNameEnum.Game1 + "' should be created on server");
     }
 
+
+    /**
+     * Test Unity : Games Limit Reached
+     * This test simulates a player trying to create more games than the limit allows by sending create game messages to the server.
+     * <p>
+     * The expected behavior is that the server responds with a "GamesLimitReached" response when trying to create a 6th game.
+     *
+     * @throws InterruptedException, Exception
+     * @implNote
+     * @author A.BENETREAU
+     * @date 2025-06-10
+     */
+
+
+    @Test
+    @Order(4)
+    void testUnityGameLimitReached() throws InterruptedException {
+        // Create 5 games
+        for (int i = 2; i <= 6; i++) {
+            Message message = new Message();
+            message.setAction(ActionEnum.CreateGame);
+            message.setGameName(GameNameEnum.valueOf("Game" + i));
+
+            MessageService.Send(message);
+        }
+
+        // Try to create a 6th game
+        Message message = new Message();
+        message.setAction(ActionEnum.CreateGame);
+        message.setGameName(GameNameEnum.Game6);
+
+        MessageService.Send(message);
+
+        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+        Response response = TestClientJava.filterResponseStatic(ResponseEnum.GamesLimitReached, responses);
+
+        assertNotNull(response, "Response should not be null");
+        assertEquals(ResponseEnum.GamesLimitReached, response.getReponse(), "Expected response to be " + ResponseEnum.GamesLimitReached);
+    }
+
+
     /**
      * Test Unity : Join Game
      * This test simulates a player joining a game by sending a join game message to the server.
      * <p>
-     * The expected behavior is that the server responds with a "Joined" response.
+     * The expected behavior is that the server responds with a "Joined" response and adds the player to the game.
      *
-     * @throws InterruptedException
+     * @throws InterruptedException, Exception
+     * @implNote
+     * @author A.BENETREAU
+     * @date 2025-06-10
      */
 
     @Test
     @Order(5)
-    void testUnityJoin() throws InterruptedException {
+    void testUnityJoin1() throws InterruptedException {
         Message message = new Message();
         message.setAction(ActionEnum.Join);
         message.setGameName(GameNameEnum.Game1);
@@ -185,11 +243,85 @@ public class AllTest extends ArenaTestBase {
         );
     }
 
+
+    /**
+     * Test Unity : Player Already In Game
+     * This test simulates a player trying to join a game that they are already in by sending a join game message to the server.
+     * <p>
+     * The expected behavior is that the server responds with a "PlayerAlreadyInGame" response.
+     *
+     * @throws InterruptedException, Exception
+     * @implNote
+     * @author A.BENETREAU
+     * @date 2025-06-10
+     */
+    @Test
+    @Order(6)
+    void testUnityJoin2() throws InterruptedException {
+        Message message = new Message();
+        message.setAction(ActionEnum.Join);
+        message.setGameName(GameNameEnum.Game1);
+
+        MessageService.Send(message);
+
+        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+        Response response = TestClientJava.filterResponseStatic(ResponseEnum.PlayerAlreadyInGame, responses);
+
+        assertNotNull(response, "Response should not be null After Join");
+        assertEquals(ResponseEnum.PlayerAlreadyInGame, response.getReponse(), "Expected response to be " + ResponseEnum.PlayerAlreadyInGame);
+    }
+
+
+    /**
+     * Test Unity : Game State
+     * This test simulates a player requesting the game state by sending a game state message to the server.
+     * <p>
+     * The expected behavior is that the server responds with a "GameState" response containing the game state data.
+     *
+     * @throws InterruptedException, Exception
+     * @implNote This test checks if the server sends the game state to all players in the game.
+     * @implNote
+     * @author A.BENETREAU
+     * @date 2025-06-10
+     */
+    @Test
+    @Order(7)
+    void testUnityGameState() throws InterruptedException {
+        // This test is to check if the server sends the game state to all players in the game
+        // We will just listen for the GameState response and check if it contains the expected data
+
+        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+        Response response = TestClientJava.filterResponseStatic(ResponseEnum.GameState, responses);
+
+        assertNotNull(response, "Response should not be null After GameState");
+        assertEquals(ResponseEnum.GameState, response.getReponse(), "Expected response to be " + ResponseEnum.GameState);
+
+        // Check if the game state contains the expected data
+        assertFalse(response.getLivingEntities().isEmpty(), "GameState should contain living entities");
+    }
+
+    @Test
+    @Order(8)
+    void testUnityCooldownStart() throws InterruptedException {
+
+        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+        Response response = TestClientJava.filterResponseStatic(ResponseEnum.GameState, responses);
+
+        assertNotNull(response, "Response should not be null After CooldownStart");
+        assertEquals(ResponseEnum.GameState, response.getReponse(), "Expected response to be " + ResponseEnum.GameState);
+
+        // Check if the cooldowns are updated
+        assertTrue(response.isCooldownUpToDate(), "Cooldowns should be up to date");
+    }
+
     // TODO: Order3 CloseGame > GameAlreadyExists
     // TODO: Order4 CloseGame > GamesLimitReached try to create Game6 "Game 6" when there are already 5 games created
     // TODO: Order6 Join > PlayerAlreadyInGame
     // TODO: Order7 Just listen GameState Response to see that Server send game state to all players in the game
-    // TODO: CooldownStart > GameState vérifier que un gamestate parmis les plusieurs reçus contient les cooldowns mis à jour (cooldownUpToDate = false for Response response : responses (filter multiples response by GameState) reponse.cooldownQStart, cooldownQEnd, cooldownWStart, cooldownWEnd, cooldownEStart, cooldownEEnd, cooldownRStart, cooldownREnd are okay according to cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs)
+    // TODO: CooldownStart > GameState vérifier que un gamestate parmis les plusieurs reçus contient les cooldowns mis à jour
+    //  (cooldownUpToDate = false for Response response : responses (filter multiples response by GameState)
+    //  reponse.cooldownQStart, cooldownQEnd, cooldownWStart, cooldownWEnd, cooldownEStart, cooldownEEnd, cooldownRStart,
+    //  cooldownREnd are okay according to cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs)
 
     //TODO: Look at Jacoco coverage and make improvements
 }

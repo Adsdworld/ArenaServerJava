@@ -107,6 +107,15 @@ public class JavaWebSocket extends WebSocketServer {
         }
     }
 
+    /**
+     * onMessage is called when a message is received from a {@link WebSocket} connection.
+     *
+     * @param conn the {@link WebSocket} connection that sent the message.
+     * @param messageJson the message received in JSON format.
+     * @implNote
+     * @author A.BENETREAU
+     * @date 2025-06-10
+     */
     @Override
     public void onMessage(WebSocket conn, String messageJson) {
         try {
