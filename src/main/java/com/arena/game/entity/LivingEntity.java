@@ -8,7 +8,7 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected int health, maxHealth;
     protected int armor, magicResist, attackDamage, abilityPower;
     protected boolean moving;
-    protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, skinScale, posXDesired, posZDesired, posYDesired;
+    protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, skinScale, posXDesired, posZDesired, posYDesired, skinAnimationSpeed=1.0f;
     protected String name, skinAnimation;
     /* Team 1 = Blue Team, Team 2 = Red Team */
     protected int team;
@@ -125,6 +125,7 @@ public abstract class LivingEntity extends Entity implements ILiving {
     }
 
     @Override public float getMoveSpeed() { return moveSpeed; }
+    @Override public void setMoveSpeed(float moveSpeed) { this.moveSpeed = moveSpeed; }
     @Override public boolean isMoving() { return moving; }
     @Override public void setMoving(boolean moving) { this.moving = moving; }
 
@@ -151,6 +152,15 @@ public abstract class LivingEntity extends Entity implements ILiving {
 
     @Override public String getSkinAnimation() { return skinAnimation; }
     @Override public void setSkinAnimation(String animation) { this.skinAnimation = animation; }
+    @Override public float getSkinAnimationSpeed() { return skinAnimationSpeed; }
+    @Override public void setSkinAnimationSpeed(float skinAnimationSpeed) { this.skinAnimationSpeed = skinAnimationSpeed; }
+    @Override public String getSkinAnimationForRunning() {
+        return "No run animation defined on this living entity, please override this methods in child";
+    }
+    @Override public String getSkinAnimationForIdle() {
+        return "No idle animation defined on this living entity, please override this methods in child";
+    }
+
 
     @Override public float getSkinScale() { return skinScale; }
     @Override public void setSkinScale(float skinScale) { this.skinScale = skinScale; }
@@ -262,6 +272,12 @@ public abstract class LivingEntity extends Entity implements ILiving {
          * The server have no access to world physics
          * */
         this.setMoving(livingEntity.isMoving());
+        if (this.isMoving()) {
+            this.setSkinAnimation(this.getSkinAnimationForRunning());
+        } else {
+            this.setSkinAnimation(this.getSkinAnimationForIdle());
+        }
+
 
         /* We refuse health, armor, etc. values to prevent cheating
          * Values are controlled by the server.

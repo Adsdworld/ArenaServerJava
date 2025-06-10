@@ -19,6 +19,7 @@ public interface ILiving {
 
 
     float getMoveSpeed();
+    void setMoveSpeed(float moveSpeed);
 
     boolean isMoving();
     void setMoving(boolean moving);
@@ -56,6 +57,10 @@ public interface ILiving {
 
     String getSkinAnimation();
     void setSkinAnimation(String animation);
+    float getSkinAnimationSpeed();
+    void setSkinAnimationSpeed(float speed);
+    String getSkinAnimationForRunning();
+    String getSkinAnimationForIdle();
 
     void setCooldownQStart(long cooldownQStart);
     long getCooldownQStart();

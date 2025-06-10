@@ -157,7 +157,7 @@ public class Core {
                 response.setResponse(ResponseEnum.GameState);
                 response.setGameName(game.getGameNameEnum());
                 response.setLivingEntities(game.getLivingEntities());
-                response.Send(game.getGameNameEnum(), true);
+                response.Send(game.getGameNameEnum(), false);
             }
             //Logger.server("Game state sent to all clients at " + new Date());
         } catch (Exception e) {

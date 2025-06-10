@@ -4,40 +4,49 @@ import com.arena.game.entity.*;
 import com.arena.utils.Vector3f;
 
 public class Garen extends LivingEntity {
+    private String skinAnimationIdle = "Idle1_Base";
+    private String skinAnimationRun = "Run";
+
+
+
     public Garen(String id, int team) {
         super(id, 600, team, "Garen"); // maxHealth
-        this.armor = 30;
-        this.attackDamage = 60;
-        this.moveSpeed = 10.03f;
+        this.setArmor(30);
+        this.setAttackDamage(60);
+        this.setMoveSpeed(12f);
 
-        this.cooldownQMs = 1000;
-        this.cooldownWMs = 5000;
-        this.cooldownEMs = 20000;
-        this.cooldownRMs = 60000;
+        this.setCooldownQMs(1000);
+        this.setCooldownWMs(5000);
+        this.setCooldownEMs(20000);
+        this.setCooldownRMs(60000);
 
-        this.setSkinScale(0.005f);
+        this.setSkinScale(0.007f);
         this.setSkinPos(new Vector3f(0.0f, 0.0f, 0.0f));
-        this.setSkinAnimation("Idle1_Base");
+        this.setSkinAnimation(getSkinAnimationForIdle());
 
         EntityRigidbody rigidbody = new EntityRigidbody();
         rigidbody.setKinematic(false);
-        this.rigidbody = rigidbody;
+        this.setRigidbody(rigidbody);
 
         EntityCollider collider = new EntityCollider();
         collider.setEnabled(true);
-        this.collider = collider;
+        this.setCollider(collider);
 
         EntityNavMeshAgent navMeshAgent = new EntityNavMeshAgent();
         navMeshAgent.setEnabled(true);
-        this.navMeshAgent = navMeshAgent;
+        this.setNavMeshAgent(navMeshAgent);
 
         EntityTransform transform = new EntityTransform();
         transform.setScale(5f);
         this.setTransform(transform);
     }
 
-    /*public void Q() {  }
-    public void Z() {  attaque 2  }
-    public void E() {  attaque 3  }
-    public void R() {  attaque ultime  }*/
+    @Override
+    public String getSkinAnimationForRunning() {
+        return skinAnimationRun;
+    }
+    @Override
+    public String getSkinAnimationForIdle() {
+        return skinAnimationIdle;
+    }
 }
