@@ -139,38 +139,39 @@ public class Logger {
     //TODO: Create a mecanism of 15262772x <text> for avoiding heavy files and console flooding
 
     private static void processLogQueue() {
-        while (!logQueue.isEmpty()) {
-            String logEntry = logQueue.poll();
-            if (logEntry != null) {
-                try {
-                    logSemaphore.acquire();
+        try {
+            logSemaphore.acquire();
 
-                    File logFile = new File(LOG_FILE_PATH);
-                    File parentDir = logFile.getParentFile();
-                    if (!parentDir.exists()) {
-                        if (parentDir.mkdirs()) {
-                            info("Log directory created.");
-                        } else {
-                            System.err.println("[Logger][WriteError] Failed to create log directory.");
-                        }
-                    }
-                    //TODO: test buffered input stream which can be faster
-                    try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile, true), StandardCharsets.UTF_8))) {
-                        writer.write(logEntry);
-                        writer.newLine();
-                    } catch (IOException e) {
-                        System.err.println("[Logger][WriteError] " + e.getMessage());
-                    }
-
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                } finally {
-                    logSemaphore.release();
+            File logFile = new File(LOG_FILE_PATH);
+            File parentDir = logFile.getParentFile();
+            if (!parentDir.exists()) {
+                if (parentDir.mkdirs()) {
+                    info("Log directory created.");
+                } else {
+                    System.err.println("[Logger][WriteError] Failed to create log directory.");
                 }
             }
+
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile, true), StandardCharsets.UTF_8))) {
+                while (!logQueue.isEmpty()) {
+                    String logEntry = logQueue.poll();
+                    if (logEntry != null) {
+                        writer.write(logEntry);
+                        writer.newLine();
+                    }
+                }
+                writer.flush();
+            } catch (IOException e) {
+                System.err.println("[Logger][WriteError] " + e.getMessage());
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            logSemaphore.release();
+            isWriting = false;
         }
-        isWriting = false;
     }
+
 
     private static String getCallerInfo() {
         StackTraceElement[] stack = Thread.currentThread().getStackTrace();
