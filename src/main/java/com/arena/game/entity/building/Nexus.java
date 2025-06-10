@@ -27,6 +27,6 @@ public class Nexus extends LivingEntity {
 
 
         this.setSkinScale(0.0015f);
-        this.setSkinPos(new Vector3f(0.0f, 1.7f, 0.0f));
+        this.setSkinPos(new Vector3f(0.0f, 0.578f, 0.0f));
     }
 }
