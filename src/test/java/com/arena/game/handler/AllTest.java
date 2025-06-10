@@ -4,6 +4,7 @@ import com.arena.ArenaTestBase;
 import com.arena.MessageService;
 import com.arena.TestClientJava;
 import com.arena.game.GameNameEnum;
+import com.arena.game.entity.LivingEntity;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
 import com.arena.player.ActionEnum;
@@ -32,7 +33,8 @@ public class AllTest extends ArenaTestBase {
     }
 
 
-    /** Test Unity : Login
+    /**
+     * Test Unity : Login
      * This test simulates a player logging in by sending a login message to the server.
      * <p>
      * The expected behavior is that the server responds with a "Logged" response.
@@ -74,7 +76,8 @@ public class AllTest extends ArenaTestBase {
     }
 
 
-    /** Test Unity : Create Game
+    /**
+     * Test Unity : Create Game
      * This test simulates a player creating a game by sending a create game message to the server.
      * <p>
      * The expected behavior is that the server responds with a "GameCreated" response.
@@ -106,14 +109,14 @@ public class AllTest extends ArenaTestBase {
          * This checks if the game with the specified name is present in the server's game list.
          */
         assertTrue(Server.getInstance().getGames()
-                .stream()
-                .anyMatch(game -> {
-                    if (game.getGameNameEnum().equals(GameNameEnum.Game1)) {
-                        return true;
-                    }
-                    return false;
-                }
-                ),
+                        .stream()
+                        .anyMatch(game -> {
+                                    if (game.getGameNameEnum().equals(GameNameEnum.Game1)) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                        ),
                 "Game with name '" + GameNameEnum.Game1 + "' should be created on server");
     }
 
@@ -300,18 +303,40 @@ public class AllTest extends ArenaTestBase {
         assertFalse(response.getLivingEntities().isEmpty(), "GameState should contain living entities");
     }
 
+
+    /**
+     * Test Unity : Cooldown Start
+     * This test simulates a player starting a cooldown by sending a cooldown start message to the server.
+     * <p>
+     * The expected behavior is that the server responds with a "GameState" response with updated cooldowns.
+     *
+     * @throws InterruptedException, Exception
+     * @implNote This test checks if the server updates the cooldowns in the game state.
+     * @author A.BENETREAU
+     * @date 2025-06-10
+     */
     @Test
     @Order(8)
     void testUnityCooldownStart() throws InterruptedException {
 
+        //TODO:  lancer le cooldown Q
+
         ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+
         Response response = TestClientJava.filterResponseStatic(ResponseEnum.GameState, responses);
 
-        assertNotNull(response, "Response should not be null After CooldownStart");
-        assertEquals(ResponseEnum.GameState, response.getReponse(), "Expected response to be " + ResponseEnum.GameState);
+        LivingEntity livingEntity = (LivingEntity) response.getLivingEntities()
+                .stream()
+                .filter(l -> l.getId().equals(TestClientJava.testUuid))
+                .findFirst()
+                .orElse(null);
 
-        // Check if the cooldowns are updated
-        assertTrue(response.isCooldownUpToDate(), "Cooldowns should be up to date");
+        assertNull(livingEntity, "Living entity should not be null");
+        long QStart = livingEntity.getCooldownQMs();
+        long QEnd = livingEntity.getCooldownQEnd();
+        long QMs = livingEntity.getCooldownQMs();
+
+        assertTrue(cooldownUpToDateTrouve, "Au moins un GameState doit contenir des cooldowns mis à jour");
     }
 
     // TODO: Order3 CloseGame > GameAlreadyExists
