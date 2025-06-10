@@ -17,6 +17,7 @@ public class Garen extends LivingEntity {
 
         this.setSkinScale(0.005f);
         this.setSkinPos(new Vector3f(0.0f, 0.0f, 0.0f));
+        this.setSkinAnimation("Idle1_Base");
 
         EntityRigidbody rigidbody = new EntityRigidbody();
         rigidbody.setKinematic(false);

@@ -54,6 +54,9 @@ public interface ILiving {
 
     String getName();
 
+    String getSkinAnimation();
+    void setSkinAnimation(String animation);
+
     void setCooldownQStart(long cooldownQStart);
     long getCooldownQStart();
     void setCooldownWStart(long cooldownWStart);

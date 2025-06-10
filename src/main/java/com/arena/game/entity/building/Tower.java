@@ -27,5 +27,6 @@ public class Tower extends LivingEntity {
 
         this.setSkinScale(0.004f);
         this.setSkinPos(new Vector3f(0.0f, -0.65f, 0.0f));
+        this.setSkinAnimation("");
     }
 }

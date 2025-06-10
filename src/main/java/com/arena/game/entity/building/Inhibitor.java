@@ -9,6 +9,7 @@ public class Inhibitor extends LivingEntity {
 
         this.setSkinScale(0.0029f);
         this.setSkinPos(new Vector3f(0.0f, 0.515f, 0.0f));
+        this.setSkinAnimation("Idle_Normal1");
 
         this.attackDamage = 0;
 

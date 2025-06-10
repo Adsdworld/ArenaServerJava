@@ -9,7 +9,7 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected int armor, magicResist, attackDamage, abilityPower;
     protected boolean moving;
     protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, skinScale, posXDesired, posZDesired, posYDesired;
-    protected String name;
+    protected String name, skinAnimation;
     /* Team 1 = Blue Team, Team 2 = Red Team */
     protected int team;
     protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd, cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs;
@@ -148,6 +148,9 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public void setPosSkinZ(float z) { this.posSkinZ = z; }
     @Override public float getPosSkinY() { return posSkinY; }
     @Override public void setPosSkinY(float y) { this.posSkinY = y; }
+
+    @Override public String getSkinAnimation() { return skinAnimation; }
+    @Override public void setSkinAnimation(String animation) { this.skinAnimation = animation; }
 
     @Override public float getSkinScale() { return skinScale; }
     @Override public void setSkinScale(float skinScale) { this.skinScale = skinScale; }
