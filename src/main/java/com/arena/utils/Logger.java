@@ -7,8 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.*;
 
 
 public class Logger {
@@ -20,6 +19,15 @@ public class Logger {
 
     // Thread dédié pour l'écriture
     private static volatile boolean isWriting = false;
+
+    private static final int MAX_BUFFER_SIZE = 100;
+
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(Logger::flush));
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(Logger::flush, 5, 5, TimeUnit.SECONDS);
+    }
+
 
 
     /// <summary>
@@ -98,7 +106,14 @@ public class Logger {
 
         logQueue.add(formatted);
 
-        if (!isWriting) {
+        if (logQueue.size() >= MAX_BUFFER_SIZE && !isWriting) {
+            isWriting = true;
+            new Thread(Logger::processLogQueue).start();
+        }
+    }
+
+    public static void flush() {
+        if (!logQueue.isEmpty() && !isWriting) {
             isWriting = true;
             new Thread(Logger::processLogQueue).start();
         }

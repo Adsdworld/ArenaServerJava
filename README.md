@@ -17,8 +17,8 @@ Pour vous aider dans votre choix du sujet et dans le développement du projet, l
 
 ### @Programmation Orientée Objets
 #### Respect des règles de base dans la programmation orientée objets (encapsulation, paquetages, surcharge, envoi des méthodes)
-**Encapsulation** : [TODO] c'est quoi?
-- [TODO]
+**Encapsulation** : [TODO] c'est mettre des variables en privée et fournir des get set public
+- [TODO] check si il y a des variables public utilisé en dur, si oui les rendre privé et créer des get set public
 - file : [TODO]
 
 **Paquetages** : organisation du code source en packages.

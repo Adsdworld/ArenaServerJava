@@ -175,7 +175,7 @@ public class AllTest extends ArenaTestBase {
          * This checks if the player with the test UUID is present in the game's player list.
          */
         assertTrue(
-                Server.getInstance().games.stream()
+                Server.getInstance().getGames().stream()
                         .filter(game -> game.getGameNameEnum() == GameNameEnum.Game1)
                         .findFirst()
                         .map(game -> game.getPlayers().stream()
