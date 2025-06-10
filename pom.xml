@@ -62,6 +62,9 @@
                 <version>3.0.0-M7</version> <!-- ou ta version -->
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
+
+
+                    <argLine>${argLine}</argLine> <!-- Important pour JaCoCo -->
                 </configuration>
             </plugin>
 
@@ -86,6 +89,30 @@
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <!-- Plugin JaCoCo pour mesurer la couverture des tests -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version> <!-- Dernière version connue -->
+                <executions>
+                    <!-- Exécuter JaCoCo pendant la phase de test -->
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>

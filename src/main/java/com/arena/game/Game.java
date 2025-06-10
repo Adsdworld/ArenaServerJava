@@ -39,6 +39,13 @@ public class Game {
         this.gameStatusEnum = GameStatusEnum.Created;
     }
 
+    public LivingEntity getLivingEntity(Player player) {
+        return getLivingEntities().stream()
+                .filter(entity -> entity.getId().equals(player.getUuid()))
+                .findFirst()
+                .orElse(null);
+    }
+
     /**
      * Send a response to the client indicating the entity he is controlling in the game.
      *

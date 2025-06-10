@@ -1,13 +1,30 @@
 package com.arena.utils.json;
 
+import com.arena.game.entity.LivingEntity;
+import com.arena.game.entity.building.Inhibitor;
+import com.arena.game.entity.building.Nexus;
+import com.arena.game.entity.building.Tower;
+import com.arena.game.entity.champion.Garen;
 import com.arena.utils.Logger;
 import com.google.gson.*;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
 import java.util.Map;
 
 public class GsonWorker implements IJson {
 
-    private final Gson gson = new Gson();
+    //private final Gson gson = new Gson();
+
+    public final Gson gson = new GsonBuilder()
+            .registerTypeAdapterFactory(
+                    RuntimeTypeAdapterFactory.of(LivingEntity.class, "RuntimeTypeAdapterFactoryClazz")
+                            .registerSubtype(Garen.class, "Garen")
+                            .registerSubtype(Tower.class, "Tower")
+                            .registerSubtype(Inhibitor.class, "Inhibitor")
+                            .registerSubtype(Nexus.class, "Nexus")
+            )
+            .create();
+
 
     public GsonWorker() {
         JsonService.setWorker(this);

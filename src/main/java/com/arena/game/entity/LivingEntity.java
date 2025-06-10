@@ -241,4 +241,73 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public long getCooldownRMs() {
         return cooldownRMs;
     }
+
+    public void update(LivingEntity livingEntity) {
+        /* We trust player position
+         * The server have no access to world physics
+         * */
+        this.setPosX(livingEntity.getPosX());
+        this.setPosY(livingEntity.getPosY());
+        this.setPosZ(livingEntity.getPosZ());
+
+        /* We trust player rotation
+         * The server have no access to world physics
+         * */
+        this.setRotationY(livingEntity.getRotationY());
+
+        /* We trust if an entity is moving to her desired destination
+         * The server have no access to world physics
+         * */
+        this.setMoving(livingEntity.isMoving());
+
+        /* We refuse health, armor, etc. values to prevent cheating
+         * Values are controlled by the server.
+         * */
+//        this.setHealth(livingEntity.getHealth());
+//        this.setMaxHealth(livingEntity.getMaxHealth());
+//        this.setArmor(livingEntity.getArmor());
+//        this.setMagicResist(livingEntity.getMagicResist());
+//        this.setAttackDamage(livingEntity.getAttackDamage());
+//        this.setAbilityPower(livingEntity.getAbilityPower());
+
+        /* We trust the desired position of the entity
+         * The server have no access to world physics
+         * */
+        this.setPosXDesired(livingEntity.getPosXDesired());
+        this.setPosYDesired(livingEntity.getPosYDesired());
+        this.setPosZDesired(livingEntity.getPosZDesired());
+
+        /* We refuse skin modifications
+         * */
+//        this.setPosSkinX(livingEntity.getPosSkinX());
+//        this.setPosSkinY(livingEntity.getPosSkinY());
+//        this.setPosSkinZ(livingEntity.getPosSkinZ());
+//        this.setSkinScale(livingEntity.getSkinScale());
+
+        /* We refuse cooldown values to prevent cheating
+         * Values are update by a specific message, check ActionEnum
+         * We prefer a message that capture the instant properties of the player for attacking
+         * */
+//        this.setCooldownQStart(livingEntity.getCooldownQStart());
+//        this.setCooldownWStart(livingEntity.getCooldownWStart());
+//        this.setCooldownEStart(livingEntity.getCooldownEStart());
+//        this.setCooldownRStart(livingEntity.getCooldownRStart());
+//        this.setCooldownQEnd(livingEntity.getCooldownQEnd());
+//        this.setCooldownWEnd(livingEntity.getCooldownWEnd());
+//        this.setCooldownEEnd(livingEntity.getCooldownEEnd());
+//        this.setCooldownREnd(livingEntity.getCooldownREnd());
+//        this.setCooldownQMs(livingEntity.getCooldownQMs());
+//        this.setCooldownWMs(livingEntity.getCooldownWMs());
+//        this.setCooldownEMs(livingEntity.getCooldownEMs());
+//        this.setCooldownRMs(livingEntity.getCooldownRMs());
+
+        /* We refuse the EntityCollider, EntityNavMeshAgent and EntityRigidbody
+         * They define the physics of the entity : gravity, collision, etc.
+         * Values are controlled by the server
+         * */
+//        this.setRigidbody(livingEntity.getRigidbody());
+//        this.setCollider(livingEntity.getCollider());
+//        this.setNavMeshAgent(livingEntity.getNavMeshAgent());
+//        this.setTransform(livingEntity.getTransform());
+    }
 }

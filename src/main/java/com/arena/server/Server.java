@@ -118,11 +118,43 @@ public class Server {
     }
 
     /**
+     * Retrieves a Game instance based on the provided Player.
+     *
+     * @param player the {@link Player} whose game is to be retrieved.
+     * @return the {@link Game} instance that contains the specified player, or {@code null} if no such game exists.
+     * @implNote This method iterates through the list of games and returns the first game that contains the specified player in its list of players.
+     * @author A.SALLIER
+     * @date 2025-06-10
+     */
+    public Game getGameOfPlayer(Player player) {
+        return games.stream()
+                .filter(game -> game.getPlayers().contains(player))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * Retrieves a player by their UUID.
+     *
+     * @param uuid the UUID of the player to retrieve
+     * @return the {@link Player} with the specified UUID, or {@code null} if not found.
+     * @implNote This method iterates through the list of players and returns the first one that matches the given UUID.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
+    public Player getPlayerByUuid(String uuid) {
+        return players.stream()
+                .filter(player -> player.getUuid().equals(uuid))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
      * Subscribe a player to a game.
      * {@code Game.players} receive {@code ResponseEnum.GameState} events, that allow them to receive updates.
      *
      * @param player the {@link Player} to subscribe.
-     * @param game the {@link Game} to which the player is subscribing.
+     * @param game   the {@link Game} to which the player is subscribing.
      * @implNote This method iterates through all {@code Server.games}  in the {@link Server}  and removes the {@code player}  from any game they were previously subscribed to, then adds him to the specified game.
      * @author A.SALLIER
      * @date 2025-06-09

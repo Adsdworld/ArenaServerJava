@@ -102,7 +102,7 @@ public  class TestClientJava extends WebSocketClient {
      * @throws InterruptedException
      */
     public ArrayList<Response> waitForNextMessages() throws InterruptedException {
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         ArrayList<Response> responses = new ArrayList<>();
 

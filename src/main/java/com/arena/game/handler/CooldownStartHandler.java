@@ -19,19 +19,18 @@ public class CooldownStartHandler implements IMessageHandler {
                         .filter(entity -> entity.getId().equals(message.getUuid()))
                         .findFirst()
                         .ifPresent(entity -> {
-                            entity.setCooldownQStart(message.getCooldownQStart());
-                            entity.setCooldownWStart(message.getCooldownWStart());
-                            entity.setCooldownEStart(message.getCooldownEStart());
-                            entity.setCooldownRStart(message.getCooldownRStart());
+                            entity.setCooldownQStart(message.getLivingEntity().getCooldownQStart());
+                            entity.setCooldownWStart(message.getLivingEntity().getCooldownWStart());
+                            entity.setCooldownEStart(message.getLivingEntity().getCooldownEStart());
+                            entity.setCooldownRStart(message.getLivingEntity().getCooldownRStart());
 
-                            Logger.info("setcooldownWEnd: " + message.getCooldownQStart() + entity.getCooldownWMs());
+                            Logger.info("setcooldownWEnd: " + message.getLivingEntity().getCooldownQStart() + entity.getCooldownWMs());
 
-                            entity.setCooldownQEnd(message.getCooldownQStart() + entity.getCooldownQMs());
-                            entity.setCooldownWEnd(message.getCooldownWStart() + entity.getCooldownWMs());
-                            entity.setCooldownEEnd(message.getCooldownEStart() + entity.getCooldownEMs());
-                            entity.setCooldownREnd(message.getCooldownRStart() + entity.getCooldownRMs());
+                            entity.setCooldownQEnd(message.getLivingEntity().getCooldownQStart() + entity.getCooldownQMs());
+                            entity.setCooldownWEnd(message.getLivingEntity().getCooldownWStart() + entity.getCooldownWMs());
+                            entity.setCooldownEEnd(message.getLivingEntity().getCooldownEStart() + entity.getCooldownEMs());
+                            entity.setCooldownREnd(message.getLivingEntity().getCooldownRStart() + entity.getCooldownRMs());
                         });
-
                 return true;
             }
             return false;
@@ -40,7 +39,5 @@ public class CooldownStartHandler implements IMessageHandler {
         if (!gameFound) {
             Logger.info("Game not found for CooldownStartHandler: " + message.getGameName());
         }
-
-
     }
 }
