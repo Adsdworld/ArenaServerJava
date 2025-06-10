@@ -25,6 +25,9 @@ public enum ActionEnum {
      */
     @SerializedName("Cooldown Start")
     CooldownStart("Cooldown Start"),
+
+    @SerializedName("Player State Update")
+    PlayerStateUpdate("Player State Update"),
     
 
 

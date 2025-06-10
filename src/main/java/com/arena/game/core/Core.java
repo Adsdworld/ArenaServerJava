@@ -47,6 +47,7 @@ public class Core {
         handlers.put(ActionEnum.Join, new JoinHandler());
         handlers.put(ActionEnum.CloseGame, new CloseGameHandler());
         handlers.put(ActionEnum.CooldownStart, new CooldownStartHandler());
+        handlers.put(ActionEnum.PlayerStateUpdate, new PlayerStateUpdateHandler());
 
         // Traitement toutes les 50ms
         _isEnteringTick = false;
