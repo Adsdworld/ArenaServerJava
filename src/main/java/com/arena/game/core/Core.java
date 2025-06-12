@@ -46,8 +46,12 @@ public class Core {
         handlers.put(ActionEnum.CreateGame, new CreateGameHandler());
         handlers.put(ActionEnum.Join, new JoinHandler());
         handlers.put(ActionEnum.CloseGame, new CloseGameHandler());
-        handlers.put(ActionEnum.CooldownStart, new CooldownStartHandler());
         handlers.put(ActionEnum.PlayerStateUpdate, new PlayerStateUpdateHandler());
+        handlers.put(ActionEnum.CastQ, new CastQHandler());
+        handlers.put(ActionEnum.CastW, new CastWHandler());
+        handlers.put(ActionEnum.CastE, new CastEHandler());
+        handlers.put(ActionEnum.CastR, new CastRHandler());
+
 
         // Traitement toutes les 50ms
         _isEnteringTick = false;
@@ -157,7 +161,7 @@ public class Core {
                 response.setResponse(ResponseEnum.GameState);
                 response.setGameName(game.getGameNameEnum());
                 response.setLivingEntities(game.getLivingEntities());
-                response.Send(game.getGameNameEnum(), false);
+                response.Send(game.getGameNameEnum(), true);
             }
             //Logger.server("Game state sent to all clients at " + new Date());
         } catch (Exception e) {

@@ -36,10 +36,6 @@ public class PlayerStateUpdateHandler implements IMessageHandler {
                 response.setNotify("Game not found for player: " + message.getUuid() + ". Please check if you have sent a Join Action.");
                 response.Send(player.getUuid());
             }
-
-        } else {
-            /* Could not send a response to the player, as the player does not exist in the Server */
-            Logger.warn("Player not found for uuid: " + message.getUuid());
         }
     }
 }

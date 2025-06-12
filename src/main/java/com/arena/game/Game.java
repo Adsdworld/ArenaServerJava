@@ -40,10 +40,18 @@ public class Game {
     }
 
     public LivingEntity getLivingEntity(Player player) {
-        return getLivingEntities().stream()
+        LivingEntity livingEntity = getLivingEntities().stream()
                 .filter(entity -> entity.getId().equals(player.getUuid()))
                 .findFirst()
                 .orElse(null);
+        if (livingEntity == null) {
+            Response response = new Response();
+            response.setResponse(ResponseEnum.Info);
+            response.setNotify("Living entity not found for player: " + player.getUuid() + ". Please check if you have sent a Join Action.");
+            response.Send(player.getUuid());
+            Logger.warn("Living entity not found for player: " + player.getUuid() + ". Please check if you have sent a Join Action.");
+        }
+        return livingEntity;
     }
 
     /**

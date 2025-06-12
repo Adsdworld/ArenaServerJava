@@ -4,10 +4,14 @@ import com.arena.game.entity.champion.Garen;
 import com.arena.utils.Position;
 import com.arena.utils.Vector3f;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public abstract class LivingEntity extends Entity implements ILiving {
     protected int health, maxHealth;
     protected int armor, magicResist, attackDamage, abilityPower;
-    protected boolean moving;
+    protected boolean moving, hasArrived, skinAnimationLocked;
     protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, skinScale, posXDesired, posZDesired, posYDesired, skinAnimationSpeed=1.0f;
     protected String name, skinAnimation;
     /* Team 1 = Blue Team, Team 2 = Red Team */
@@ -128,6 +132,8 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public void setMoveSpeed(float moveSpeed) { this.moveSpeed = moveSpeed; }
     @Override public boolean isMoving() { return moving; }
     @Override public void setMoving(boolean moving) { this.moving = moving; }
+    @Override public boolean hasArrived() { return hasArrived; }
+    @Override public void setHasArrived(boolean hasArrived) { this.hasArrived = hasArrived; }
 
     @Override public float getPosXDesired() { return posXDesired; }
     @Override public void setPosXDesired(float x) { this.posXDesired = x; }
@@ -150,17 +156,54 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public float getPosSkinY() { return posSkinY; }
     @Override public void setPosSkinY(float y) { this.posSkinY = y; }
 
+    @Override public void lockSkinAnimation(boolean lock) { this.skinAnimationLocked = lock; }
+    @Override public boolean isSkinAnimationLocked() { return skinAnimationLocked; }
     @Override public String getSkinAnimation() { return skinAnimation; }
     @Override public void setSkinAnimation(String animation) { this.skinAnimation = animation; }
     @Override public float getSkinAnimationSpeed() { return skinAnimationSpeed; }
     @Override public void setSkinAnimationSpeed(float skinAnimationSpeed) { this.skinAnimationSpeed = skinAnimationSpeed; }
     @Override public String getSkinAnimationForRunning() {
-        return "No run animation defined on this living entity, please override this methods in child";
+        return "None";
     }
     @Override public String getSkinAnimationForIdle() {
-        return "No idle animation defined on this living entity, please override this methods in child";
+        return "None";
+    }
+    @Override public String getSkinAnimationForQ() {
+        return "None";
+    }
+    @Override public String getSkinAnimationForW() {
+        return "None";
+    }
+    @Override public String getSkinAnimationForE() {
+        return "None";
+    }
+    @Override public String getSkinAnimationForR() {
+        return "None";
+    }
+    @Override public long getSkinAnimationDurationForQ() {
+        return 0;
+    }
+    @Override public long getSkinAnimationDurationForW() {
+        return 0;
+    }
+    @Override public long getSkinAnimationDurationForE() {
+        return 0;
+    }
+    @Override public long getSkinAnimationDurationForR() {
+        return 0;
     }
 
+    public void LockSkinAnimation(long ms) {
+        final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
+        this.lockSkinAnimation(true);
+        executor.schedule(() ->
+                {
+                    this.lockSkinAnimation(false);
+                },
+                ms,
+                TimeUnit.MILLISECONDS);
+    }
 
     @Override public float getSkinScale() { return skinScale; }
     @Override public void setSkinScale(float skinScale) { this.skinScale = skinScale; }
@@ -272,11 +315,14 @@ public abstract class LivingEntity extends Entity implements ILiving {
          * The server have no access to world physics
          * */
         this.setMoving(livingEntity.isMoving());
-        if (this.isMoving()) {
-            this.setSkinAnimation(this.getSkinAnimationForRunning());
-        } else {
-            this.setSkinAnimation(this.getSkinAnimationForIdle());
+        if (!isSkinAnimationLocked()) {
+            if (this.isMoving()) {
+                this.setSkinAnimation(this.getSkinAnimationForRunning());
+            } else {
+                this.setSkinAnimation(this.getSkinAnimationForIdle());
+            }
         }
+        this.setHasArrived(livingEntity.hasArrived());
 
 
         /* We refuse health, armor, etc. values to prevent cheating

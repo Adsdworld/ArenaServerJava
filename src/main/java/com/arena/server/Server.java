@@ -90,11 +90,13 @@ public class Server {
                     Logger.warn(gameNameEnum.getGameName() + " already exists.");
                     response.setResponse(ResponseEnum.GameAlreadyExists);
                     response.setNotify(gameNameEnum.getGameName() + " already exists.");
+                    response.Send(message.getUuid());
 
                 } else if (games.size() >= maxGames) {
                     Logger.warn("Cannot create more than " + maxGames + " games.");
                     response.setResponse(ResponseEnum.GamesLimitReached);
                     response.setNotify("Cannot create more than " + maxGames + " games.");
+                    response.Send(message.getUuid());
 
                 } else {
                     Logger.game("Creating " + gameNameEnum.getGameName());
@@ -107,9 +109,8 @@ public class Server {
                     response.setResponse(ResponseEnum.GameCreated);
                     response.setNotify(gameNameEnum.getGameName() + " created successfully.");
                     response.setGameName(gameNameEnum);
+                    response.Send();
                 }
-
-                response.Send(message.getUuid());
 
             } finally {
                 creatingGame = false;
@@ -127,10 +128,18 @@ public class Server {
      * @date 2025-06-10
      */
     public Game getGameOfPlayer(Player player) {
-        return games.stream()
-                .filter(game -> game.getPlayers().contains(player))
+        Game game = games.stream()
+                .filter(g -> g.getPlayers().contains(player))
                 .findFirst()
                 .orElse(null);
+        if (game == null) {
+            Response response = new Response();
+            response.setResponse(ResponseEnum.Info);
+            response.setNotify("Game not found for player: " + player.getUuid() + ". Please check if you have sent a Create Game Action.");
+            response.Send(player.getUuid());
+            Logger.warn("Game not found for player: " + player.getUuid() + ". Please check if you have sent a Create Game Action.");
+        }
+        return game;
     }
 
     /**
@@ -143,10 +152,14 @@ public class Server {
      * @date 2025-06-07
      */
     public Player getPlayerByUuid(String uuid) {
-        return players.stream()
-                .filter(player -> player.getUuid().equals(uuid))
+        Player player = players.stream()
+                .filter(p -> p.getUuid().equals(uuid))
                 .findFirst()
                 .orElse(null);
+        if (player == null) {
+            Logger.warn("Player with UUID " + uuid + " not found. Please check if you have sent a Login Action.");
+        }
+        return player;
     }
 
     /**

@@ -15,7 +15,7 @@ public class Garen extends LivingEntity {
         this.setAttackDamage(60);
         this.setMoveSpeed(12f);
 
-        this.setCooldownQMs(1000);
+        this.setCooldownQMs(1200);
         this.setCooldownWMs(5000);
         this.setCooldownEMs(20000);
         this.setCooldownRMs(60000);
@@ -48,5 +48,38 @@ public class Garen extends LivingEntity {
     @Override
     public String getSkinAnimationForIdle() {
         return skinAnimationIdle;
+    }
+    @Override
+    public String getSkinAnimationForQ() {
+        return "Spell1";
+    }
+    @Override
+    public String getSkinAnimationForW() {
+        return "Dance_Base";
+    }
+    @Override
+    public String getSkinAnimationForE() {
+        return "Spell3_90";
+    }
+    @Override
+    public String getSkinAnimationForR() {
+        return "Spell4_Base";
+    }
+
+    @Override
+    public long getSkinAnimationDurationForQ(){
+        return 1000;
+    }
+    @Override
+    public long getSkinAnimationDurationForW(){
+        return 2666;
+    }
+    @Override
+    public long getSkinAnimationDurationForE(){
+        return 3000;
+    }
+    @Override
+    public long getSkinAnimationDurationForR() {
+        return 1566;
     }
 }

@@ -23,6 +23,8 @@ public interface ILiving {
 
     boolean isMoving();
     void setMoving(boolean moving);
+    boolean hasArrived();
+    void setHasArrived(boolean hasArrived);
     float getPosXDesired();
     void setPosXDesired(float x);
     float getPosZDesired();
@@ -55,12 +57,22 @@ public interface ILiving {
 
     String getName();
 
+    void lockSkinAnimation(boolean lock);
+    boolean isSkinAnimationLocked();
     String getSkinAnimation();
     void setSkinAnimation(String animation);
     float getSkinAnimationSpeed();
     void setSkinAnimationSpeed(float speed);
     String getSkinAnimationForRunning();
     String getSkinAnimationForIdle();
+    String getSkinAnimationForQ();
+    String getSkinAnimationForW();
+    String getSkinAnimationForE();
+    String getSkinAnimationForR();
+    long getSkinAnimationDurationForQ();
+    long getSkinAnimationDurationForW();
+    long getSkinAnimationDurationForE();
+    long getSkinAnimationDurationForR();
 
     void setCooldownQStart(long cooldownQStart);
     long getCooldownQStart();
