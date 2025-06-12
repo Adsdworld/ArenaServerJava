@@ -33,14 +33,16 @@ public class CastQHandler implements IMessageHandler {
                     long castDuration = entity.getCooldownQMs();
                     long castEnd = castStart + castDuration;
 
-                    entity.setCooldownQStart(castStart);
-                    entity.setCooldownQEnd(castEnd);
+                    if (castStart >= entity.getCooldownQEnd()) {
+                        entity.setCooldownQStart(castStart);
+                        entity.setCooldownQEnd(castEnd);
 
-                    /* Set the skin animation */
-                    entity.setSkinAnimation(entity.getSkinAnimationForQ());
+                        /* Set the skin animation */
+                        entity.setSkinAnimation(entity.getSkinAnimationForQ());
 
-                    /* Lock the skin animation */
-                    entity.LockSkinAnimation(entity.getSkinAnimationDurationForQ());
+                        /* Lock the skin animation */
+                        entity.LockSkinAnimation(entity.getSkinAnimationDurationForQ());
+                    }
                 }
             }
         }
