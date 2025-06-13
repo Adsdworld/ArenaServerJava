@@ -1,12 +1,20 @@
 package com.arena.game.entity;
 
+import com.arena.game.Game;
 import com.arena.game.entity.champion.Garen;
+import com.arena.game.zone.Zone;
+import com.arena.game.zone.ZoneCircle;
+import com.arena.player.Player;
+import com.arena.server.Server;
+import com.arena.utils.Logger;
 import com.arena.utils.Position;
 import com.arena.utils.Vector3f;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import static com.arena.game.entity.EntityPositions.*;
 
 public abstract class LivingEntity extends Entity implements ILiving {
     protected int health, maxHealth;
@@ -106,6 +114,28 @@ public abstract class LivingEntity extends Entity implements ILiving {
     }
     @Override public void takeDamage(int amount) {
         this.health = Math.max(0, this.health - amount);
+        if (this.health == 0) {
+            this.setSkinAnimation(this.getSkinAnimationForDeath());
+            this.LockSkinAnimation(this.getSkinAnimationDurationForDeath(), this::die);
+        }
+    }
+
+    @Override
+    public void die() {}
+
+    public void spawnAtTeamSpawn() {
+        switch (this.getTeam()) {
+            case 1:
+                this.setPos(BLUE_SPAWN);
+                break;
+            case 2:
+                this.setPos(RED_SPAWN);
+                break;
+            default:
+                this.setPos(CENTER_SPAWN);
+                Logger.warn("Team not specified for player " + this.getId() + ", defaulting to CENTER_SPAWN.");
+                break;
+        }
     }
 
     @Override public int getArmor() { return armor; }
@@ -127,6 +157,29 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public int setAbilityPower(int abilityPower) {
         this.abilityPower = abilityPower; return this.abilityPower;
     }
+
+    @Override public int getQTotalDamage() { return 0; }
+    @Override public int getWTotalShield() { return 0; }
+    @Override public int getETotalDamage() { return 0; }
+    @Override public int getRTotalDamage() { return 0; }
+
+    @Override public Zone getQZone() {
+        return new ZoneCircle(0);
+    }
+    @Override public Zone getWZone() {
+        return new ZoneCircle(0);
+    }
+    @Override public Zone getEZone() {
+        return new ZoneCircle(0);
+    }
+    @Override public Zone getRZone() {
+        return new ZoneCircle(0);
+    }
+
+    @Override public void useQ() {}
+    @Override public void useW() {}
+    @Override public void useE() {}
+    @Override public void useR() {}
 
     @Override public float getMoveSpeed() { return moveSpeed; }
     @Override public void setMoveSpeed(float moveSpeed) { this.moveSpeed = moveSpeed; }
@@ -180,6 +233,9 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public String getSkinAnimationForR() {
         return "None";
     }
+    @Override public String getSkinAnimationForDeath() {
+        return "None";
+    }
     @Override public long getSkinAnimationDurationForQ() {
         return 0;
     }
@@ -190,6 +246,9 @@ public abstract class LivingEntity extends Entity implements ILiving {
         return 0;
     }
     @Override public long getSkinAnimationDurationForR() {
+        return 0;
+    }
+    @Override public long getSkinAnimationDurationForDeath() {
         return 0;
     }
 
@@ -204,6 +263,18 @@ public abstract class LivingEntity extends Entity implements ILiving {
                 ms,
                 TimeUnit.MILLISECONDS);
     }
+    public void LockSkinAnimation(long ms, Runnable afterUnlock) {
+        final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
+        this.lockSkinAnimation(true);
+        executor.schedule(() -> {
+            this.lockSkinAnimation(false);
+            if (afterUnlock != null) {
+                afterUnlock.run();
+            }
+        }, ms, TimeUnit.MILLISECONDS);
+    }
+
 
     @Override public float getSkinScale() { return skinScale; }
     @Override public void setSkinScale(float skinScale) { this.skinScale = skinScale; }

@@ -48,23 +48,22 @@ public class JoinHandler implements IMessageHandler {
                 // TODO: Permettre au joueur de choisir son équipe : bien pour faire une demo, car aucun outil pour forcer une équipe
                 // rajouter un propriété dans le message
                 // rajouter un élément dans l'interface ServerSelector pour choisir BLEU ROUGE SPECTATEUR
-                int team = ThreadLocalRandom.current().nextInt(2) + 1;
+
+                int blue = game.getPlayersOfTeam(1).size();
+                int red = game.getPlayersOfTeam(2).size();
+
+                int team;
+
+                if (blue >= red) {
+                    team = 2;
+                } else {
+                    team = 1;
+                }
 
                 /* Create entity  and add it to game */
                 Garen garen = new Garen(player.getUuid(), team);
 
-                switch (team) {
-                    case 1:
-                        garen.setPos(BLUE_SPAWN);
-                        break;
-                    case 2:
-                        garen.setPos(RED_SPAWN);
-                        break;
-                    default:
-                        garen.setPos(CENTER_SPAWN);
-                        Logger.warn("Team not specified for player " + player.getUuid() + ", defaulting to CENTER_SPAWN.");
-                        break;
-                }
+                garen.spawnAtTeamSpawn();
 
                 /* Add the new entity to the game */
                 game.addEntity(garen);

@@ -37,6 +37,8 @@ public class CastRHandler implements IMessageHandler {
                         entity.setCooldownRStart(castStart);
                         entity.setCooldownREnd(castEnd);
 
+                        entity.useR();
+
                         /* Set the skin animation */
                         entity.setSkinAnimation(entity.getSkinAnimationForR());
 

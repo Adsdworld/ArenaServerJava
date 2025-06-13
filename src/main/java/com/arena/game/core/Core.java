@@ -55,7 +55,7 @@ public class Core {
 
         // Traitement toutes les 50ms
         _isEnteringTick = false;
-        scheduler.scheduleAtFixedRate(this::processMessages, 0, 50, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(this::processMessages, 0, 10, TimeUnit.MILLISECONDS);
     }
 
     public void receive(Message message) {
@@ -65,7 +65,9 @@ public class Core {
             Logger.failure("Unknown or invalid action in message: " + message);
         } else {
             messageQueue.offer(message);
-            Logger.info("Offered message to queue: " + message.getAction() + " with timestamp: " + message.getTimeStamp());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+                    .withZone(ZoneOffset.UTC);
+            Logger.info("Offered message to queue: " + message.getAction() + " with timestamp: " + formatter.format(Instant.ofEpochMilli(message.getTimeStamp())));
         }
     }
 
@@ -80,7 +82,7 @@ public class Core {
              * VivoBook A.SALLIER (16 Go) : max 9ms for a CreateGame action
              *
              */
-            long tolerance = 1000;
+            long tolerance = 200;
             _isEnteringTick = true;
             boolean _isEmpty = messageQueue.isEmpty();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
@@ -95,7 +97,7 @@ public class Core {
                     Logger.server(stringBuilder.toString());
                     _isEnteringTick = false;
                     if (!_isEmpty) {
-                        Logger.server("Processing messages at " + formatter.format(Instant.ofEpochMilli(now)) + " with tolerance: " + tolerance + "ms");
+                        //Logger.server("Processing messages at " + formatter.format(Instant.ofEpochMilli(now)) + " with tolerance: " + tolerance + "ms");
                     }
                 }
 
@@ -108,14 +110,14 @@ public class Core {
 
                 assert next != null;
                 if (next.getTimeStamp() < now - tolerance) {
-                    Logger.server("Skipping message: " + next.getUuid() + " >>> "+ next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
+                    //Logger.server("Skipping message: " + next.getUuid() + " >>> "+ next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
                     messageQueue.poll();
                 } else if (next.getTimeStamp() <= now) {
-                    Logger.server("Processing message: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
+                    //Logger.server("Processing message: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
                     handleMessage(next);
                     messageQueue.poll();
                 } else {
-                    Logger.server("Message not ready yet: " + next.getUuid() + " >>> " + next.getAction() + "...");
+                    //Logger.server("Message not ready yet: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
                     break;
                 }
             }

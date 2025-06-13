@@ -100,4 +100,3 @@ Diagramme de classes détaillé (hors IHM) : attributs, méthodes, visibilités,
 - [TODO] 80% pour les méthodes élémentaires
 - 
 
-Last modified: Tuesday, 6 May 2025, 6:32 PM

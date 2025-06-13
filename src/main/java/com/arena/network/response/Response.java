@@ -63,8 +63,8 @@ public class Response implements Comparable<Response>{
         return _timestamp;
     }
 
-    public ArrayList<LivingEntity> setLivingEntities(ArrayList<LivingEntity> livingEntities) {
-        return _livingEntities = livingEntities;
+    public void setLivingEntities(ArrayList<LivingEntity> livingEntities) {
+        _livingEntities = livingEntities;
     }
 
     public ArrayList<LivingEntity> getLivingEntities() {

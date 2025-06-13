@@ -1,5 +1,7 @@
 package com.arena.game.entity;
 
+import com.arena.game.zone.Zone;
+
 public interface ILiving {
     int getHealth();
     void heal(int amount);
@@ -16,7 +18,20 @@ public interface ILiving {
     int setAttackDamage(int attackDamage);
     int getAbilityPower();
     int setAbilityPower(int abilityPower);
+    int getQTotalDamage();
+    int getWTotalShield();
+    int getETotalDamage();
+    int getRTotalDamage();
 
+    Zone getQZone();
+    Zone getWZone();
+    Zone getEZone();
+    Zone getRZone();
+
+    void useQ();
+    void useW();
+    void useE();
+    void useR();
 
     float getMoveSpeed();
     void setMoveSpeed(float moveSpeed);
@@ -69,10 +84,14 @@ public interface ILiving {
     String getSkinAnimationForW();
     String getSkinAnimationForE();
     String getSkinAnimationForR();
+    String getSkinAnimationForDeath();
     long getSkinAnimationDurationForQ();
     long getSkinAnimationDurationForW();
     long getSkinAnimationDurationForE();
     long getSkinAnimationDurationForR();
+    long getSkinAnimationDurationForDeath();
+
+    void die();
 
     void setCooldownQStart(long cooldownQStart);
     long getCooldownQStart();

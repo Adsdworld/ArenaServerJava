@@ -3,6 +3,7 @@ package com.arena.game;
 import com.arena.game.entity.Entity;
 import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.champion.Garen;
+import com.arena.game.zone.Zone;
 import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
@@ -12,7 +13,9 @@ import static com.arena.game.entity.EntityPositions.*;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
     /* Identifier for the game */
@@ -21,8 +24,9 @@ public class Game {
     /* Status of the game */
     GameStatusEnum gameStatusEnum;
 
-    /* Teams in the game */
-    private ArrayList<LivingEntity> livingEntities;
+    //private ArrayList<LivingEntity> livingEntities;
+    private ConcurrentHashMap<String, LivingEntity> livingEntities;
+
 
     private ArrayList<Player> players;
 
@@ -33,7 +37,7 @@ public class Game {
         this.gameStatusEnum = GameStatusEnum.Creating;
         this.gameNameEnum = gameNameEnum;
 
-        this.livingEntities = new ArrayList<>();
+        this.livingEntities = new ConcurrentHashMap<>();
         this.players = new ArrayList<>();
 
         this.gameStatusEnum = GameStatusEnum.Created;
@@ -104,6 +108,29 @@ public class Game {
         }
     }
 
+    public void removeEntity(LivingEntity livingEntity) {
+        if (livingEntity != null) {
+            livingEntities.remove(livingEntity);
+            Logger.game(livingEntity.getName() + " '" + livingEntity.getId() + "' removed from game " + gameNameEnum.getGameName(), gameNameEnum);
+        } else {
+            Logger.failure("Cannot remove null entity from game " + gameNameEnum.getGameName());
+        }
+    }
+
+    public List<Player> getPlayersOfTeam(int team) {
+        return getPlayers().stream()
+                .filter((player -> getLivingEntitiesOfTeam(team).stream()
+                        .anyMatch(livingEntity -> livingEntity.getId().equals(player.getUuid()))))
+                .toList();
+    }
+
+    public List<LivingEntity> getLivingEntitiesOfTeam(int team) {
+        return livingEntities.values().stream()
+                .filter(entity -> entity.getTeam() == team)
+                .toList();
+    }
+
+
     /**
      * Checks if a {@link LivingEntity} with the given {@code id} already exists in the game.
      *
@@ -171,6 +198,51 @@ public class Game {
         response.Send(game.getGameNameEnum(), true);
     }
 
+    public void dealDamageToEnnemies(LivingEntity attacker, Zone zone, int damage) {
+        List<LivingEntity> enemies = getEnemies(attacker);
+
+        Logger.game("@@@dealDamageToEnnemies @@@ attacker: " + attacker.getName() + " damage: " + damage + " zone: " + zone.toString() + "enemies: " + enemies.size(), gameNameEnum);
+
+        for (LivingEntity enemy : enemies) {
+            if (zone.isInZone(attacker, enemy)) {
+                enemy.takeDamage(damage);
+                Logger.game(enemy.getName() + "(health: " +enemy.getHealth()+damage +") " + enemy.getId() + " took " + damage + " damage from " + attacker.getName() + attacker.getId() + " new health: " + enemy.getHealth(), gameNameEnum);
+            }
+        }
+    }
+
+    public void dealDamageToEnnemies(LivingEntity attacker, Zone zone, int damage, long duration) {
+        List<LivingEntity> enemies = getEnemies(attacker);
+
+        for (LivingEntity enemy : enemies) {
+            if (zone.isInZone(attacker, enemy)) {
+                enemy.heal(damage);
+            }
+        }
+    }
+
+    public void healSelf(LivingEntity livingEntity) {
+        livingEntity.heal(livingEntity.getWTotalShield());
+    }
+
+
+    public List<LivingEntity> getEnemies(LivingEntity livingEntity) {
+         int team = livingEntity.getTeam();
+
+        return this.livingEntities.stream()
+                .filter(e -> e != livingEntity) // évite de se filtrer soi-même
+                .filter(e -> switch (team) {
+                    case 0 -> false;                      // neutre, pas d'ennemi
+                    case 1 -> e.getTeam() == 2;
+                    case 2 -> e.getTeam() == 1;
+                    default -> false;
+                })
+                .toList();
+//        return this.livingEntities.stream()
+//                .filter((entity) -> entity.getTeam() != livingEntity.getTeam())
+//                .toList();
+    }
+
     // Getters and Setters
     public GameNameEnum getGameNameEnum() {
         return gameNameEnum;
@@ -184,6 +256,6 @@ public class Game {
     }
 
     public ArrayList<LivingEntity> getLivingEntities() {
-        return livingEntities;
+        return livingEntities.values();
     }
 }

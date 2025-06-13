@@ -142,6 +142,19 @@ public class Server {
         return game;
     }
 
+    public Game getGameOfEntity(LivingEntity entity) {
+        Server server = Server.getInstance();
+
+        Game game = server.getGames().stream()
+                .filter(g -> g.getLivingEntities().contains(entity))
+                .findFirst()
+                .orElse(null);
+        if (game == null) {
+            Logger.warn("Game not found for entity: " + entity.getId() + ". Please check if the entity is present in a game.");
+        }
+        return game;
+    }
+
     /**
      * Retrieves a player by their UUID.
      *
@@ -184,7 +197,7 @@ public class Server {
     private void CreateNexusInhibitorAndTowers(Game game) {
         /* Towers */
         for (Map.Entry<String, Position> map : BLUE_TOWERS.entrySet()) {
-            String id = map.getKey();
+            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
             Position position = map.getValue();
 
             LivingEntity livingEntity = new Tower(id, 1);
@@ -192,7 +205,7 @@ public class Server {
             game.addEntity(livingEntity);
         }
         for (Map.Entry<String, Position> map : RED_TOWERS.entrySet()) {
-            String id = map.getKey();
+            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
             Position position = map.getValue();
 
             LivingEntity livingEntity = new Tower(id, 2);
@@ -202,7 +215,7 @@ public class Server {
 
         /* Inhibitors */
         for (Map.Entry<String, Position> map : BLUE_INHIBITORS.entrySet()) {
-            String id = map.getKey();
+            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
             Position position = map.getValue();
 
             LivingEntity livingEntity = new Inhibitor(id, 1);
@@ -210,7 +223,7 @@ public class Server {
             game.addEntity(livingEntity);
         }
         for (Map.Entry<String, Position> map : RED_INHIBITORS.entrySet()) {
-            String id = map.getKey();
+            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
             Position position = map.getValue();
 
             LivingEntity livingEntity = new Inhibitor(id, 2);
@@ -220,7 +233,7 @@ public class Server {
 
         /* Nexus */
         for (Map.Entry<String, Position> map : BLUE_NEXUS.entrySet()) {
-            String id = map.getKey();
+            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
             Position position = map.getValue();
 
             LivingEntity livingEntity = new Nexus(id, 1);
@@ -228,7 +241,7 @@ public class Server {
             game.addEntity(livingEntity);
         }
         for (Map.Entry<String, Position> map : RED_NEXUS.entrySet()) {
-            String id = map.getKey();
+            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
             Position position = map.getValue();
 
             LivingEntity livingEntity = new Nexus(id, 2);

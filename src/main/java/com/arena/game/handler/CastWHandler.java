@@ -37,6 +37,8 @@ public class CastWHandler implements IMessageHandler {
                         entity.setCooldownWStart(castStart);
                         entity.setCooldownWEnd(castEnd);
 
+                        entity.useW();
+
                         /* Set the skin animation */
                         entity.setSkinAnimation(entity.getSkinAnimationForW());
 

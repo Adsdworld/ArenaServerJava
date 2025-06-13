@@ -37,6 +37,8 @@ public class CastQHandler implements IMessageHandler {
                         entity.setCooldownQStart(castStart);
                         entity.setCooldownQEnd(castEnd);
 
+                        entity.useQ();
+
                         /* Set the skin animation */
                         entity.setSkinAnimation(entity.getSkinAnimationForQ());
 
