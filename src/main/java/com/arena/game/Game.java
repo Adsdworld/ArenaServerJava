@@ -1,20 +1,16 @@
 package com.arena.game;
 
-import com.arena.game.entity.Entity;
 import com.arena.game.entity.LivingEntity;
-import com.arena.game.entity.champion.Garen;
 import com.arena.game.zone.Zone;
 import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
-import static com.arena.game.entity.EntityPositions.*;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Game {
@@ -25,26 +21,25 @@ public class Game {
     GameStatusEnum gameStatusEnum;
 
     //private ArrayList<LivingEntity> livingEntities;
-    private ConcurrentHashMap<String, LivingEntity> livingEntities;
+    private final ConcurrentHashMap<String, LivingEntity> livingEntities;
 
 
-    private ArrayList<Player> players;
+    private final ConcurrentHashMap<String, Player> players;
 
     /**
      * @param gameNameEnum
      */
     public Game(GameNameEnum gameNameEnum) {
-        this.gameStatusEnum = GameStatusEnum.Creating;
         this.gameNameEnum = gameNameEnum;
 
         this.livingEntities = new ConcurrentHashMap<>();
-        this.players = new ArrayList<>();
+        this.players = new ConcurrentHashMap<>();
 
         this.gameStatusEnum = GameStatusEnum.Created;
     }
 
     public LivingEntity getLivingEntity(Player player) {
-        LivingEntity livingEntity = getLivingEntities().stream()
+        LivingEntity livingEntity = getLivingEntitiesMap().values().stream()
                 .filter(entity -> entity.getId().equals(player.getUuid()))
                 .findFirst()
                 .orElse(null);
@@ -62,12 +57,11 @@ public class Game {
      * Send a response to the client indicating the entity he is controlling in the game.
      *
      * @param entityId the {@link String}  of the entity.
-     * @param gameName the {@link GameNameEnum}  to which the entity belongs.
      * @implNote This method checks if the {@link Game}  exists and sends a response with the {@code entityId} .
      * @author A.SALLIER
      * @date 2025-06-07
      */
-    public void yourEntityIs(String entityId, GameNameEnum gameName) {
+    public void yourEntityIs(String entityId) {
 
         Game game = Server.getInstance().gameExists(gameNameEnum);
 
@@ -93,16 +87,11 @@ public class Game {
      */
     public void addEntity(LivingEntity livingEntity) {
 
-        LivingEntity existsInGame = livingEntityAlreadyExists(livingEntity.getId());
+        LivingEntity existsInGame = this.livingEntityAlreadyExists(livingEntity.getId());
 
         if (existsInGame == null) {
-            if (livingEntity != null) {
-                livingEntities.add(livingEntity);
-                Logger.game(livingEntity.getName() + " " + livingEntity.getId() + " added to game " + gameNameEnum.getGameName(), gameNameEnum);
-            } else {
-                // TODO: add a failure for game Logger.failure("some failure message", gameNameEnum);
-                Logger.failure("Cannot add null entity to game " + gameNameEnum.getGameName());
-            }
+            getLivingEntitiesMap().putIfAbsent(livingEntity.getId(), livingEntity);
+            Logger.game(livingEntity.getName() + " " + livingEntity.getId() + " added to game " + gameNameEnum.getGameName(), gameNameEnum);
         } else {
             Logger.warn(livingEntity.getName() + " " + livingEntity.getId() + " already exists in game " + gameNameEnum.getGameName());
         }
@@ -110,22 +99,22 @@ public class Game {
 
     public void removeEntity(LivingEntity livingEntity) {
         if (livingEntity != null) {
-            livingEntities.remove(livingEntity);
-            Logger.game(livingEntity.getName() + " '" + livingEntity.getId() + "' removed from game " + gameNameEnum.getGameName(), gameNameEnum);
+            getLivingEntitiesMap().remove(livingEntity.getId());
+            Logger.game(livingEntity.getName() + " " + livingEntity.getId() + " removed from game " + gameNameEnum.getGameName(), gameNameEnum);
         } else {
             Logger.failure("Cannot remove null entity from game " + gameNameEnum.getGameName());
         }
     }
 
     public List<Player> getPlayersOfTeam(int team) {
-        return getPlayers().stream()
+        return getPlayersMap().values().stream()
                 .filter((player -> getLivingEntitiesOfTeam(team).stream()
                         .anyMatch(livingEntity -> livingEntity.getId().equals(player.getUuid()))))
                 .toList();
     }
 
     public List<LivingEntity> getLivingEntitiesOfTeam(int team) {
-        return livingEntities.values().stream()
+        return getLivingEntitiesMap().values().stream()
                 .filter(entity -> entity.getTeam() == team)
                 .toList();
     }
@@ -143,25 +132,14 @@ public class Game {
     public LivingEntity livingEntityAlreadyExists(String id) {
         LivingEntity result = null;
 
-        Game game = Server.getInstance().gameExists(gameNameEnum);
-
-        if (game == null) {
-            Logger.warn("Game " + gameNameEnum.getGameName() + " does not exist.");
-        } else {
-            for (LivingEntity livingEntity : livingEntities) {
-                if (livingEntity.getId().equals(id)) {
-                    result = livingEntity;
-                    break; // on peut sortir dès qu'on a trouvé
-                }
+        for (LivingEntity livingEntity : getLivingEntitiesMap().values()) {
+            if (livingEntity.getId().equals(id)) {
+                result = livingEntity;
+                break;
             }
         }
 
         return result;
-    }
-
-    public void clearLivingEntities() {
-        livingEntities.clear();
-        Logger.game("Living entities cleared in game " + gameNameEnum.getGameName(), gameNameEnum);
     }
 
     /**
@@ -190,7 +168,6 @@ public class Game {
      * @date 2025-06-09
      */
     public void clearUnityGame(Game game) {
-        game.clearLivingEntities();
         Response response = new Response();
         response.setResponse(ResponseEnum.GameState);
         response.setGameName(gameNameEnum);
@@ -229,7 +206,7 @@ public class Game {
     public List<LivingEntity> getEnemies(LivingEntity livingEntity) {
          int team = livingEntity.getTeam();
 
-        return this.livingEntities.stream()
+        return this.livingEntities.values().stream()
                 .filter(e -> e != livingEntity) // évite de se filtrer soi-même
                 .filter(e -> switch (team) {
                     case 0 -> false;                      // neutre, pas d'ennemi
@@ -238,9 +215,6 @@ public class Game {
                     default -> false;
                 })
                 .toList();
-//        return this.livingEntities.stream()
-//                .filter((entity) -> entity.getTeam() != livingEntity.getTeam())
-//                .toList();
     }
 
     // Getters and Setters
@@ -251,11 +225,18 @@ public class Game {
         this.gameNameEnum = gameNameEnum;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public Collection<Player> getPlayers() {
+        return players.values();
+    }
+    public ConcurrentHashMap<String, Player> getPlayersMap() {
         return players;
     }
 
-    public ArrayList<LivingEntity> getLivingEntities() {
+    public Collection<LivingEntity> getLivingEntities() {
         return livingEntities.values();
+    }
+
+    public ConcurrentHashMap<String, LivingEntity> getLivingEntitiesMap() {
+        return livingEntities;
     }
 }

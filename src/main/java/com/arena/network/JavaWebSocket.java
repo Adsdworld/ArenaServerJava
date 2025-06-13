@@ -18,6 +18,7 @@ import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JavaWebSocket is a singleton WebSocket server that listens for incoming connections
@@ -30,8 +31,8 @@ public class JavaWebSocket extends WebSocketServer {
     private static JavaWebSocket instance;
     private final JsonService jsonService = new JsonService();
 
-    public Map<WebSocket, Player> webSocketToUuid;
-    public Map<Player, WebSocket> uuidToWebSocket;
+    public ConcurrentHashMap<WebSocket, Player> webSocketToUuid;
+    public ConcurrentHashMap<Player, WebSocket> uuidToWebSocket;
 
     private JavaWebSocket(int port) {
         super(new InetSocketAddress(port));
@@ -40,8 +41,8 @@ public class JavaWebSocket extends WebSocketServer {
         ResponseService.setResponseSender(new JavaWebSocketResponseSender());
 
         Logger.info("JavaWebSocket created on port " + port);
-        webSocketToUuid = new HashMap<WebSocket, Player>();
-        uuidToWebSocket = new HashMap<Player, WebSocket>();
+        webSocketToUuid = new ConcurrentHashMap<>();
+        uuidToWebSocket = new ConcurrentHashMap<>();
     }
 
     // Méthode d'accès au singleton
@@ -85,16 +86,12 @@ public class JavaWebSocket extends WebSocketServer {
 
                 /* Unregister player from the server, it avoids sending response to null connections */
                 uuidToWebSocket.remove(player);
-                synchronized(server.getPlayers()) {
-                    Server.getInstance().getPlayers().remove(player);
-                }
+                Server.getInstance().getPlayersMap().remove(player.getUuid());
 
                 /* Remove player from all games, player entity still exists in the game if he rejoins later,
                 * It avoids sending multiples 'Game State' to one Player */
                 for (Game game : server.getGames()) {
-                    if (game.getPlayers().contains(player)) {
-                        game.getPlayers().remove(player);
-                    }
+                    game.getPlayersMap().remove(player.getUuid());
                 }
             }
             webSocketToUuid.remove(conn);
@@ -130,8 +127,8 @@ public class JavaWebSocket extends WebSocketServer {
              */
             if (message.getAction() == ActionEnum.Login) {
                 Player player = new Player(message.getUuid());
-                JavaWebSocket.getInstance().webSocketToUuid.put(conn, player);
-                JavaWebSocket.getInstance().uuidToWebSocket.put(player, conn);
+                JavaWebSocket.getInstance().webSocketToUuid.putIfAbsent(conn, player);
+                JavaWebSocket.getInstance().uuidToWebSocket.putIfAbsent(player, conn);
 
                 Server.getInstance().registerPlayer(player);
 

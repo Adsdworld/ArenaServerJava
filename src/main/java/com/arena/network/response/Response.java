@@ -8,6 +8,7 @@ import com.arena.player.ResponseEnum;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Response implements Comparable<Response>{
     private String _uuid;   // Unique id
@@ -17,7 +18,7 @@ public class Response implements Comparable<Response>{
     private String _text;
     private String _notify;
     private long _timestamp;
-    private ArrayList<LivingEntity> _livingEntities;
+    private Collection<LivingEntity> _livingEntities;
 
     // Constructeur vide nécessaire pour Gson
     public Response() {
@@ -63,11 +64,11 @@ public class Response implements Comparable<Response>{
         return _timestamp;
     }
 
-    public void setLivingEntities(ArrayList<LivingEntity> livingEntities) {
+    public void setLivingEntities(Collection<LivingEntity> livingEntities) {
         _livingEntities = livingEntities;
     }
 
-    public ArrayList<LivingEntity> getLivingEntities() {
+    public Collection<LivingEntity> getLivingEntities() {
         return _livingEntities;
     }
 

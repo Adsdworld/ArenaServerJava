@@ -16,7 +16,7 @@ public class JavaWebSocketResponseSender implements IResponseSender {
 
     @Override
     public void sendResponse(Response response, boolean silent) {
-        for (Player player : Server.getInstance().getPlayers()) {
+        for (Player player : Server.getInstance().getPlayersMap().values()) {
             if (player.getUuid() == null) {
                 Logger.failure("Player UUID is null, cannot send response: " + response);
                 continue;
@@ -34,8 +34,8 @@ public class JavaWebSocketResponseSender implements IResponseSender {
         Server server = Server.getInstance();
         for (Game game : server.getGames()) {
             if (game.getGameNameEnum().equals(gameName)) {
-                for (Player player : game.getPlayers()) {
-                    if (server.getPlayers().contains(player)) {
+                for (Player player : game.getPlayersMap().values()) {
+                    if (server.getPlayersMap().containsKey(player.getUuid())) {
                         response.setUuid(player.getUuid());
                         sendToConn(getConnByUuid(player.getUuid()), response);
                     }
@@ -49,9 +49,7 @@ public class JavaWebSocketResponseSender implements IResponseSender {
 
     @Override
     public void sendUuidResponse(String uuid, Response response, boolean silent) {
-        Player player = new Player(uuid);
-
-        if (Server.getInstance().getPlayers().contains(player)) {
+        if (Server.getInstance().getPlayersMap().containsKey(uuid)) {
             response.setUuid(uuid);
             sendToConn(getConnByUuid(uuid), response);
         }

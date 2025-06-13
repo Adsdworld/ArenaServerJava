@@ -202,11 +202,11 @@ public class Garen extends LivingEntity {
         Player player = new Player(this.getId());
         Game game = server.getGameOfPlayer(player);
         if (game != null) {
-            team = this.getTeam();
+            int entityTeam = this.getTeam();
 
             game.removeEntity(this);
 
-            Garen garen = new Garen(player.getUuid(), team);
+            Garen garen = new Garen(player.getUuid(), entityTeam);
             garen.spawnAtTeamSpawn();
             game.addEntity(garen);
 
@@ -223,7 +223,7 @@ public class Garen extends LivingEntity {
             server.subscribePlayerToGame(player, game);
 
             /* Assign the new entity to the player */
-            game.yourEntityIs(player.getUuid(), response.getGameName());
+            game.yourEntityIs(player.getUuid());
         }
     }
 }

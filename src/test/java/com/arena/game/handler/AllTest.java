@@ -69,7 +69,7 @@ public class AllTest extends ArenaTestBase {
          * Check if the player is registered on the server
          * This checks if the player with the test UUID is registered in the server's player list.
          */
-        assertTrue(Server.getInstance().getPlayers()
+        assertTrue(Server.getInstance().getPlayersMap().values()
                         .stream()
                         .anyMatch(p -> p.getUuid().equals(TestClientJava.testUuid)),
                 "Player with UUID '" + TestClientJava.testUuid + "' should be registered on server");

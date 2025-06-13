@@ -14,10 +14,8 @@ import com.arena.player.ResponseEnum;
 import com.arena.utils.Logger;
 import com.arena.utils.Position;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.arena.game.entity.EntityPositions.*;
 
@@ -25,19 +23,19 @@ public class Server {
 
     private static Server instance;
 
-    private ArrayList<Player> players;
+    private final ConcurrentHashMap<String, Player> players;
 
     public ArrayList<Game> games;
 
     private boolean creatingGame;
     private boolean closingGame;
 
-    private final int maxGames = 5;
+    private final int MAX_GAMES = 5;
 
     private Server() {
         games = new ArrayList<>();
         creatingGame = false;
-        players = new ArrayList<>();
+        players = new ConcurrentHashMap<>();
     }
 
     /**
@@ -72,7 +70,7 @@ public class Server {
      * @author A.SALLIER
      * @date 2025-06-07
      */
-    public synchronized void createGame(Message message) {
+    public void createGame(Message message) {
         if (creatingGame) {
             Logger.warn("A game is already being created, please wait.");
             Core.getInstance().retryLater(message);
@@ -92,10 +90,10 @@ public class Server {
                     response.setNotify(gameNameEnum.getGameName() + " already exists.");
                     response.Send(message.getUuid());
 
-                } else if (games.size() >= maxGames) {
-                    Logger.warn("Cannot create more than " + maxGames + " games.");
+                } else if (games.size() >= MAX_GAMES) {
+                    Logger.warn("Cannot create more than " + MAX_GAMES + " games.");
                     response.setResponse(ResponseEnum.GamesLimitReached);
-                    response.setNotify("Cannot create more than " + maxGames + " games.");
+                    response.setNotify("Cannot create more than " + MAX_GAMES + " games.");
                     response.Send(message.getUuid());
 
                 } else {
@@ -146,7 +144,7 @@ public class Server {
         Server server = Server.getInstance();
 
         Game game = server.getGames().stream()
-                .filter(g -> g.getLivingEntities().contains(entity))
+                .filter(g -> g.getLivingEntitiesMap().containsKey(entity.getId()))
                 .findFirst()
                 .orElse(null);
         if (game == null) {
@@ -165,7 +163,7 @@ public class Server {
      * @date 2025-06-07
      */
     public Player getPlayerByUuid(String uuid) {
-        Player player = players.stream()
+        Player player = getPlayersMap().values().stream()
                 .filter(p -> p.getUuid().equals(uuid))
                 .findFirst()
                 .orElse(null);
@@ -191,7 +189,7 @@ public class Server {
         for (Game g : server.getGames()) {
             g.getPlayers().removeIf(p -> p.equals(player));
         }
-        game.getPlayers().add(player);
+        game.getPlayersMap().putIfAbsent(player.getUuid(), player);
     }
 
     private void CreateNexusInhibitorAndTowers(Game game) {
@@ -374,7 +372,7 @@ public class Server {
             Logger.failure("Could not register a null player.");
 
         } else {
-            players.add(player);
+            getPlayersMap().putIfAbsent(player.getUuid(), player);
             Logger.server("Registering player : " + player.getUuid());
         }
     }
@@ -396,9 +394,7 @@ public class Server {
         }
     }
 
-    public ArrayList<Player> getPlayers() {
+    public ConcurrentHashMap<String, Player> getPlayersMap() {
         return players;
     }
-
-
 }

@@ -92,7 +92,7 @@ public class JoinHandler implements IMessageHandler {
             response.Send(gameNameEnum);
 
             /* Assign the new entity to the player */
-            game.yourEntityIs(player.getUuid(), response.getGameName());
+            game.yourEntityIs(player.getUuid());
 
             // TODO : improve message add possibility to choose team and champion
 
