@@ -178,12 +178,11 @@ public class Game {
     public void dealDamageToEnnemies(LivingEntity attacker, Zone zone, int damage) {
         List<LivingEntity> enemies = getEnemies(attacker);
 
-        Logger.game("@@@dealDamageToEnnemies @@@ attacker: " + attacker.getName() + " damage: " + damage + " zone: " + zone.toString() + "enemies: " + enemies.size(), gameNameEnum);
-
         for (LivingEntity enemy : enemies) {
             if (zone.isInZone(attacker, enemy)) {
+                float enemyHealth = enemy.getHealth();
                 enemy.takeDamage(damage);
-                Logger.game(enemy.getName() + "(health: " +enemy.getHealth()+damage +") " + enemy.getId() + " took " + damage + " damage from " + attacker.getName() + attacker.getId() + " new health: " + enemy.getHealth(), gameNameEnum);
+                Logger.game(enemy.getName() + "(health: " + enemyHealth +") " + enemy.getId() + " took " + damage + " damage from " + attacker.getName() + attacker.getId() + " new health: " + enemy.getHealth(), gameNameEnum);
             }
         }
     }

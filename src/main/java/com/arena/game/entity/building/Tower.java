@@ -59,7 +59,7 @@ public class Tower extends LivingEntity {
         }
 
         int newEntityTeam = 0;
-        String entityId = this.getId();
+        String entityId = this.getGeneralId();
         int entityTeam = this.getTeam();
 
         game.removeEntity(this);
@@ -69,25 +69,18 @@ public class Tower extends LivingEntity {
         switch (entityTeam) {
             case 1:
                 position = EntityPositions.BLUE_TOWERS.get(entityId);
-                Logger.info("Tower " + entityId + " is BLUE_TOWERS, using BLUE_TOWERS position.");
                 break;
             case 2:
                 position = EntityPositions.RED_TOWERS.get(entityId);
-                Logger.info("Tower " + entityId + " is RED_TOWERS, using RED_TOWERS position.");
                 break;
             default:
                 position = EntityPositions.BLUE_TOWERS.get(entityId);
-                Logger.warn("Tower " + entityId + " has no team, defaulting to BLUE_TOWERS position.");
                 break;
         }
 
         TowerDead towerDead = new TowerDead(entityId + "_DEAD", newEntityTeam);
-        Logger.info("new TowerDead with id: " + towerDead.getId() + " and team: " + newEntityTeam);
         towerDead.setPos(position);
 
         game.addEntity(towerDead);
-
-        /* Clear the Unity game of players */
-        //game.clearUnityGame(game);
     }
 }

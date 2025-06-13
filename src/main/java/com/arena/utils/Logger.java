@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.*;
 
 
@@ -96,7 +97,9 @@ public class Logger {
     }
 
     private static void enqueueLog(String level, String message, String customBefore) {
-        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String timestamp = sdf.format(new Date());
 
         // Récupérer le nom de la méthode appelante (optionnel)
         String callerInfo = getCallerInfo();
@@ -120,7 +123,9 @@ public class Logger {
     }
 
     private static void enqueueLog(String level, String message) {
-        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String timestamp = sdf.format(new Date());
 
         // Récupérer le nom de la méthode appelante (optionnel)
         String callerInfo = getCallerInfo();

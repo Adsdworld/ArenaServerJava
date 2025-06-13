@@ -67,7 +67,7 @@ public class Core {
             messageQueue.offer(message);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
                     .withZone(ZoneOffset.UTC);
-            Logger.info("Offered message to queue: " + message.getAction() + " with timestamp: " + formatter.format(Instant.ofEpochMilli(message.getTimeStamp())));
+            //Logger.info("Offered message to queue: " + message.getAction() + " with timestamp: " + formatter.format(Instant.ofEpochMilli(message.getTimeStamp())));
         }
     }
 
@@ -94,7 +94,7 @@ public class Core {
                     for (Message message : messageQueue) {
                         stringBuilder.append(message.getAction()).append(", ");
                     }
-                    Logger.server(stringBuilder.toString());
+                    //Logger.server(stringBuilder.toString());
                     _isEnteringTick = false;
                     if (!_isEmpty) {
                         //Logger.server("Processing messages at " + formatter.format(Instant.ofEpochMilli(now)) + " with tolerance: " + tolerance + "ms");
@@ -112,7 +112,7 @@ public class Core {
                 if (next.getTimeStamp() < now - tolerance) {
                     //Logger.server("Skipping message: " + next.getUuid() + " >>> "+ next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
                     messageQueue.poll();
-                } else if (next.getTimeStamp() <= now) {
+                } else if (next.getTimeStamp() <= now + tolerance) {
                     //Logger.server("Processing message: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
                     handleMessage(next);
                     messageQueue.poll();
@@ -128,7 +128,7 @@ public class Core {
             if (!_isEmpty) {
                 long endTime = System.currentTimeMillis();
                 long duration = endTime - now;
-                Logger.info("processMessages total duration: " + duration + " ms");
+                //Logger.info("processMessages total duration: " + duration + " ms");
             }
         } catch (Exception e) {
             Logger.error("Exception while processing messages: " + e.getMessage());

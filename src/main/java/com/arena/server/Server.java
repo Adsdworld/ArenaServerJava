@@ -256,7 +256,7 @@ public class Server {
      * @author A.SALLIER
      * @date 2025-06-07
      */
-    public synchronized void closeGame(Message message) {
+    public void closeGame(Message message) {
         if (closingGame) {
             Logger.warn("A game is already being closed, please wait.");
             Core.getInstance().retryLater(message);

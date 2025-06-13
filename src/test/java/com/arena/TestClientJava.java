@@ -4,6 +4,7 @@ import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.building.Inhibitor;
 import com.arena.game.entity.building.Nexus;
 import com.arena.game.entity.building.Tower;
+import com.arena.game.entity.building.TowerDead;
 import com.arena.game.entity.champion.Garen;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
@@ -40,6 +41,7 @@ public  class TestClientJava extends WebSocketClient {
                     RuntimeTypeAdapterFactory.of(LivingEntity.class, "name")
                             .registerSubtype(Garen.class, "Garen")
                             .registerSubtype(Tower.class, "Tower")
+                            .registerSubtype(TowerDead.class, "TowerDead")
                             .registerSubtype(Inhibitor.class, "Inhibitor")
                             .registerSubtype(Nexus.class, "Nexus")
             )

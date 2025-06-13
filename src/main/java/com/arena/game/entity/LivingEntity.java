@@ -1,11 +1,7 @@
 package com.arena.game.entity;
 
-import com.arena.game.Game;
-import com.arena.game.entity.champion.Garen;
 import com.arena.game.zone.Zone;
 import com.arena.game.zone.ZoneCircle;
-import com.arena.player.Player;
-import com.arena.server.Server;
 import com.arena.utils.Logger;
 import com.arena.utils.Position;
 import com.arena.utils.Vector3f;
@@ -29,6 +25,8 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected EntityNavMeshAgent navMeshAgent;
     protected EntityRigidbody rigidbody;
     protected EntityTransform transform;
+
+    private static final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 
     public LivingEntity(String id, int maxHealth, int team, String name) {
@@ -253,10 +251,8 @@ public abstract class LivingEntity extends Entity implements ILiving {
     }
 
     public void LockSkinAnimation(long ms) {
-        final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
         this.lockSkinAnimation(true);
-        executor.schedule(() ->
+        scheduler.schedule(() ->
                 {
                     this.lockSkinAnimation(false);
                 },
@@ -264,10 +260,8 @@ public abstract class LivingEntity extends Entity implements ILiving {
                 TimeUnit.MILLISECONDS);
     }
     public void LockSkinAnimation(long ms, Runnable afterUnlock) {
-        final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
         this.lockSkinAnimation(true);
-        executor.schedule(() -> {
+        scheduler.schedule(() -> {
             this.lockSkinAnimation(false);
             if (afterUnlock != null) {
                 afterUnlock.run();

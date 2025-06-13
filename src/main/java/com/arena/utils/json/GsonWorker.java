@@ -4,6 +4,7 @@ import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.building.Inhibitor;
 import com.arena.game.entity.building.Nexus;
 import com.arena.game.entity.building.Tower;
+import com.arena.game.entity.building.TowerDead;
 import com.arena.game.entity.champion.Garen;
 import com.arena.utils.Logger;
 import com.google.gson.*;
@@ -20,8 +21,10 @@ public class GsonWorker implements IJson {
                     RuntimeTypeAdapterFactory.of(LivingEntity.class, "RuntimeTypeAdapterFactoryClazz")
                             .registerSubtype(Garen.class, "Garen")
                             .registerSubtype(Tower.class, "Tower")
+                            .registerSubtype(TowerDead.class, "TowerDead")
                             .registerSubtype(Inhibitor.class, "Inhibitor")
                             .registerSubtype(Nexus.class, "Nexus")
+
             )
             .create();
 

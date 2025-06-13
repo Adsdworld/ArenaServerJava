@@ -11,13 +11,11 @@ import com.arena.server.Server;
 import com.arena.utils.Logger;
 import com.arena.network.message.Message;
 import com.arena.utils.json.JsonService;
-import com.google.gson.*;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
-import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -120,7 +118,9 @@ public class JavaWebSocket extends WebSocketServer {
 
             Message message = jsonService.fromJson(messageJson, Message.class);
 
-            Logger.info(message.getUuid() + " >>> " + message.getAction() + " : " + messageJson);
+            if (message.getAction() != ActionEnum.PlayerStateUpdate) {
+                Logger.info(message.getUuid() + " >>> " + message.getAction() + " : " + messageJson);
+            }
 
             /* Check if the message is a login action
              * This logic could not be pass to the Core because we need the conn/Websocket to register the Player
