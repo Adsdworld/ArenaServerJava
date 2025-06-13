@@ -3,11 +3,19 @@ package com.arena.game.entity;
 import com.arena.game.zone.Zone;
 
 public interface ILiving {
+    void lockEntity(boolean lock);
+    boolean isLocked();
+    void lockEntityCast(boolean lock);
+    boolean isCastLocked();
+    void lockEntityMove(boolean lock);
+    boolean isMoveLocked();
     int getHealth();
     void heal(int amount);
     int getMaxHealth();
     int setMaxHealth(int maxHealth);
     void takeDamage(int amount);
+    void setAttackable(boolean attackable);
+    boolean isAttackable();
 
 
     int getArmor();

@@ -2,16 +2,10 @@ package com.arena.game.entity.building;
 
 import com.arena.game.Game;
 import com.arena.game.entity.*;
-import com.arena.game.entity.champion.Garen;
-import com.arena.network.response.Response;
-import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
-import com.arena.utils.Position;
+import com.arena.game.utils.Position;
 import com.arena.utils.Vector3f;
-import com.arena.utils.json.JsonService;
-
-import java.util.ArrayList;
 
 public class Tower extends LivingEntity {
     private String skinAnimationIdle = "None";
@@ -68,18 +62,23 @@ public class Tower extends LivingEntity {
         Position position;
         switch (entityTeam) {
             case 1:
-                position = EntityPositions.BLUE_TOWERS.get(entityId);
+                position = EntityPositions.BLUE_TOWERS.get(entityId).getPosition();
                 break;
             case 2:
-                position = EntityPositions.RED_TOWERS.get(entityId);
+                position = EntityPositions.RED_TOWERS.get(entityId).getPosition();
                 break;
             default:
-                position = EntityPositions.BLUE_TOWERS.get(entityId);
+                position = EntityPositions.BLUE_TOWERS.get(entityId).getPosition();
                 break;
         }
 
         TowerDead towerDead = new TowerDead(entityId + "_DEAD", newEntityTeam);
         towerDead.setPos(position);
+
+        LivingEntity nextObjective = game.getLivingEntityByGeneralId(this.getNextObjective());
+        if (nextObjective != null) {
+            nextObjective.setAttackable(true);
+        }
 
         game.addEntity(towerDead);
     }

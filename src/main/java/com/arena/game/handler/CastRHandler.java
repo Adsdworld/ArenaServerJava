@@ -33,7 +33,9 @@ public class CastRHandler implements IMessageHandler {
                     long castDuration = entity.getCooldownRMs();
                     long castEnd = castStart + castDuration;
 
-                    if (castStart >= entity.getCooldownREnd()) {
+                    if (castStart >= entity.getCooldownREnd() && !entity.isLocked() && !entity.isCastLocked()) {
+                        entity.lockEntityCast(true);
+
                         entity.setCooldownRStart(castStart);
                         entity.setCooldownREnd(castEnd);
 
@@ -43,7 +45,9 @@ public class CastRHandler implements IMessageHandler {
                         entity.setSkinAnimation(entity.getSkinAnimationForR());
 
                         /* Lock the skin animation */
-                        entity.LockSkinAnimation(entity.getSkinAnimationDurationForR());
+                        entity.LockSkinAnimation(entity.getSkinAnimationDurationForR(), () -> {
+                            entity.lockEntityCast(false);
+                        });
                     }
                 }
             }

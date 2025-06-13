@@ -2,8 +2,9 @@ package com.arena.game.entity;
 
 import com.arena.game.zone.Zone;
 import com.arena.game.zone.ZoneCircle;
+import com.arena.server.Server;
 import com.arena.utils.Logger;
-import com.arena.utils.Position;
+import com.arena.game.utils.Position;
 import com.arena.utils.Vector3f;
 
 import java.util.concurrent.Executors;
@@ -15,9 +16,9 @@ import static com.arena.game.entity.EntityPositions.*;
 public abstract class LivingEntity extends Entity implements ILiving {
     protected int health, maxHealth;
     protected int armor, magicResist, attackDamage, abilityPower;
-    protected boolean moving, hasArrived, skinAnimationLocked;
+    protected boolean moving, hasArrived, skinAnimationLocked, attackable, entityLocked, entityCastLocked, entityMoveLocked;
     protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, skinScale, posXDesired, posZDesired, posYDesired, skinAnimationSpeed=1.0f;
-    protected String name, skinAnimation;
+    protected String name, skinAnimation, nextObjective;
     /* Team 1 = Blue Team, Team 2 = Red Team */
     protected int team;
     protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd, cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs;
@@ -101,6 +102,35 @@ public abstract class LivingEntity extends Entity implements ILiving {
         return getId() != null ? getId().hashCode() : 0;
     }
 
+    @Override
+    public void lockEntity(boolean locked) {
+        this.entityLocked = locked;
+    }
+
+    @Override
+    public boolean isLocked() {
+        return entityLocked;
+    }
+
+    @Override
+    public void lockEntityCast(boolean locked) {
+        this.entityCastLocked = locked;
+    }
+
+    @Override
+    public boolean isCastLocked() {
+        return entityCastLocked;
+    }
+
+    @Override
+    public void lockEntityMove(boolean locked) {
+        this.entityMoveLocked = locked;
+    }
+    @Override
+    public boolean isMoveLocked() {
+        return entityMoveLocked;
+    }
+
     @Override public int getHealth() { return health; }
     @Override public void heal(int amount) {
         this.health = Math.min(this.health + amount, maxHealth);
@@ -119,7 +149,26 @@ public abstract class LivingEntity extends Entity implements ILiving {
     }
 
     @Override
-    public void die() {}
+    public void setAttackable(boolean attackable) {
+        this.attackable = attackable;
+    }
+
+    @Override
+    public boolean isAttackable() {
+        return attackable;
+    }
+
+    public void setNextObjective(String nextObjective) {
+        this.nextObjective = nextObjective;
+    }
+    public String getNextObjective() {
+        return nextObjective;
+    }
+
+    @Override
+    public void die() {
+        Logger.game(this.getName() + " (ID: " + this.getId() + ") has died.", Server.getInstance().getGameOfEntity(this).getGameNameEnum());
+    }
 
     public void spawnAtTeamSpawn() {
         switch (this.getTeam()) {
@@ -364,80 +413,34 @@ public abstract class LivingEntity extends Entity implements ILiving {
     }
 
     public void update(LivingEntity livingEntity) {
-        /* We trust player position
-         * The server have no access to world physics
-         * */
-        this.setPosX(livingEntity.getPosX());
-        this.setPosY(livingEntity.getPosY());
-        this.setPosZ(livingEntity.getPosZ());
+        if (!isLocked()) {
+            /* We trust player position
+             * The server have no access to world physics
+             * */
+            if (!isMoveLocked()) {
+                this.setPosX(livingEntity.getPosX());
+                this.setPosY(livingEntity.getPosY());
+                this.setPosZ(livingEntity.getPosZ());
+                this.setRotationY(livingEntity.getRotationY());
 
-        /* We trust player rotation
-         * The server have no access to world physics
-         * */
-        this.setRotationY(livingEntity.getRotationY());
+                this.setMoving(livingEntity.isMoving());
+                if (!isSkinAnimationLocked()) {
+                    if (this.isMoving()) {
+                        this.setSkinAnimation(this.getSkinAnimationForRunning());
+                    } else {
+                        this.setSkinAnimation(this.getSkinAnimationForIdle());
+                    }
+                }
+                this.setHasArrived(livingEntity.hasArrived());
 
-        /* We trust if an entity is moving to her desired destination
-         * The server have no access to world physics
-         * */
-        this.setMoving(livingEntity.isMoving());
-        if (!isSkinAnimationLocked()) {
-            if (this.isMoving()) {
-                this.setSkinAnimation(this.getSkinAnimationForRunning());
+                this.setPosXDesired(livingEntity.getPosXDesired());
+                this.setPosYDesired(livingEntity.getPosYDesired());
+                this.setPosZDesired(livingEntity.getPosZDesired());
             } else {
-                this.setSkinAnimation(this.getSkinAnimationForIdle());
+                this.setPosXDesired(livingEntity.getPosX());
+                this.setPosYDesired(livingEntity.getPosY());
+                this.setPosZDesired(livingEntity.getPosZ());
             }
         }
-        this.setHasArrived(livingEntity.hasArrived());
-
-
-        /* We refuse health, armor, etc. values to prevent cheating
-         * Values are controlled by the server.
-         * */
-//        this.setHealth(livingEntity.getHealth());
-//        this.setMaxHealth(livingEntity.getMaxHealth());
-//        this.setArmor(livingEntity.getArmor());
-//        this.setMagicResist(livingEntity.getMagicResist());
-//        this.setAttackDamage(livingEntity.getAttackDamage());
-//        this.setAbilityPower(livingEntity.getAbilityPower());
-
-        /* We trust the desired position of the entity
-         * The server have no access to world physics
-         * */
-        this.setPosXDesired(livingEntity.getPosXDesired());
-        this.setPosYDesired(livingEntity.getPosYDesired());
-        this.setPosZDesired(livingEntity.getPosZDesired());
-
-        /* We refuse skin modifications
-         * */
-//        this.setPosSkinX(livingEntity.getPosSkinX());
-//        this.setPosSkinY(livingEntity.getPosSkinY());
-//        this.setPosSkinZ(livingEntity.getPosSkinZ());
-//        this.setSkinScale(livingEntity.getSkinScale());
-
-        /* We refuse cooldown values to prevent cheating
-         * Values are update by a specific message, check ActionEnum
-         * We prefer a message that capture the instant properties of the player for attacking
-         * */
-//        this.setCooldownQStart(livingEntity.getCooldownQStart());
-//        this.setCooldownWStart(livingEntity.getCooldownWStart());
-//        this.setCooldownEStart(livingEntity.getCooldownEStart());
-//        this.setCooldownRStart(livingEntity.getCooldownRStart());
-//        this.setCooldownQEnd(livingEntity.getCooldownQEnd());
-//        this.setCooldownWEnd(livingEntity.getCooldownWEnd());
-//        this.setCooldownEEnd(livingEntity.getCooldownEEnd());
-//        this.setCooldownREnd(livingEntity.getCooldownREnd());
-//        this.setCooldownQMs(livingEntity.getCooldownQMs());
-//        this.setCooldownWMs(livingEntity.getCooldownWMs());
-//        this.setCooldownEMs(livingEntity.getCooldownEMs());
-//        this.setCooldownRMs(livingEntity.getCooldownRMs());
-
-        /* We refuse the EntityCollider, EntityNavMeshAgent and EntityRigidbody
-         * They define the physics of the entity : gravity, collision, etc.
-         * Values are controlled by the server
-         * */
-//        this.setRigidbody(livingEntity.getRigidbody());
-//        this.setCollider(livingEntity.getCollider());
-//        this.setNavMeshAgent(livingEntity.getNavMeshAgent());
-//        this.setTransform(livingEntity.getTransform());
     }
 }

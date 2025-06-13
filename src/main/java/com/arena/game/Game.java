@@ -197,6 +197,17 @@ public class Game {
         }
     }
 
+    public LivingEntity getLivingEntityByGeneralId(String generalId) {
+        LivingEntity livingEntity = getLivingEntitiesMap().values().stream()
+                .filter(entity -> entity.getGeneralId().equals(generalId))
+                .findFirst()
+                .orElse(null);
+        if (livingEntity == null) {
+            Logger.warn("Living entity not found for generalId: " + generalId + ". Please check if you have added the entity and be sure to provide a generalId and not an id.");
+        }
+        return livingEntity;
+    }
+
     public void healSelf(LivingEntity livingEntity) {
         livingEntity.heal(livingEntity.getWTotalShield());
     }
@@ -206,6 +217,7 @@ public class Game {
          int team = livingEntity.getTeam();
 
         return this.livingEntities.values().stream()
+                .filter(LivingEntity::isAttackable)
                 .filter(e -> e != livingEntity) // évite de se filtrer soi-même
                 .filter(e -> switch (team) {
                     case 0 -> false;                      // neutre, pas d'ennemi

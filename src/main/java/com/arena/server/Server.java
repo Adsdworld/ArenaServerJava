@@ -7,12 +7,13 @@ import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.building.Inhibitor;
 import com.arena.game.entity.building.Nexus;
 import com.arena.game.entity.building.Tower;
+import com.arena.game.utils.EntityInit;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.utils.Logger;
-import com.arena.utils.Position;
+import com.arena.game.utils.Position;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -194,55 +195,73 @@ public class Server {
 
     private void CreateNexusInhibitorAndTowers(Game game) {
         /* Towers */
-        for (Map.Entry<String, Position> map : BLUE_TOWERS.entrySet()) {
+        for (Map.Entry<String, EntityInit> map : BLUE_TOWERS.entrySet()) {
+            EntityInit entityInit = map.getValue();
             String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = map.getValue();
+            Position position = entityInit.getPosition();
 
             LivingEntity livingEntity = new Tower(id, 1);
+            livingEntity.setAttackable(entityInit.isAttackable());
+            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
             livingEntity.setPos(position);
             game.addEntity(livingEntity);
         }
-        for (Map.Entry<String, Position> map : RED_TOWERS.entrySet()) {
+        for (Map.Entry<String, EntityInit> map : RED_TOWERS.entrySet()) {
+            EntityInit entityInit = map.getValue();
             String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = map.getValue();
+            Position position = entityInit.getPosition();
 
             LivingEntity livingEntity = new Tower(id, 2);
+            livingEntity.setAttackable(entityInit.isAttackable());
+            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
             livingEntity.setPos(position);
             game.addEntity(livingEntity);
         }
 
         /* Inhibitors */
-        for (Map.Entry<String, Position> map : BLUE_INHIBITORS.entrySet()) {
+        for (Map.Entry<String, EntityInit> map : BLUE_INHIBITORS.entrySet()) {
+            EntityInit entityInit = map.getValue();
             String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = map.getValue();
+            Position position = entityInit.getPosition();
 
             LivingEntity livingEntity = new Inhibitor(id, 1);
+            livingEntity.setAttackable(entityInit.isAttackable());
+            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
             livingEntity.setPos(position);
             game.addEntity(livingEntity);
         }
-        for (Map.Entry<String, Position> map : RED_INHIBITORS.entrySet()) {
+        for (Map.Entry<String, EntityInit> map : RED_INHIBITORS.entrySet()) {
+            EntityInit entityInit = map.getValue();
             String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = map.getValue();
+            Position position = entityInit.getPosition();
 
             LivingEntity livingEntity = new Inhibitor(id, 2);
+            livingEntity.setAttackable(entityInit.isAttackable());
+            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
             livingEntity.setPos(position);
             game.addEntity(livingEntity);
         }
 
         /* Nexus */
-        for (Map.Entry<String, Position> map : BLUE_NEXUS.entrySet()) {
+        for (Map.Entry<String, EntityInit> map : BLUE_NEXUS.entrySet()) {
+            EntityInit entityInit = map.getValue();
             String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = map.getValue();
+            Position position = entityInit.getPosition();
 
             LivingEntity livingEntity = new Nexus(id, 1);
+            livingEntity.setAttackable(entityInit.isAttackable());
+            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
             livingEntity.setPos(position);
             game.addEntity(livingEntity);
         }
-        for (Map.Entry<String, Position> map : RED_NEXUS.entrySet()) {
+        for (Map.Entry<String, EntityInit> map : RED_NEXUS.entrySet()) {
+            EntityInit entityInit = map.getValue();
             String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = map.getValue();
+            Position position = entityInit.getPosition();
 
             LivingEntity livingEntity = new Nexus(id, 2);
+            livingEntity.setAttackable(entityInit.isAttackable());
+            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
             livingEntity.setPos(position);
             game.addEntity(livingEntity);
         }

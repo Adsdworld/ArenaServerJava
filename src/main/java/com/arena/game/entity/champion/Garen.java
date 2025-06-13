@@ -197,6 +197,8 @@ public class Garen extends LivingEntity {
 
     @Override
     public void die() {
+        this.lockEntity(true);
+
         Server server = Server.getInstance();
 
         Player player = new Player(this.getId());
