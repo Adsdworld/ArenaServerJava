@@ -182,7 +182,9 @@ public class Game {
             if (zone.isInZone(attacker, enemy)) {
                 float enemyHealth = enemy.getHealth();
                 enemy.takeDamage(damage);
-                Logger.game(enemy.getName() + "(health: " + enemyHealth +") " + enemy.getId() + " took " + damage + " damage from " + attacker.getName() + attacker.getId() + " new health: " + enemy.getHealth(), gameNameEnum);
+                if (enemyHealth != 0) {
+                    Logger.game(enemy.getName() + "(health: " + enemyHealth +") " + enemy.getId() + " took " + damage + " damage from " + attacker.getName() + attacker.getId() + " new health: " + enemy.getHealth(), gameNameEnum);
+                }
             }
         }
     }
@@ -203,6 +205,16 @@ public class Game {
                 .findFirst()
                 .orElse(null);
         if (livingEntity == null) {
+            Logger.warn("Living entity not found for generalId: " + generalId + ". Please check if you have added the entity and be sure to provide a generalId and not an id.");
+        }
+        return livingEntity;
+    }
+
+    public Collection<LivingEntity> getLivingEntityByGeneralId(Collection<String> generalId) {
+        Collection<LivingEntity> livingEntity = getLivingEntitiesMap().values().stream()
+                .filter(entity -> generalId.contains(entity.getGeneralId()))
+                .toList();
+        if (livingEntity.isEmpty()) {
             Logger.warn("Living entity not found for generalId: " + generalId + ". Please check if you have added the entity and be sure to provide a generalId and not an id.");
         }
         return livingEntity;

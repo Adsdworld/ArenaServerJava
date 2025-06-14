@@ -84,6 +84,8 @@ public interface ILiving {
     boolean isSkinAnimationLocked();
     String getSkinAnimation();
     void setSkinAnimation(String animation);
+    float getSkinAnimationBaseSpeed();
+    void setSkinAnimationBaseSpeed(float speed);
     float getSkinAnimationSpeed();
     void setSkinAnimationSpeed(float speed);
     String getSkinAnimationForRunning();
@@ -93,11 +95,17 @@ public interface ILiving {
     String getSkinAnimationForE();
     String getSkinAnimationForR();
     String getSkinAnimationForDeath();
+    String getSkinAnimationForDeathHold();
+    String getSkinAnimationForSpawn();
+    String getSkinAnimationForSpawnHold();
     long getSkinAnimationDurationForQ();
     long getSkinAnimationDurationForW();
     long getSkinAnimationDurationForE();
     long getSkinAnimationDurationForR();
     long getSkinAnimationDurationForDeath();
+    long getSkinAnimationDurationForDeathHold();
+    long getSkinAnimationDurationForSpawn();
+    long getSkinAnimationDurationForSpawnHold();
 
     void die();
 

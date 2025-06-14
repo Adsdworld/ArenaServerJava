@@ -3,6 +3,7 @@ package com.arena.game.entity;
 import com.arena.game.utils.EntityInit;
 import com.arena.game.utils.Position;
 
+import java.util.List;
 import java.util.Map;
 
 public class EntityPositions {
@@ -44,15 +45,15 @@ public class EntityPositions {
     );
 
     public static final Map<String, EntityInit> BLUE_INHIBITORS = Map.of(
-            "INHIB_TOP_BLUE", new EntityInit(new Position(295.19f, -7.36f, 400.44f, 0f), "NEXUS_BLUE"),
-            "INHIB_MID_BLUE", new EntityInit(new Position(360.45f, -7.36f, 389.32f, 0f), "NEXUS_BLUE"),
-            "INHIB_BOT_BLUE", new EntityInit(new Position(371.75f, -7.36f, 324.39f, 0f), "NEXUS_BLUE")
+            "INHIB_TOP_BLUE", new EntityInit(new Position(295.19f, -7.36f, 400.44f, 0f), List.of("T4_BOT_BLUE", "T4_TOP_BLUE")),
+            "INHIB_MID_BLUE", new EntityInit(new Position(360.45f, -7.36f, 389.32f, 0f), List.of("T4_BOT_BLUE", "T4_TOP_BLUE")),
+            "INHIB_BOT_BLUE", new EntityInit(new Position(371.75f, -7.36f, 324.39f, 0f), List.of("T4_BOT_BLUE", "T4_TOP_BLUE"))
     );
 
     public static final Map<String, EntityInit> RED_INHIBITORS = Map.of(
-            "INHIB_TOP_RED", new EntityInit(new Position(623.69f, -7.36f, 726.13f, 0f), "NEXUS_RED"),
-            "INHIB_MID_RED", new EntityInit(new Position(632.51f, -7.36f, 662.37f, 0f), "NEXUS_RED"),
-            "INHIB_BOT_RED", new EntityInit(new Position(698.56f, -7.36f, 650.66f, 0f), "NEXUS_RED")
+            "INHIB_TOP_RED", new EntityInit(new Position(623.69f, -7.36f, 726.13f, 0f), List.of("T4_BOT_RED", "T4_TOP_RED")),
+            "INHIB_MID_RED", new EntityInit(new Position(632.51f, -7.36f, 662.37f, 0f), List.of("T4_BOT_RED", "T4_TOP_RED")),
+            "INHIB_BOT_RED", new EntityInit(new Position(698.56f, -7.36f, 650.66f, 0f), List.of("T4_BOT_RED", "T4_TOP_RED"))
     );
 
     public static final Map<String, EntityInit> BLUE_NEXUS = Map.of(

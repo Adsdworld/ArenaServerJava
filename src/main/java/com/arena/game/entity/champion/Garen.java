@@ -31,7 +31,6 @@ public class Garen extends LivingEntity {
     private int rDamage = 250;
 
 
-
     public Garen(String id, int team) {
         super(id, 600, team, "Garen"); // maxHealth
         this.setArmor(30);
@@ -68,49 +67,58 @@ public class Garen extends LivingEntity {
     public String getSkinAnimationForRunning() {
         return skinAnimationForRun;
     }
+
     @Override
     public String getSkinAnimationForIdle() {
         return skinAnimationForIdle;
     }
+
     @Override
     public String getSkinAnimationForQ() {
         return skinAnimationForQ;
     }
+
     @Override
     public String getSkinAnimationForW() {
         return skinAnimationForW;
     }
+
     @Override
     public String getSkinAnimationForE() {
         return skinAnimationForE;
     }
+
     @Override
     public String getSkinAnimationForR() {
         return skinAnimationForR;
     }
+
     @Override
     public String getSkinAnimationForDeath() {
         return skinAnimationForDeath;
     }
 
     @Override
-    public long getSkinAnimationDurationForQ(){
-        return skinAnimationDurationForQ;
-    }
+    public long getSkinAnimationDurationForQ() {return (long) (this.getSkinAnimationBaseSpeed() / this.getSkinAnimationSpeed()) * skinAnimationDurationForQ;}
+
     @Override
-    public long getSkinAnimationDurationForW(){
-        return skinAnimationDurationForW;
+    public long getSkinAnimationDurationForW() {
+        return (long) (this.getSkinAnimationBaseSpeed() / this.getSkinAnimationSpeed()) * skinAnimationDurationForW;
     }
+
     @Override
-    public long getSkinAnimationDurationForE(){
-        return skinAnimationDurationForE;
+    public long getSkinAnimationDurationForE() {
+        return (long) (this.getSkinAnimationBaseSpeed() / this.getSkinAnimationSpeed()) * skinAnimationDurationForE;
     }
+
     @Override
     public long getSkinAnimationDurationForR() {
-        return skinAnimationDurationForR;
+        return (long) (this.getSkinAnimationBaseSpeed() / this.getSkinAnimationSpeed()) * skinAnimationDurationForR;
     }
-    @Override public long getSkinAnimationDurationForDeath() {
-        return skinAnimationDurationForDeath;
+
+    @Override
+    public long getSkinAnimationDurationForDeath() {
+        return (long) (this.getSkinAnimationBaseSpeed() / this.getSkinAnimationSpeed()) * skinAnimationDurationForDeath;
     }
 
     @Override
@@ -122,6 +130,7 @@ public class Garen extends LivingEntity {
     public int getWTotalShield() {
         return wShield; // W does not deal damage, it provides a shield
     }
+
     @Override
     public int getETotalDamage() {
         return eDamage; // E deals 150% of AD as damage

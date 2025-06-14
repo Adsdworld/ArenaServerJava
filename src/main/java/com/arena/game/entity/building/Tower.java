@@ -8,7 +8,6 @@ import com.arena.game.utils.Position;
 import com.arena.utils.Vector3f;
 
 public class Tower extends LivingEntity {
-    private String skinAnimationIdle = "None";
 
     public Tower(String id, int team) {
         super(id, 300, team, "Tower");
@@ -34,11 +33,6 @@ public class Tower extends LivingEntity {
         this.setSkinScale(0.004f);
         this.setSkinPos(new Vector3f(0.0f, -0.65f, 0.0f));
         this.setSkinAnimation(getSkinAnimationForIdle());
-    }
-
-    @Override
-    public String getSkinAnimationForIdle() {
-        return skinAnimationIdle;
     }
 
     @Override
@@ -75,9 +69,12 @@ public class Tower extends LivingEntity {
         TowerDead towerDead = new TowerDead(entityId + "_DEAD", newEntityTeam);
         towerDead.setPos(position);
 
-        LivingEntity nextObjective = game.getLivingEntityByGeneralId(this.getNextObjective());
-        if (nextObjective != null) {
-            nextObjective.setAttackable(true);
+        this.setAttackable(false);
+        for (String nextObjectiveGeneralId : this.getNextObjective()) {
+            LivingEntity nextObjective = game.getLivingEntityByGeneralId(nextObjectiveGeneralId);
+            if (nextObjective != null) {
+                nextObjective.setAttackable(true);
+            }
         }
 
         game.addEntity(towerDead);

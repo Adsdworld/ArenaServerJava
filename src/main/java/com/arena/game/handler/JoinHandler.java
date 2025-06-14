@@ -3,6 +3,7 @@ package com.arena.game.handler;
 import com.arena.game.Game;
 import com.arena.game.GameNameEnum;
 import com.arena.game.entity.Entity;
+import com.arena.game.entity.EntityPositions;
 import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.champion.Garen;
 import com.arena.network.message.Message;
@@ -14,6 +15,7 @@ import com.arena.utils.Logger;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.arena.game.entity.EntityPositions.*;
@@ -54,10 +56,24 @@ public class JoinHandler implements IMessageHandler {
 
                 int team;
 
+                Collection<LivingEntity> buildings = new ArrayList<>();
+
                 if (blue >= red) {
                     team = 2;
+                    buildings.addAll(game.getLivingEntityByGeneralId(RED_NEXUS.keySet()));
+                    buildings.addAll(game.getLivingEntityByGeneralId(RED_INHIBITORS.keySet()));
+
                 } else {
                     team = 1;
+                    buildings.addAll(game.getLivingEntityByGeneralId(BLUE_NEXUS.keySet()));
+                    buildings.addAll(game.getLivingEntityByGeneralId(BLUE_INHIBITORS.keySet()));
+                }
+
+                for (LivingEntity building : buildings) {
+                    building.setSkinAnimation(building.getSkinAnimationForSpawn());
+                    building.LockSkinAnimation(building.getSkinAnimationDurationForSpawn(), () -> {
+                        building.setSkinAnimation(building.getSkinAnimationForIdle());
+                    });
                 }
 
                 /* Create entity  and add it to game */

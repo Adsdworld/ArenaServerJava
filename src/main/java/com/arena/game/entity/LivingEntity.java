@@ -7,6 +7,7 @@ import com.arena.utils.Logger;
 import com.arena.game.utils.Position;
 import com.arena.utils.Vector3f;
 
+import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -17,8 +18,8 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected int health, maxHealth;
     protected int armor, magicResist, attackDamage, abilityPower;
     protected boolean moving, hasArrived, skinAnimationLocked, attackable, entityLocked, entityCastLocked, entityMoveLocked;
-    protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, skinScale, posXDesired, posZDesired, posYDesired, skinAnimationSpeed=1.0f;
-    protected String name, skinAnimation, nextObjective;
+    protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, skinScale, posXDesired, posZDesired, posYDesired, skinAnimationSpeed, skinAnimationBaseSpeed;
+    protected String name, skinAnimation;
     /* Team 1 = Blue Team, Team 2 = Red Team */
     protected int team;
     protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd, cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs;
@@ -27,15 +28,20 @@ public abstract class LivingEntity extends Entity implements ILiving {
     protected EntityRigidbody rigidbody;
     protected EntityTransform transform;
 
+    protected Collection<String> nextObjective;
+
     private static final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 
     public LivingEntity(String id, int maxHealth, int team, String name) {
         super(id);
-        this.maxHealth = maxHealth;
-        this.health = maxHealth;
-        this.team = team;
-        this.name = name;
+        this.setMaxHealth(maxHealth);
+        this.heal(maxHealth);
+        this.setTeam(team);
+        this.setName(name);
+        this.setSkinAnimationBaseSpeed(1f);
+        this.setSkinAnimationSpeed(1f);
+        this.setAttackable(false);
     }
 
     public void setPos(Vector3f vector3f) {
@@ -158,10 +164,10 @@ public abstract class LivingEntity extends Entity implements ILiving {
         return attackable;
     }
 
-    public void setNextObjective(String nextObjective) {
+    public void setNextObjective(Collection<String> nextObjective) {
         this.nextObjective = nextObjective;
     }
-    public String getNextObjective() {
+    public Collection<String> getNextObjective() {
         return nextObjective;
     }
 
@@ -259,7 +265,9 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public void lockSkinAnimation(boolean lock) { this.skinAnimationLocked = lock; }
     @Override public boolean isSkinAnimationLocked() { return skinAnimationLocked; }
     @Override public String getSkinAnimation() { return skinAnimation; }
-    @Override public void setSkinAnimation(String animation) { this.skinAnimation = animation; }
+    @Override public void setSkinAnimation(String animation) { this.skinAnimation = animation;}
+    @Override public float getSkinAnimationBaseSpeed() { return skinAnimationBaseSpeed; }
+    @Override public void setSkinAnimationBaseSpeed(float speed) {this.skinAnimationBaseSpeed = speed;}
     @Override public float getSkinAnimationSpeed() { return skinAnimationSpeed; }
     @Override public void setSkinAnimationSpeed(float skinAnimationSpeed) { this.skinAnimationSpeed = skinAnimationSpeed; }
     @Override public String getSkinAnimationForRunning() {
@@ -283,6 +291,9 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public String getSkinAnimationForDeath() {
         return "None";
     }
+    @Override public String getSkinAnimationForSpawnHold() {return "None";}
+    @Override public String getSkinAnimationForSpawn() {return "None";}
+    @Override public String getSkinAnimationForDeathHold() {return "None";}
     @Override public long getSkinAnimationDurationForQ() {
         return 0;
     }
@@ -298,6 +309,9 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public long getSkinAnimationDurationForDeath() {
         return 0;
     }
+    @Override public long getSkinAnimationDurationForSpawnHold() {return 0;}
+    @Override public long getSkinAnimationDurationForSpawn() {return 0;}
+    @Override public long getSkinAnimationDurationForDeathHold() {return 0;}
 
     public void LockSkinAnimation(long ms) {
         this.lockSkinAnimation(true);
@@ -337,6 +351,9 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override
     public String getName() {
         return name;
+    }
+    private void setName(String name) {
+        this.name = name;
     }
 
     @Override public void setCooldownQStart(long cooldownQStart) {
