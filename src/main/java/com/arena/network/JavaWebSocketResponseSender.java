@@ -76,7 +76,6 @@ public class JavaWebSocketResponseSender implements IResponseSender {
             }
         } catch (WebsocketNotConnectedException e) {
             Logger.error("WebSocket not connected while sending response to: " + conn.getRemoteSocketAddress());
-            e.printStackTrace();
         }
     }
 }
