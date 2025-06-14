@@ -2,6 +2,8 @@ package com.arena.game.entity.building;
 
 import com.arena.game.Game;
 import com.arena.game.entity.*;
+import com.arena.network.response.Response;
+import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
 import com.arena.utils.Vector3f;
@@ -84,19 +86,11 @@ public class Inhibitor extends LivingEntity {
 
         Game game = server.getGameOfEntity(this);
 
-        if (game == null) {
-            Logger.failure("Game not found for entity: " + this.getId());
-            return;
-        }
+        this.setSkinAnimation(getSkinAnimationForDeathHold());
 
-        this.setSkinAnimation(getSkinAnimationForDeath());
-
-        this.setAttackable(false);
-        for (String nextObjectiveGeneralId : this.getNextObjective()) {
-            LivingEntity nextObjective = game.getLivingEntityByGeneralId(nextObjectiveGeneralId);
-            if (nextObjective != null) {
-                nextObjective.setAttackable(true);
-            }
-        }
+        Response response = new Response();
+        response.setResponse(ResponseEnum.Info);
+        response.setNotify("Inhibitor " + this.getGeneralId() + " has been destroyed.");
+        response.Send(game.getGameNameEnum());
     }
 }

@@ -2,6 +2,8 @@ package com.arena.game.entity.building;
 
 import com.arena.game.Game;
 import com.arena.game.entity.*;
+import com.arena.network.response.Response;
+import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Logger;
 import com.arena.game.utils.Position;
@@ -69,14 +71,12 @@ public class Tower extends LivingEntity {
         TowerDead towerDead = new TowerDead(entityId + "_DEAD", newEntityTeam);
         towerDead.setPos(position);
 
-        this.setAttackable(false);
-        for (String nextObjectiveGeneralId : this.getNextObjective()) {
-            LivingEntity nextObjective = game.getLivingEntityByGeneralId(nextObjectiveGeneralId);
-            if (nextObjective != null) {
-                nextObjective.setAttackable(true);
-            }
-        }
-
         game.addEntity(towerDead);
+
+
+        Response response = new Response();
+        response.setResponse(ResponseEnum.Info);
+        response.setNotify("Tower " + this.getGeneralId() + " has been destroyed.");
+        response.Send(game.getGameNameEnum());
     }
 }

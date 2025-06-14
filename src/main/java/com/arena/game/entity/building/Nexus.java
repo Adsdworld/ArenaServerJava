@@ -95,12 +95,7 @@ public class Nexus extends LivingEntity {
             return;
         }
 
-        this.setSkinAnimation(getSkinAnimationForDeath());
-        this.LockSkinAnimation(getSkinAnimationDurationForDeath(), () -> {
-            this.setSkinAnimation(getSkinAnimationForDeathHold());
-        });
-
-        this.setAttackable(false);
+        this.setSkinAnimation(getSkinAnimationForDeathHold());
 
         Response response = new Response();
         response.setResponse(ResponseEnum.Info);

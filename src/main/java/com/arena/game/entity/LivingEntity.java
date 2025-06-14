@@ -150,6 +150,13 @@ public abstract class LivingEntity extends Entity implements ILiving {
         this.health = Math.max(0, this.health - amount);
         if (this.health == 0) {
             this.setSkinAnimation(this.getSkinAnimationForDeath());
+            this.setAttackable(false);
+            for (String nextObjectiveGeneralId : this.getNextObjective()) {
+                LivingEntity nextObjective = game.getLivingEntityByGeneralId(nextObjectiveGeneralId);
+                if (nextObjective != null) {
+                    nextObjective.setAttackable(true);
+                }
+            }
             this.LockSkinAnimation(this.getSkinAnimationDurationForDeath(), this::die);
         }
     }

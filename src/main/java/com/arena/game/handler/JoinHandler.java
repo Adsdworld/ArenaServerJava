@@ -116,11 +116,11 @@ public class JoinHandler implements IMessageHandler {
         } else {
             // TODO: improve this response create a special ResponseEnum for this case and handle it in the client unity
             response.setResponse(ResponseEnum.GameNotFound);
-            response.setNotify("Couldn't not " + message.getAction() + " game " + message.getGameName().getGameName());
+            response.setNotify("Could not Join : " + message.getGameName().getGameName() + " not found, please create it first.");
             response.setGameName(message.getGameName());
             response.Send(message.getUuid());
 
-            Logger.failure("Couldn't find game " + message.getGameName());
+            Logger.failure("Could not Join : " + message.getGameName().getGameName() + " not found, please create it first.");
         }
     }
 }
