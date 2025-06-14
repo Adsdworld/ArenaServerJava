@@ -1,5 +1,9 @@
 package com.arena.game.entity;
 
+import com.arena.game.Game;
+import com.arena.game.entity.building.Inhibitor;
+import com.arena.game.entity.building.Nexus;
+import com.arena.game.entity.building.Tower;
 import com.arena.game.zone.Zone;
 import com.arena.game.zone.ZoneCircle;
 import com.arena.server.Server;
@@ -150,11 +154,19 @@ public abstract class LivingEntity extends Entity implements ILiving {
         this.health = Math.max(0, this.health - amount);
         if (this.health == 0) {
             this.setSkinAnimation(this.getSkinAnimationForDeath());
-            this.setAttackable(false);
-            for (String nextObjectiveGeneralId : this.getNextObjective()) {
-                LivingEntity nextObjective = game.getLivingEntityByGeneralId(nextObjectiveGeneralId);
-                if (nextObjective != null) {
-                    nextObjective.setAttackable(true);
+            if (this instanceof Nexus || this instanceof Inhibitor) {
+                this.setAttackable(false);
+            }
+
+            if (this.getNextObjective() != null) {
+                Server server = Server.getInstance();
+                Game game = server.getGameOfEntity(this);
+
+                for (String nextObjectiveGeneralId : this.getNextObjective()) {
+                    LivingEntity nextEntity = game.getLivingEntityByGeneralId(nextObjectiveGeneralId);
+                    if (nextEntity != null) {
+                        nextEntity.setAttackable(true);
+                    }
                 }
             }
             this.LockSkinAnimation(this.getSkinAnimationDurationForDeath(), this::die);

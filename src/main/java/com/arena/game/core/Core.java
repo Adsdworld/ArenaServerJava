@@ -94,10 +94,10 @@ public class Core {
                     for (Message message : messageQueue) {
                         stringBuilder.append(message.getAction()).append(", ");
                     }
-                    //Logger.server(stringBuilder.toString());
+                    Logger.server(stringBuilder.toString());
                     _isEnteringTick = false;
                     if (!_isEmpty) {
-                        //Logger.server("Processing messages at " + formatter.format(Instant.ofEpochMilli(now)) + " with tolerance: " + tolerance + "ms");
+                        Logger.server("Processing messages at " + formatter.format(Instant.ofEpochMilli(now)) + " with tolerance: " + tolerance + "ms");
                     }
                 }
 
@@ -110,14 +110,14 @@ public class Core {
 
                 assert next != null;
                 if (next.getTimeStamp() < now - tolerance) {
-                    //Logger.server("Skipping message: " + next.getUuid() + " >>> "+ next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
+                    Logger.server("Skipping message: " + next.getUuid() + " >>> "+ next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
                     messageQueue.poll();
                 } else if (next.getTimeStamp() <= now + tolerance) {
-                    //Logger.server("Processing message: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
+                    Logger.server("Processing message: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
                     handleMessage(next);
                     messageQueue.poll();
                 } else {
-                    //Logger.server("Message not ready yet: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
+                    Logger.server("Message not ready yet: " + next.getUuid() + " >>> " + next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
                     break;
                 }
             }
@@ -128,7 +128,7 @@ public class Core {
             if (!_isEmpty) {
                 long endTime = System.currentTimeMillis();
                 long duration = endTime - now;
-                //Logger.info("processMessages total duration: " + duration + " ms");
+                Logger.info("processMessages total duration: " + duration + " ms");
             }
         } catch (Exception e) {
             Logger.error("Exception while processing messages: " + e.getMessage());

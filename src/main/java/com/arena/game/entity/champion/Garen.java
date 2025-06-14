@@ -37,6 +37,8 @@ public class Garen extends LivingEntity {
         this.setAttackDamage(60);
         this.setMoveSpeed(12f);
 
+        this.setAttackable(true);
+
         this.setCooldownQMs(1200);
         this.setCooldownWMs(5000);
         this.setCooldownEMs(20000);
