@@ -1,0 +1,250 @@
+\doxysection{com.\+arena.\+server.\+Server Class Reference}
+\hypertarget{classcom_1_1arena_1_1server_1_1_server}{}\label{classcom_1_1arena_1_1server_1_1_server}\index{com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_a4adac1f9f65cf0c1651ba719c648c3da}{create\+Game}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
+\item 
+\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_a922e39c801ee3fa7d2e6e4cd8fbf5a1b}{get\+Game\+Of\+Player}} (Player player)
+\item 
+\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_af9511aac08a1cb9520a06c58e25bf670}{get\+Game\+Of\+Entity}} (\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{Living\+Entity}} entity)
+\item 
+Player \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_a77a8bba126c7c1c048fa6ed4bc25d8e9}{get\+Player\+By\+Uuid}} (String uuid)
+\item 
+void \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_aeadf5627add5c400659d64e47fde6da9}{subscribe\+Player\+To\+Game}} (Player player, \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} game)
+\item 
+void \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_afca9f0be2365a3207bc867d9c317a1ad}{close\+Game}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
+\item 
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_afc20fe1350d54beaec6c5e2dffeb4782}\label{classcom_1_1arena_1_1server_1_1_server_afc20fe1350d54beaec6c5e2dffeb4782} 
+Array\+List$<$ \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} $>$ {\bfseries get\+Games} ()
+\item 
+\mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server}{Server}} \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_a2b1919b31f969bc6968740ba56c6ef37}{server\+Exists}} ()
+\item 
+\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_a1b90a5a09ea65e90156cf731a4849dea}{game\+Exists}} (\mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} game\+Name\+Enum)
+\item 
+void \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_a6c367073ee22d8e2120b3e8b97aee0cb}{register\+Player}} (Player player)
+\item 
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_a587b67aa9bcec9619b2efc32ce224914}\label{classcom_1_1arena_1_1server_1_1_server_a587b67aa9bcec9619b2efc32ce224914} 
+Concurrent\+Hash\+Map$<$ String, Player $>$ {\bfseries get\+Players\+Map} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static synchronized \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server}{Server}} \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_ae528927e713d5b0fd097051249974a62}{get\+Instance}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_a3b710275c89687054292a4678619c433}\label{classcom_1_1arena_1_1server_1_1_server_a3b710275c89687054292a4678619c433} 
+Array\+List$<$ \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} $>$ {\bfseries games}
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_afca9f0be2365a3207bc867d9c317a1ad}\index{com.arena.server.Server@{com.arena.server.Server}!closeGame@{closeGame}}
+\index{closeGame@{closeGame}!com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection{\texorpdfstring{closeGame()}{closeGame()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_afca9f0be2365a3207bc867d9c317a1ad} 
+void com.\+arena.\+server.\+Server.\+close\+Game (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
+
+Closes a game based on the provided {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} containing the {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} to close the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}}. @impl\+Note This method checks if a {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} is already being closed. If so, it logs a warning and retries later. If not, it proceeds to close the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}}, checking if it exists. It sends a {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} back to the client with the result of the operation. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/07 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_a4adac1f9f65cf0c1651ba719c648c3da}\index{com.arena.server.Server@{com.arena.server.Server}!createGame@{createGame}}
+\index{createGame@{createGame}!com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection{\texorpdfstring{createGame()}{createGame()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_a4adac1f9f65cf0c1651ba719c648c3da} 
+void com.\+arena.\+server.\+Server.\+create\+Game (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
+
+Creates a new game based on the provided {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} containing the {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} to create the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}}. @impl\+Note This method checks if a {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} is already being created. If so, it logs a warning and retries later. If not, it proceeds to create the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} , checking if it already exists or if the maximum number of games has been reached. It sends a {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} back to the client with the result of the operation. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/07 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_a1b90a5a09ea65e90156cf731a4849dea}\index{com.arena.server.Server@{com.arena.server.Server}!gameExists@{gameExists}}
+\index{gameExists@{gameExists}!com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection{\texorpdfstring{gameExists()}{gameExists()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_a1b90a5a09ea65e90156cf731a4849dea} 
+\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} com.\+arena.\+server.\+Server.\+game\+Exists (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}}}]{game\+Name\+Enum}{}\end{DoxyParamCaption})}
+
+Checks if a game with the given {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} exists.
+
+
+\begin{DoxyParams}{Parameters}
+{\em game\+Name\+Enum} & the game name to check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} instance if it exists; {\ttfamily null} otherwise. @impl\+Note @impl\+Note This method checks if the {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{Server}} instance is initialized and returns {\ttfamily null} if not. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+Sallier 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/07 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_af9511aac08a1cb9520a06c58e25bf670}\index{com.arena.server.Server@{com.arena.server.Server}!getGameOfEntity@{getGameOfEntity}}
+\index{getGameOfEntity@{getGameOfEntity}!com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection{\texorpdfstring{getGameOfEntity()}{getGameOfEntity()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_af9511aac08a1cb9520a06c58e25bf670} 
+\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} com.\+arena.\+server.\+Server.\+get\+Game\+Of\+Entity (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{Living\+Entity}}}]{entity}{}\end{DoxyParamCaption})}
+
+Retrieves the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} of a given {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{Living\+Entity}} .
+
+
+\begin{DoxyParams}{Parameters}
+{\em entity} & the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{Living\+Entity}} whose game is to be retrieved. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} instance that contains the specified entity, or {\ttfamily null} if no such game exists. @impl\+Note This method iterates through the list of games and returns the first game that contains the specified entity in its map of living entities. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_a922e39c801ee3fa7d2e6e4cd8fbf5a1b}\index{com.arena.server.Server@{com.arena.server.Server}!getGameOfPlayer@{getGameOfPlayer}}
+\index{getGameOfPlayer@{getGameOfPlayer}!com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection{\texorpdfstring{getGameOfPlayer()}{getGameOfPlayer()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_a922e39c801ee3fa7d2e6e4cd8fbf5a1b} 
+\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} com.\+arena.\+server.\+Server.\+get\+Game\+Of\+Player (\begin{DoxyParamCaption}\item[{Player}]{player}{}\end{DoxyParamCaption})}
+
+Retrieves a \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game} instance based on the provided Player.
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & the {\ttfamily \doxylink{}{Player}} whose game is to be retrieved. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} instance that contains the specified player, or {\ttfamily null} if no such game exists. @impl\+Note This method iterates through the list of games and returns the first game that contains the specified player in its list of players. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/10 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_ae528927e713d5b0fd097051249974a62}\index{com.arena.server.Server@{com.arena.server.Server}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_ae528927e713d5b0fd097051249974a62} 
+synchronized \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server}{Server}} com.\+arena.\+server.\+Server.\+get\+Instance (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Singleton pattern to ensure only one instance of \doxylink{classcom_1_1arena_1_1server_1_1_server}{Server} exists. jc
+
+\begin{DoxyReturn}{Returns}
+{\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{Server}} instance @impl\+Note This method initializes the {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{Server}} instance if it is not already created. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/07 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_a77a8bba126c7c1c048fa6ed4bc25d8e9}\index{com.arena.server.Server@{com.arena.server.Server}!getPlayerByUuid@{getPlayerByUuid}}
+\index{getPlayerByUuid@{getPlayerByUuid}!com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection{\texorpdfstring{getPlayerByUuid()}{getPlayerByUuid()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_a77a8bba126c7c1c048fa6ed4bc25d8e9} 
+Player com.\+arena.\+server.\+Server.\+get\+Player\+By\+Uuid (\begin{DoxyParamCaption}\item[{String}]{uuid}{}\end{DoxyParamCaption})}
+
+Retrieves a player by their UUID.
+
+
+\begin{DoxyParams}{Parameters}
+{\em uuid} & the UUID of the player to retrieve \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the {\ttfamily \doxylink{}{Player}} with the specified UUID, or {\ttfamily null} if not found. @impl\+Note This method iterates through the list of players and returns the first one that matches the given UUID. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/07 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_a6c367073ee22d8e2120b3e8b97aee0cb}\index{com.arena.server.Server@{com.arena.server.Server}!registerPlayer@{registerPlayer}}
+\index{registerPlayer@{registerPlayer}!com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection{\texorpdfstring{registerPlayer()}{registerPlayer()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_a6c367073ee22d8e2120b3e8b97aee0cb} 
+void com.\+arena.\+server.\+Server.\+register\+Player (\begin{DoxyParamCaption}\item[{Player}]{player}{}\end{DoxyParamCaption})}
+
+Registers a {\ttfamily \doxylink{}{Player}} to the {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{Server}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & the {\ttfamily \doxylink{}{Player}} to register @impl\+Note This method checks if the {\ttfamily \doxylink{}{Player}} is already registered on the {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{Server}}. If so, it logs a warning. If the {\ttfamily player} is {\ttfamily null} , it logs a failure. Otherwise, it adds the {\ttfamily player} to the list of registered {\ttfamily players} and logs the registration. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/07 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_a2b1919b31f969bc6968740ba56c6ef37}\index{com.arena.server.Server@{com.arena.server.Server}!serverExists@{serverExists}}
+\index{serverExists@{serverExists}!com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection{\texorpdfstring{serverExists()}{serverExists()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_a2b1919b31f969bc6968740ba56c6ef37} 
+\mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server}{Server}} com.\+arena.\+server.\+Server.\+server\+Exists (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Checks if the {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{Server}} instance exists.
+
+\begin{DoxyReturn}{Returns}
+the {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{Server}} instance if it exists; {\ttfamily null} otherwise. @impl\+Note This method checks if the {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{Server}} instance is initialized and returns {\ttfamily null} if not. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/07 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_aeadf5627add5c400659d64e47fde6da9}\index{com.arena.server.Server@{com.arena.server.Server}!subscribePlayerToGame@{subscribePlayerToGame}}
+\index{subscribePlayerToGame@{subscribePlayerToGame}!com.arena.server.Server@{com.arena.server.Server}}
+\doxysubsubsection{\texorpdfstring{subscribePlayerToGame()}{subscribePlayerToGame()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_aeadf5627add5c400659d64e47fde6da9} 
+void com.\+arena.\+server.\+Server.\+subscribe\+Player\+To\+Game (\begin{DoxyParamCaption}\item[{Player}]{player}{, }\item[{\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}}}]{game}{}\end{DoxyParamCaption})}
+
+Subscribe a player to a game. {\ttfamily Game.\+players} receive {\ttfamily Response\+Enum.\+Game\+State} events, that allow them to receive updates.
+
+
+\begin{DoxyParams}{Parameters}
+{\em player} & the {\ttfamily \doxylink{}{Player}} to subscribe. \\
+\hline
+{\em game} & the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} to which the player is subscribing. @impl\+Note This method iterates through all {\ttfamily Server.\+games} in the {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{Server}} and removes the {\ttfamily player} from any game they were previously subscribed to, then adds him to the specified game. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/09 
+\end{DoxyDate}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/server/Server.\+java\end{DoxyCompactItemize}

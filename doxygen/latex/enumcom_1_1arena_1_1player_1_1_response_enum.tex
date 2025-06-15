@@ -1,0 +1,59 @@
+\doxysection{com.\+arena.\+player.\+Response\+Enum Enum Reference}
+\hypertarget{enumcom_1_1arena_1_1player_1_1_response_enum}{}\label{enumcom_1_1arena_1_1player_1_1_response_enum}\index{com.arena.player.ResponseEnum@{com.arena.player.ResponseEnum}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{enumcom_1_1arena_1_1player_1_1_response_enum_a70adfab5895443ba1c89212f55fcebf5}\label{enumcom_1_1arena_1_1player_1_1_response_enum_a70adfab5895443ba1c89212f55fcebf5} 
+{\bfseries Response\+Enum} (String response)
+\item 
+\Hypertarget{enumcom_1_1arena_1_1player_1_1_response_enum_aae418cd4fa3a44a848f124cabda26f08}\label{enumcom_1_1arena_1_1player_1_1_response_enum_aae418cd4fa3a44a848f124cabda26f08} 
+String {\bfseries get\+Response} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{enumcom_1_1arena_1_1player_1_1_response_enum_ac98b51885eb2328ca15c8b22627749b3}{Serialized\+Name}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Enum representing various responses that can be sent by the server to the client. 
+
+\label{doc-variable-members}
+\Hypertarget{enumcom_1_1arena_1_1player_1_1_response_enum_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{enumcom_1_1arena_1_1player_1_1_response_enum_ac98b51885eb2328ca15c8b22627749b3}\index{com.arena.player.ResponseEnum@{com.arena.player.ResponseEnum}!SerializedName@{SerializedName}}
+\index{SerializedName@{SerializedName}!com.arena.player.ResponseEnum@{com.arena.player.ResponseEnum}}
+\doxysubsubsection{\texorpdfstring{SerializedName}{SerializedName}}
+{\footnotesize\ttfamily \label{enumcom_1_1arena_1_1player_1_1_response_enum_ac98b51885eb2328ca15c8b22627749b3} 
+com.\+arena.\+player.\+Response\+Enum.\+Serialized\+Name}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=(\textcolor{stringliteral}{"{}Info"{}})}
+\DoxyCodeLine{\ \ \ \ Info(\textcolor{stringliteral}{"{}Info"{}})}
+
+\end{DoxyCode}
+Info \+: success
+
+Login \+: success Response to login. This is sent when the {\ttfamily \doxylink{namespacecom_1_1arena_1_1player_aade8fec7513360f537d8bb72c9ff0804}{Player}} have been added to the {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{com.\+arena.\+server.\+Server}} .
+
+Create\+Game \+: failure Response game already exists.
+
+Create\+Game \+: failure Response games limit reached. Use game\+Name\+Enum Game 6 to test this.
+
+Join\+Game \+: success Response to join a game.
+
+Join\+Game \+: failure Response player already in game.
+
+Close\+Game \+: success Response to close a game.
+
+Close\+Game \+: failure Response game not found.
+
+Game State \+: None Response to send a game state.
+
+Your Entity Is \+: None Response to set the entity controlled by the {\ttfamily \doxylink{namespacecom_1_1arena_1_1player_aade8fec7513360f537d8bb72c9ff0804}{Player}}. 
+
+The documentation for this enum was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/player/Response\+Enum.\+java\end{DoxyCompactItemize}

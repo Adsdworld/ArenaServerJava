@@ -1,0 +1,32 @@
+\doxysection{Package com.\+arena.\+server}
+\hypertarget{namespacecom_1_1arena_1_1server}{}\label{namespacecom_1_1arena_1_1server}\index{com.arena.server@{com.arena.server}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server}{Server}}
+\item 
+class \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_manager}{Server\+Manager}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The {\ttfamily com.\+arena.\+server} package is responsible for managing server-\/side logic of the multiplayer arena game. It handles player registration, game creation and destruction, and the management of game states and entities within those games. 
+
+Core responsibilities include\+: 
+\begin{DoxyItemize}
+\item Maintaining a singleton {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{com.\+arena.\+server.\+Server}} instance 
+\item Creating and closing game sessions identified by {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{com.\+arena.\+game.\+Game\+Name\+Enum}} 
+\item Registering and retrieving {\ttfamily \doxylink{namespacecom_1_1arena_1_1player_aade8fec7513360f537d8bb72c9ff0804}{com.\+arena.\+player.\+Player}} instances 
+\item Subscribing players to games and updating their states 
+\item Associating entities such as {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_tower}{com.\+arena.\+game.\+entity.\+building.\+Tower}}, {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_inhibitor}{com.\+arena.\+game.\+entity.\+building.\+Inhibitor}}, and {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_nexus}{com.\+arena.\+game.\+entity.\+building.\+Nexus}} with game instances and positions using {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1utils_1_1_entity_init}{com.\+arena.\+game.\+utils.\+Entity\+Init}} 
+\item Logging important server events using the {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}} utility 
+\end{DoxyItemize}
+
+This package is the backbone of the multiplayer game environment, ensuring data integrity, consistent state management, and synchronized player-\/game interaction.
+
+\begin{DoxyAuthor}{Author}
+A. 
+\end{DoxyAuthor}
+\begin{DoxySince}{Since}
+2025-\/06-\/07 
+\end{DoxySince}

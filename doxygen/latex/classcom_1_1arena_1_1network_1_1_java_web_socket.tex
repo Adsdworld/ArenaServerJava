@@ -1,0 +1,114 @@
+\doxysection{com.\+arena.\+network.\+Java\+Web\+Socket Class Reference}
+\hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket}{}\label{classcom_1_1arena_1_1network_1_1_java_web_socket}\index{com.arena.network.JavaWebSocket@{com.arena.network.JavaWebSocket}}
+Inheritance diagram for com.\+arena.\+network.\+Java\+Web\+Socket\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcom_1_1arena_1_1network_1_1_java_web_socket}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_a92e9590d779819683fe6229c9858e83a}\label{classcom_1_1arena_1_1network_1_1_java_web_socket_a92e9590d779819683fe6229c9858e83a} 
+void {\bfseries on\+Start} ()
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_a60295f4eb55edacbd377c9bfce76f2f9}\label{classcom_1_1arena_1_1network_1_1_java_web_socket_a60295f4eb55edacbd377c9bfce76f2f9} 
+void {\bfseries on\+Open} (Web\+Socket conn, Client\+Handshake handshake)
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_aa237b9a65ae51d6378917d298aac485e}\label{classcom_1_1arena_1_1network_1_1_java_web_socket_aa237b9a65ae51d6378917d298aac485e} 
+void {\bfseries on\+Close} (Web\+Socket conn, int code, String reason, boolean remote)
+\item 
+void \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket_ac7c9a0fb1f44dcaf8fc28345f89979fd}{on\+Message}} (Web\+Socket conn, String message\+Json)
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_a06baef585f789b1d598a921f7d425994}\label{classcom_1_1arena_1_1network_1_1_java_web_socket_a06baef585f789b1d598a921f7d425994} 
+void {\bfseries on\+Error} (Web\+Socket conn, Exception ex)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static synchronized \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket}{Java\+Web\+Socket}} \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket_a7e47e5f760be5733f1ad2178c2e17d86}{get\+Instance}} ()
+\item 
+static synchronized void \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket_ae458a8bb61f5437e8f26d2c4300ffb73}{initialize}} (int port)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_a6003e922c72d93eb135c09bdd78fd109}\label{classcom_1_1arena_1_1network_1_1_java_web_socket_a6003e922c72d93eb135c09bdd78fd109} 
+int {\bfseries port}
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_a075b19865c2aaff5e58802541a237c0c}\label{classcom_1_1arena_1_1network_1_1_java_web_socket_a075b19865c2aaff5e58802541a237c0c} 
+Concurrent\+Hash\+Map$<$ Web\+Socket, Player $>$ {\bfseries web\+Socket\+To\+Uuid}
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_a7d1706a87551b5b703a45af98e60ca8a}\label{classcom_1_1arena_1_1network_1_1_java_web_socket_a7d1706a87551b5b703a45af98e60ca8a} 
+Concurrent\+Hash\+Map$<$ Player, Web\+Socket $>$ {\bfseries uuid\+To\+Web\+Socket}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\doxylink{classcom_1_1arena_1_1network_1_1_java_web_socket}{Java\+Web\+Socket} is a singleton Web\+Socket server that listens for incoming connections and processes messages in JSON format. It uses the \doxylink{classcom_1_1arena_1_1utils_1_1json_1_1_json_service}{Json\+Service} for JSON serialization/deserialization. 
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_a7e47e5f760be5733f1ad2178c2e17d86}\index{com.arena.network.JavaWebSocket@{com.arena.network.JavaWebSocket}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!com.arena.network.JavaWebSocket@{com.arena.network.JavaWebSocket}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1network_1_1_java_web_socket_a7e47e5f760be5733f1ad2178c2e17d86} 
+synchronized \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket}{Java\+Web\+Socket}} com.\+arena.\+network.\+Java\+Web\+Socket.\+get\+Instance (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+get\+Instance is a synchronized method that returns the singleton instance of \doxylink{classcom_1_1arena_1_1network_1_1_java_web_socket}{Java\+Web\+Socket}.
+
+\begin{DoxyReturn}{Returns}
+\doxylink{classcom_1_1arena_1_1network_1_1_java_web_socket}{Java\+Web\+Socket} instance. @impl\+Note if the instance is not initialized, it throws an Illegal\+State\+Exception. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_ae458a8bb61f5437e8f26d2c4300ffb73}\index{com.arena.network.JavaWebSocket@{com.arena.network.JavaWebSocket}!initialize@{initialize}}
+\index{initialize@{initialize}!com.arena.network.JavaWebSocket@{com.arena.network.JavaWebSocket}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1network_1_1_java_web_socket_ae458a8bb61f5437e8f26d2c4300ffb73} 
+synchronized void com.\+arena.\+network.\+Java\+Web\+Socket.\+initialize (\begin{DoxyParamCaption}\item[{int}]{port}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+initialize is a synchronized method that creates a new instance of \doxylink{classcom_1_1arena_1_1network_1_1_java_web_socket}{Java\+Web\+Socket}
+
+
+\begin{DoxyParams}{Parameters}
+{\em port} & the port on which the Web\+Socket server will listen. @impl\+Note checks if the instance is already initialized to avoid creating multiple instances. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_ac7c9a0fb1f44dcaf8fc28345f89979fd}\index{com.arena.network.JavaWebSocket@{com.arena.network.JavaWebSocket}!onMessage@{onMessage}}
+\index{onMessage@{onMessage}!com.arena.network.JavaWebSocket@{com.arena.network.JavaWebSocket}}
+\doxysubsubsection{\texorpdfstring{onMessage()}{onMessage()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1network_1_1_java_web_socket_ac7c9a0fb1f44dcaf8fc28345f89979fd} 
+void com.\+arena.\+network.\+Java\+Web\+Socket.\+on\+Message (\begin{DoxyParamCaption}\item[{Web\+Socket}]{conn}{, }\item[{String}]{message\+Json}{}\end{DoxyParamCaption})}
+
+on\+Message is called when a message is received from a {\ttfamily \doxylink{}{Web\+Socket}} connection.
+
+
+\begin{DoxyParams}{Parameters}
+{\em conn} & the {\ttfamily \doxylink{}{Web\+Socket}} connection that sent the message. \\
+\hline
+{\em message\+Json} & the message received in JSON format. @impl\+Note \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+BENETREAU 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/10 
+\end{DoxyDate}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/network/Java\+Web\+Socket.\+java\end{DoxyCompactItemize}

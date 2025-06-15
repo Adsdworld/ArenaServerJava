@@ -1,0 +1,189 @@
+\doxysection{com.\+arena.\+utils.\+Vector2f Class Reference}
+\hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f}{}\label{classcom_1_1arena_1_1utils_1_1_vector2f}\index{com.arena.utils.Vector2f@{com.arena.utils.Vector2f}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f_a28c036304b89d9145d4a48a855714165}{Vector2f}} (float x, float y)
+\item 
+\mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f_a7b4551c544c6c05fade2d285504c12f2}{sub}} (\mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} other)
+\item 
+float \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f_ae38a11768e31d67bc501c1a4aae1a1d2}{len}} ()
+\item 
+float \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f_aa336ececdeb6db56a93dce32f86a77b1}{dist\+To}} (\mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} other)
+\item 
+float \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f_a37a77b11479144a575b78ce61a5c3e38}{dot}} (\mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} other)
+\item 
+String \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f_ac30c0c867ac4f913be4e11ff00112c0c}{to\+String}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f_a5ee81c1d6b901d6c343339c57f83ea36}{rotation\+To\+Direction}} (float rotation\+Degrees)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_a83bf61628173b91a4ca4b8f9e743eccd}\label{classcom_1_1arena_1_1utils_1_1_vector2f_a83bf61628173b91a4ca4b8f9e743eccd} 
+float {\bfseries x}
+\item 
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_a24d2d38e57bd02f8c74f6f721bd16221}\label{classcom_1_1arena_1_1utils_1_1_vector2f_a24d2d38e57bd02f8c74f6f721bd16221} 
+float {\bfseries y}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+{\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} is a simple class representing a 2D vector with {\ttfamily float} coordinates. 
+
+\label{doc-constructors}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_a28c036304b89d9145d4a48a855714165}\index{com.arena.utils.Vector2f@{com.arena.utils.Vector2f}!Vector2f@{Vector2f}}
+\index{Vector2f@{Vector2f}!com.arena.utils.Vector2f@{com.arena.utils.Vector2f}}
+\doxysubsubsection{\texorpdfstring{Vector2f()}{Vector2f()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1_vector2f_a28c036304b89d9145d4a48a855714165} 
+com.\+arena.\+utils.\+Vector2f.\+Vector2f (\begin{DoxyParamCaption}\item[{float}]{x}{, }\item[{float}]{y}{}\end{DoxyParamCaption})}
+
+Creates a new {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} .
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & the x coordinate as a {\ttfamily float}. \\
+\hline
+{\em y} & the y coordinate as a {\ttfamily float}. @impl\+Note This constructor initializes the vector with the given coordinates. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_aa336ececdeb6db56a93dce32f86a77b1}\index{com.arena.utils.Vector2f@{com.arena.utils.Vector2f}!distTo@{distTo}}
+\index{distTo@{distTo}!com.arena.utils.Vector2f@{com.arena.utils.Vector2f}}
+\doxysubsubsection{\texorpdfstring{distTo()}{distTo()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1_vector2f_aa336ececdeb6db56a93dce32f86a77b1} 
+float com.\+arena.\+utils.\+Vector2f.\+dist\+To (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}}}]{other}{}\end{DoxyParamCaption})}
+
+Calculates the euclidian distance to another {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & the other {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} to which the distance is calculated. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the distance as a {\ttfamily float} . @impl\+Note This method computes the distance using the Pythagorean theorem, which is the square root of the sum of the squares of the differences in x and y coordinates. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_a37a77b11479144a575b78ce61a5c3e38}\index{com.arena.utils.Vector2f@{com.arena.utils.Vector2f}!dot@{dot}}
+\index{dot@{dot}!com.arena.utils.Vector2f@{com.arena.utils.Vector2f}}
+\doxysubsubsection{\texorpdfstring{dot()}{dot()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1_vector2f_a37a77b11479144a575b78ce61a5c3e38} 
+float com.\+arena.\+utils.\+Vector2f.\+dot (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}}}]{other}{}\end{DoxyParamCaption})}
+
+Calculates the dot product of this {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} with another {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & the other {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} to which the dot product is calculated. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the dot product as a {\ttfamily float} . @impl\+Note This method computes the dot product by multiplying the corresponding x and y coordinates of both vectors and summing the results. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_ae38a11768e31d67bc501c1a4aae1a1d2}\index{com.arena.utils.Vector2f@{com.arena.utils.Vector2f}!len@{len}}
+\index{len@{len}!com.arena.utils.Vector2f@{com.arena.utils.Vector2f}}
+\doxysubsubsection{\texorpdfstring{len()}{len()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1_vector2f_ae38a11768e31d67bc501c1a4aae1a1d2} 
+float com.\+arena.\+utils.\+Vector2f.\+len (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Calculates the length of the current {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} .
+
+\begin{DoxyReturn}{Returns}
+the length of the vector as a {\ttfamily float} . @impl\+Note This method computes the length using the Pythagorean theorem, which is the square root of the sum of the squares of the x and y coordinates. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_a5ee81c1d6b901d6c343339c57f83ea36}\index{com.arena.utils.Vector2f@{com.arena.utils.Vector2f}!rotationToDirection@{rotationToDirection}}
+\index{rotationToDirection@{rotationToDirection}!com.arena.utils.Vector2f@{com.arena.utils.Vector2f}}
+\doxysubsubsection{\texorpdfstring{rotationToDirection()}{rotationToDirection()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1_vector2f_a5ee81c1d6b901d6c343339c57f83ea36} 
+\mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} com.\+arena.\+utils.\+Vector2f.\+rotation\+To\+Direction (\begin{DoxyParamCaption}\item[{float}]{rotation\+Degrees}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Converts a rotation in degrees to a direction {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} .
+
+
+\begin{DoxyParams}{Parameters}
+{\em rotation\+Degrees} & the rotation in degrees. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} representing the direction corresponding to the given rotation. @impl\+Note This method converts the rotation from degrees to radians and then calculates the sine and cosine to create a direction vector. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_a7b4551c544c6c05fade2d285504c12f2}\index{com.arena.utils.Vector2f@{com.arena.utils.Vector2f}!sub@{sub}}
+\index{sub@{sub}!com.arena.utils.Vector2f@{com.arena.utils.Vector2f}}
+\doxysubsubsection{\texorpdfstring{sub()}{sub()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1_vector2f_a7b4551c544c6c05fade2d285504c12f2} 
+\mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} com.\+arena.\+utils.\+Vector2f.\+sub (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}}}]{other}{}\end{DoxyParamCaption})}
+
+Adds another {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} to this vector and returns a new {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & the vector to add. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a new {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} instance representing the sum of this vector and the other {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} . @impl\+Note This method creates a new vector by adding the x and y coordinates of the other vector to this vector\textquotesingle{}s coordinates. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_vector2f_ac30c0c867ac4f913be4e11ff00112c0c}\index{com.arena.utils.Vector2f@{com.arena.utils.Vector2f}!toString@{toString}}
+\index{toString@{toString}!com.arena.utils.Vector2f@{com.arena.utils.Vector2f}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1_vector2f_ac30c0c867ac4f913be4e11ff00112c0c} 
+String com.\+arena.\+utils.\+Vector2f.\+to\+String (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Converts this {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1_vector2f}{Vector2f}} to a string representation.
+
+@impl\+Note This method returns a string that includes the x and y coordinates of the vector. \begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/utils/Vector2f.\+java\end{DoxyCompactItemize}

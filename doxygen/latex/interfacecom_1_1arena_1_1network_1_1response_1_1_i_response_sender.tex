@@ -1,0 +1,109 @@
+\doxysection{com.\+arena.\+network.\+response.\+IResponse\+Sender Interface Reference}
+\hypertarget{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender}{}\label{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender}\index{com.arena.network.response.IResponseSender@{com.arena.network.response.IResponseSender}}
+Inheritance diagram for com.\+arena.\+network.\+response.\+IResponse\+Sender\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_acd892a2c2e17a80663edf3c7819ca076}{send\+Response}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} response, boolean silent)
+\item 
+void \mbox{\hyperlink{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_aacc3d39f9051ca60a1a40630438d6154}{send\+Game\+Response}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} response, \mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} game\+Name, boolean silent)
+\item 
+void \mbox{\hyperlink{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_a8796e0c6b4646d41cba25277d52dc066}{send\+Uuid\+Response}} (String uuid, \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} response, boolean silent)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This interface defines methods for sending response messages to players in a game. 
+
+\label{doc-func-members}
+\Hypertarget{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_aacc3d39f9051ca60a1a40630438d6154}\index{com.arena.network.response.IResponseSender@{com.arena.network.response.IResponseSender}!sendGameResponse@{sendGameResponse}}
+\index{sendGameResponse@{sendGameResponse}!com.arena.network.response.IResponseSender@{com.arena.network.response.IResponseSender}}
+\doxysubsubsection{\texorpdfstring{sendGameResponse()}{sendGameResponse()}}
+{\footnotesize\ttfamily \label{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_aacc3d39f9051ca60a1a40630438d6154} 
+void com.\+arena.\+network.\+response.\+IResponse\+Sender.\+send\+Game\+Response (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}}}]{response}{, }\item[{\mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}}}]{game\+Name}{, }\item[{boolean}]{silent}{}\end{DoxyParamCaption})}
+
+Sends a game-\/specific response to all players in the specified game.
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} to send. \\
+\hline
+{\em game\+Name} & The name of the game to which the response should be sent. \\
+\hline
+{\em silent} & If true, the response will not be logged by the {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}}. @impl\+Note \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+Implemented in \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_ae8583001e848379064d971695ff54d4b}{com.\+arena.\+network.\+Java\+Web\+Socket\+Response\+Sender}}.
+
+\Hypertarget{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_acd892a2c2e17a80663edf3c7819ca076}\index{com.arena.network.response.IResponseSender@{com.arena.network.response.IResponseSender}!sendResponse@{sendResponse}}
+\index{sendResponse@{sendResponse}!com.arena.network.response.IResponseSender@{com.arena.network.response.IResponseSender}}
+\doxysubsubsection{\texorpdfstring{sendResponse()}{sendResponse()}}
+{\footnotesize\ttfamily \label{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_acd892a2c2e17a80663edf3c7819ca076} 
+void com.\+arena.\+network.\+response.\+IResponse\+Sender.\+send\+Response (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}}}]{response}{, }\item[{boolean}]{silent}{}\end{DoxyParamCaption})}
+
+Sends a response message to all players in the specified game.
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} to send. \\
+\hline
+{\em silent} & If true, the response will not be logged by the {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}} . \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+Implemented in \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_ae87e51e5c3b4ae64216700825a9fc44b}{com.\+arena.\+network.\+Java\+Web\+Socket\+Response\+Sender}}.
+
+\Hypertarget{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_a8796e0c6b4646d41cba25277d52dc066}\index{com.arena.network.response.IResponseSender@{com.arena.network.response.IResponseSender}!sendUuidResponse@{sendUuidResponse}}
+\index{sendUuidResponse@{sendUuidResponse}!com.arena.network.response.IResponseSender@{com.arena.network.response.IResponseSender}}
+\doxysubsubsection{\texorpdfstring{sendUuidResponse()}{sendUuidResponse()}}
+{\footnotesize\ttfamily \label{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_a8796e0c6b4646d41cba25277d52dc066} 
+void com.\+arena.\+network.\+response.\+IResponse\+Sender.\+send\+Uuid\+Response (\begin{DoxyParamCaption}\item[{String}]{uuid}{, }\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}}}]{response}{, }\item[{boolean}]{silent}{}\end{DoxyParamCaption})}
+
+Sends a response message to a specific player identified by their UUID.
+
+
+\begin{DoxyParams}{Parameters}
+{\em uuid} & The UUID of the player to whom the message should be sent. \\
+\hline
+{\em response} & The {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} to send. \\
+\hline
+{\em silent} & If true, the response will not be logged by the {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+Implemented in \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_a945561a1afcd378f305d66438b572141}{com.\+arena.\+network.\+Java\+Web\+Socket\+Response\+Sender}}.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/network/response/IResponse\+Sender.\+java\end{DoxyCompactItemize}

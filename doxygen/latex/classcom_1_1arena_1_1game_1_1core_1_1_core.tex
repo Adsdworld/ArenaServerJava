@@ -1,0 +1,58 @@
+\doxysection{com.\+arena.\+game.\+core.\+Core Class Reference}
+\hypertarget{classcom_1_1arena_1_1game_1_1core_1_1_core}{}\label{classcom_1_1arena_1_1game_1_1core_1_1_core}\index{com.arena.game.core.Core@{com.arena.game.core.Core}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1core_1_1_core_a2678d828d6521ee9386da9fd5db45123}{receive}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1core_1_1_core}{Core}} \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1core_1_1_core_a40931b9dc5abd0d5a48e1ffe729dff3a}{get\+Instance}} ()
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1game_1_1core_1_1_core_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1game_1_1core_1_1_core_a40931b9dc5abd0d5a48e1ffe729dff3a}\index{com.arena.game.core.Core@{com.arena.game.core.Core}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!com.arena.game.core.Core@{com.arena.game.core.Core}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1game_1_1core_1_1_core_a40931b9dc5abd0d5a48e1ffe729dff3a} 
+\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1core_1_1_core}{Core}} com.\+arena.\+game.\+core.\+Core.\+get\+Instance (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+get\+Instance is a method that returns the singleton instance of \doxylink{classcom_1_1arena_1_1game_1_1core_1_1_core}{Core}.
+
+\begin{DoxyReturn}{Returns}
+\doxylink{classcom_1_1arena_1_1game_1_1core_1_1_core}{Core} instance. @impl\+Note If the instance is not initialized, it creates a new instance. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1game_1_1core_1_1_core_a2678d828d6521ee9386da9fd5db45123}\index{com.arena.game.core.Core@{com.arena.game.core.Core}!receive@{receive}}
+\index{receive@{receive}!com.arena.game.core.Core@{com.arena.game.core.Core}}
+\doxysubsubsection{\texorpdfstring{receive()}{receive()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1game_1_1core_1_1_core_a2678d828d6521ee9386da9fd5db45123} 
+void com.\+arena.\+game.\+core.\+Core.\+receive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
+
+Receive is a method that receives a message and adds it to the message queue.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} to be processed. @impl\+Note Checks if the message is null or if the action is invalid, logging an error if so. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/game/core/Core.\+java\end{DoxyCompactItemize}

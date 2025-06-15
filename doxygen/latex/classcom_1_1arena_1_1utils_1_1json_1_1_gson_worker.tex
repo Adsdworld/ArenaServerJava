@@ -1,0 +1,96 @@
+\doxysection{com.\+arena.\+utils.\+json.\+Gson\+Worker Class Reference}
+\hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker}{}\label{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker}\index{com.arena.utils.json.GsonWorker@{com.arena.utils.json.GsonWorker}}
+Inheritance diagram for com.\+arena.\+utils.\+json.\+Gson\+Worker\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+String \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_a7ce53ef94b13caa3599305062dfb32f9}{to\+Json}} (Object object)
+\item 
+Json\+Element \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_ad5d274428ed581f30c43509823253a81}{to\+Json\+Tree}} (Object parsed\+Object)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Gson \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_a3ed73e82c60f6db8eaa317eaa1c11e71}{gson}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_a7ce53ef94b13caa3599305062dfb32f9}\index{com.arena.utils.json.GsonWorker@{com.arena.utils.json.GsonWorker}!toJson@{toJson}}
+\index{toJson@{toJson}!com.arena.utils.json.GsonWorker@{com.arena.utils.json.GsonWorker}}
+\doxysubsubsection{\texorpdfstring{toJson()}{toJson()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_a7ce53ef94b13caa3599305062dfb32f9} 
+String com.\+arena.\+utils.\+json.\+Gson\+Worker.\+to\+Json (\begin{DoxyParamCaption}\item[{Object}]{object}{}\end{DoxyParamCaption})}
+
+Converts an object to its JSON representation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & the object to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the JSON string representation of the object 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_a25ea35146a035d64f25031231fa26a1b}{com.\+arena.\+utils.\+json.\+IJson}}.
+
+\Hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_ad5d274428ed581f30c43509823253a81}\index{com.arena.utils.json.GsonWorker@{com.arena.utils.json.GsonWorker}!toJsonTree@{toJsonTree}}
+\index{toJsonTree@{toJsonTree}!com.arena.utils.json.GsonWorker@{com.arena.utils.json.GsonWorker}}
+\doxysubsubsection{\texorpdfstring{toJsonTree()}{toJsonTree()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_ad5d274428ed581f30c43509823253a81} 
+Json\+Element com.\+arena.\+utils.\+json.\+Gson\+Worker.\+to\+Json\+Tree (\begin{DoxyParamCaption}\item[{Object}]{parsed\+Object}{}\end{DoxyParamCaption})}
+
+Converts an object to a JSON tree structure.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parsed\+Object} & the object to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a JSON element representing the object 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_ab60d4ba3f4548ffbef97157e3e6d3057}{com.\+arena.\+utils.\+json.\+IJson}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_a3ed73e82c60f6db8eaa317eaa1c11e71}\index{com.arena.utils.json.GsonWorker@{com.arena.utils.json.GsonWorker}!gson@{gson}}
+\index{gson@{gson}!com.arena.utils.json.GsonWorker@{com.arena.utils.json.GsonWorker}}
+\doxysubsubsection{\texorpdfstring{gson}{gson}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_a3ed73e82c60f6db8eaa317eaa1c11e71} 
+final Gson com.\+arena.\+utils.\+json.\+Gson\+Worker.\+gson}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \textcolor{keyword}{new}\ GsonBuilder()}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ .registerTypeAdapterFactory(}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ RuntimeTypeAdapterFactory.of(\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{LivingEntity}}.class,\ \textcolor{stringliteral}{"{}RuntimeTypeAdapterFactoryClazz"{}})}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .registerSubtype(\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1champion_1_1_garen}{Garen}}.class,\ \textcolor{stringliteral}{"{}Garen"{}})}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .registerSubtype(\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_tower}{Tower}}.class,\ \textcolor{stringliteral}{"{}Tower"{}})}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .registerSubtype(\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_tower_dead}{TowerDead}}.class,\ \textcolor{stringliteral}{"{}TowerDead"{}})}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .registerSubtype(\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_inhibitor}{Inhibitor}}.class,\ \textcolor{stringliteral}{"{}Inhibitor"{}})}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .registerSubtype(\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_nexus}{Nexus}}.class,\ \textcolor{stringliteral}{"{}Nexus"{}})}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ .create()}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/utils/json/Gson\+Worker.\+java\end{DoxyCompactItemize}

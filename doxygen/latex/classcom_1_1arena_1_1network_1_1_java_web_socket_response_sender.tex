@@ -1,0 +1,106 @@
+\doxysection{com.\+arena.\+network.\+Java\+Web\+Socket\+Response\+Sender Class Reference}
+\hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender}{}\label{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender}\index{com.arena.network.JavaWebSocketResponseSender@{com.arena.network.JavaWebSocketResponseSender}}
+Inheritance diagram for com.\+arena.\+network.\+Java\+Web\+Socket\+Response\+Sender\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_ae87e51e5c3b4ae64216700825a9fc44b}{send\+Response}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} response, boolean silent)
+\item 
+void \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_ae8583001e848379064d971695ff54d4b}{send\+Game\+Response}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} response, \mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} game\+Name, boolean silent)
+\item 
+void \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_a945561a1afcd378f305d66438b572141}{send\+Uuid\+Response}} (String uuid, \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} response, boolean silent)
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_ae8583001e848379064d971695ff54d4b}\index{com.arena.network.JavaWebSocketResponseSender@{com.arena.network.JavaWebSocketResponseSender}!sendGameResponse@{sendGameResponse}}
+\index{sendGameResponse@{sendGameResponse}!com.arena.network.JavaWebSocketResponseSender@{com.arena.network.JavaWebSocketResponseSender}}
+\doxysubsubsection{\texorpdfstring{sendGameResponse()}{sendGameResponse()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_ae8583001e848379064d971695ff54d4b} 
+void com.\+arena.\+network.\+Java\+Web\+Socket\+Response\+Sender.\+send\+Game\+Response (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}}}]{response}{, }\item[{\mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}}}]{game\+Name}{, }\item[{boolean}]{silent}{}\end{DoxyParamCaption})}
+
+Sends a game-\/specific response to all players in the specified game.
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} to send. \\
+\hline
+{\em game\+Name} & The name of the game to which the response should be sent. \\
+\hline
+{\em silent} & If true, the response will not be logged by the {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}}. @impl\+Note \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+Implements \mbox{\hyperlink{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_aacc3d39f9051ca60a1a40630438d6154}{com.\+arena.\+network.\+response.\+IResponse\+Sender}}.
+
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_ae87e51e5c3b4ae64216700825a9fc44b}\index{com.arena.network.JavaWebSocketResponseSender@{com.arena.network.JavaWebSocketResponseSender}!sendResponse@{sendResponse}}
+\index{sendResponse@{sendResponse}!com.arena.network.JavaWebSocketResponseSender@{com.arena.network.JavaWebSocketResponseSender}}
+\doxysubsubsection{\texorpdfstring{sendResponse()}{sendResponse()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_ae87e51e5c3b4ae64216700825a9fc44b} 
+void com.\+arena.\+network.\+Java\+Web\+Socket\+Response\+Sender.\+send\+Response (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}}}]{response}{, }\item[{boolean}]{silent}{}\end{DoxyParamCaption})}
+
+Sends a response message to all players in the specified game.
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} to send. \\
+\hline
+{\em silent} & If true, the response will not be logged by the {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}} . \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+Implements \mbox{\hyperlink{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_acd892a2c2e17a80663edf3c7819ca076}{com.\+arena.\+network.\+response.\+IResponse\+Sender}}.
+
+\Hypertarget{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_a945561a1afcd378f305d66438b572141}\index{com.arena.network.JavaWebSocketResponseSender@{com.arena.network.JavaWebSocketResponseSender}!sendUuidResponse@{sendUuidResponse}}
+\index{sendUuidResponse@{sendUuidResponse}!com.arena.network.JavaWebSocketResponseSender@{com.arena.network.JavaWebSocketResponseSender}}
+\doxysubsubsection{\texorpdfstring{sendUuidResponse()}{sendUuidResponse()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1network_1_1_java_web_socket_response_sender_a945561a1afcd378f305d66438b572141} 
+void com.\+arena.\+network.\+Java\+Web\+Socket\+Response\+Sender.\+send\+Uuid\+Response (\begin{DoxyParamCaption}\item[{String}]{uuid}{, }\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}}}]{response}{, }\item[{boolean}]{silent}{}\end{DoxyParamCaption})}
+
+Sends a response message to a specific player identified by their UUID.
+
+
+\begin{DoxyParams}{Parameters}
+{\em uuid} & The UUID of the player to whom the message should be sent. \\
+\hline
+{\em response} & The {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} to send. \\
+\hline
+{\em silent} & If true, the response will not be logged by the {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+Implements \mbox{\hyperlink{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender_a8796e0c6b4646d41cba25277d52dc066}{com.\+arena.\+network.\+response.\+IResponse\+Sender}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/network/Java\+Web\+Socket\+Response\+Sender.\+java\end{DoxyCompactItemize}

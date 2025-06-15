@@ -1,0 +1,54 @@
+\doxysection{com.\+arena.\+game.\+zone.\+Zone Interface Reference}
+\hypertarget{interfacecom_1_1arena_1_1game_1_1zone_1_1_zone}{}\label{interfacecom_1_1arena_1_1game_1_1zone_1_1_zone}\index{com.arena.game.zone.Zone@{com.arena.game.zone.Zone}}
+Inheritance diagram for com.\+arena.\+game.\+zone.\+Zone\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.588652cm]{interfacecom_1_1arena_1_1game_1_1zone_1_1_zone}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+boolean \mbox{\hyperlink{interfacecom_1_1arena_1_1game_1_1zone_1_1_zone_a972d205c65164372bbd67a19782458d0}{is\+In\+Zone}} (\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{Living\+Entity}} attacker, \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{Living\+Entity}} target)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This interface defines a zone in the Arena game. A zone is a specific area where certain conditions apply, such as whether an attacker can target a living entity. 
+
+\label{doc-func-members}
+\Hypertarget{interfacecom_1_1arena_1_1game_1_1zone_1_1_zone_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{interfacecom_1_1arena_1_1game_1_1zone_1_1_zone_a972d205c65164372bbd67a19782458d0}\index{com.arena.game.zone.Zone@{com.arena.game.zone.Zone}!isInZone@{isInZone}}
+\index{isInZone@{isInZone}!com.arena.game.zone.Zone@{com.arena.game.zone.Zone}}
+\doxysubsubsection{\texorpdfstring{isInZone()}{isInZone()}}
+{\footnotesize\ttfamily \label{interfacecom_1_1arena_1_1game_1_1zone_1_1_zone_a972d205c65164372bbd67a19782458d0} 
+boolean com.\+arena.\+game.\+zone.\+Zone.\+is\+In\+Zone (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{Living\+Entity}}}]{attacker}{, }\item[{\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{Living\+Entity}}}]{target}{}\end{DoxyParamCaption})}
+
+Checks if the attacker is within the zone of the target.
+
+
+\begin{DoxyParams}{Parameters}
+{\em attacker} & The living entity that is attacking. \\
+\hline
+{\em target} & The living entity that is being targeted. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the attacker is within the zone of the target, false otherwise. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+Implemented in \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1zone_1_1_zone_circle_a73c321565c81943549dae312b7e381c0}{com.\+arena.\+game.\+zone.\+Zone\+Circle}}, \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1zone_1_1_zone_cone_af9812ba0299144a957d90b5a603e5fc0}{com.\+arena.\+game.\+zone.\+Zone\+Cone}}, and \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1zone_1_1_zone_rectangle_a9d8ea5619a90e371771aed192d3ec8c3}{com.\+arena.\+game.\+zone.\+Zone\+Rectangle}}.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/game/zone/Zone.\+java\end{DoxyCompactItemize}

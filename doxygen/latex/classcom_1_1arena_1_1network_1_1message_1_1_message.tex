@@ -1,0 +1,55 @@
+\doxysection{com.\+arena.\+network.\+message.\+Message Class Reference}
+\hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message}{}\label{classcom_1_1arena_1_1network_1_1message_1_1_message}\index{com.arena.network.message.Message@{com.arena.network.message.Message}}
+Inheritance diagram for com.\+arena.\+network.\+message.\+Message\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcom_1_1arena_1_1network_1_1message_1_1_message}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_a5b193ece544f98a24d6e27a7abd71d6e}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_a5b193ece544f98a24d6e27a7abd71d6e} 
+long {\bfseries get\+Time\+Stamp} ()
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_ab9a2b41da289eea016e40491509dec9b}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_ab9a2b41da289eea016e40491509dec9b} 
+void {\bfseries set\+Time\+Stamp} (long new\+Timestamp)
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_a94e9925d843fc56c292b31f08c2d4698}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_a94e9925d843fc56c292b31f08c2d4698} 
+\mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} {\bfseries get\+Game\+Name} ()
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_a958383c2d03211fda67190cec644e9a8}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_a958383c2d03211fda67190cec644e9a8} 
+void {\bfseries set\+Game\+Name} (\mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} game\+Name)
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_ac1b36e98ecfe339bda563d24755770a3}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_ac1b36e98ecfe339bda563d24755770a3} 
+\mbox{\hyperlink{enumcom_1_1arena_1_1player_1_1_action_enum}{Action\+Enum}} {\bfseries get\+Action} ()
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_a554ed111ca97f0c8dde6d496bae3c56e}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_a554ed111ca97f0c8dde6d496bae3c56e} 
+void {\bfseries set\+Action} (\mbox{\hyperlink{enumcom_1_1arena_1_1player_1_1_action_enum}{Action\+Enum}} action)
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_a5d497d61d52d9a1286c78b3665419f0d}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_a5d497d61d52d9a1286c78b3665419f0d} 
+String {\bfseries get\+Uuid} ()
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_a3b5007e876211d9088b4126a7fc98cc7}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_a3b5007e876211d9088b4126a7fc98cc7} 
+void {\bfseries set\+Uuid} (String uuid)
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_aafac87dfb78e3e2537e6d8513847bcb2}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_aafac87dfb78e3e2537e6d8513847bcb2} 
+\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{Living\+Entity}} {\bfseries get\+Living\+Entity} ()
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_af0602cad7a064de9ab768dc040ddf59d}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_af0602cad7a064de9ab768dc040ddf59d} 
+void {\bfseries set\+Living\+Entity} (\mbox{\hyperlink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{Living\+Entity}} living\+Entity)
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_a8b7b1d20c5d0b0721cbf603cb629bd0e}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_a8b7b1d20c5d0b0721cbf603cb629bd0e} 
+int {\bfseries compare\+To} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} other)
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1message_1_1_message_a78045087ee3abc0c28c9cfee4dd06b03}\label{classcom_1_1arena_1_1network_1_1message_1_1_message_a78045087ee3abc0c28c9cfee4dd06b03} 
+String {\bfseries to\+String} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a message sent over the network. This class is used to encapsulate the data that is sent by the {\ttfamily \doxylink{namespacecom_1_1arena_1_1player_aade8fec7513360f537d8bb72c9ff0804}{com.\+arena.\+player.\+Player}} to the {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{com.\+arena.\+server.\+Server}} . 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/network/message/Message.\+java\end{DoxyCompactItemize}

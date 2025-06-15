@@ -1,0 +1,201 @@
+\doxysection{com.\+arena.\+utils.\+logger.\+Logger Class Reference}
+\hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{}\label{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}\index{com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a03b67b97d956f382212ab1c5e40987e7}{info}} (String message)
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a7aeac4d63610399caff56c2a4409b9bb}{server}} (String message)
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_abadaa936269c99e4a34bdca3d6dcacf6}{game}} (String message)
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a8955ceded5f4af032d80932cb5200257}{game}} (String message, \mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} game\+Name)
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a1ee4e5e40d898a25f9ca4005b0329ed7}{warn}} (String message)
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a8dc98a511c4e17322bd88107f14c1850}{failure}} (String message)
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_ae1540d0a38d10c02d77ae8b12d6917ec}{error}} (String message)
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a4fdf1ad0a346c7935d255a5096c2516d}{test}} (String message)
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a7a0f9db2ccb5b9b7aa6d41d4bebd0405}{flush}} ()
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_ae1540d0a38d10c02d77ae8b12d6917ec}\index{com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}!error@{error}}
+\index{error@{error}!com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}}
+\doxysubsubsection{\texorpdfstring{error()}{error()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_ae1540d0a38d10c02d77ae8b12d6917ec} 
+void com.\+arena.\+utils.\+logger.\+Logger.\+error (\begin{DoxyParamCaption}\item[{String}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+For logging errors, an error is raised by Java Runtime or a library exception.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the message to log. @impl\+Note This method enqueues a log message with the level "{}error"{}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a8dc98a511c4e17322bd88107f14c1850}\index{com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}!failure@{failure}}
+\index{failure@{failure}!com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}}
+\doxysubsubsection{\texorpdfstring{failure()}{failure()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a8dc98a511c4e17322bd88107f14c1850} 
+void com.\+arena.\+utils.\+logger.\+Logger.\+failure (\begin{DoxyParamCaption}\item[{String}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+For logging failures, which indicate that something went wrong but the code can still continue to run. Used for game logic failures. example\+: "{}\+Player tried to join a game that does not exist"{}, "{}\+Game creation failed due to invalid parameters"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the message to log. @impl\+Note This method enqueues a log message with the level "{}failure"{}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a7a0f9db2ccb5b9b7aa6d41d4bebd0405}\index{com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}!flush@{flush}}
+\index{flush@{flush}!com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}}
+\doxysubsubsection{\texorpdfstring{flush()}{flush()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a7a0f9db2ccb5b9b7aa6d41d4bebd0405} 
+void com.\+arena.\+utils.\+logger.\+Logger.\+flush (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Flushes the log queue buffer to write all pending log messages to the log file.
+
+@impl\+Note This method checks if the log queue is not empty and call the \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_log_writer}{Log\+Writer} to process the queue. \begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_abadaa936269c99e4a34bdca3d6dcacf6}\index{com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}!game@{game}}
+\index{game@{game}!com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}}
+\doxysubsubsection{\texorpdfstring{game()}{game()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_abadaa936269c99e4a34bdca3d6dcacf6} 
+void com.\+arena.\+utils.\+logger.\+Logger.\+game (\begin{DoxyParamCaption}\item[{String}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+For logging {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{com.\+arena.\+game.\+Game}} actions that have been processed successfully.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the message to log. @impl\+Note This method enqueues a log message with the level "{}info game"{} and a custom prefix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a8955ceded5f4af032d80932cb5200257}\index{com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}!game@{game}}
+\index{game@{game}!com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}}
+\doxysubsubsection{\texorpdfstring{game()}{game()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a8955ceded5f4af032d80932cb5200257} 
+void com.\+arena.\+utils.\+logger.\+Logger.\+game (\begin{DoxyParamCaption}\item[{String}]{message}{, }\item[{\mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}}}]{game\+Name}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+For logging {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{com.\+arena.\+game.\+Game}} actions that have been processed successfully with a specific {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} .
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the message to log. \\
+\hline
+{\em game\+Name} & the name of the game as an enum. @impl\+Note This method enqueues a log message with the level "{}info game"{} and a custom prefix that includes the game name. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a03b67b97d956f382212ab1c5e40987e7}\index{com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}!info@{info}}
+\index{info@{info}!com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}}
+\doxysubsubsection{\texorpdfstring{info()}{info()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a03b67b97d956f382212ab1c5e40987e7} 
+void com.\+arena.\+utils.\+logger.\+Logger.\+info (\begin{DoxyParamCaption}\item[{String}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+For logging {\ttfamily System} , {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1_java_web_socket}{com.\+arena.\+network.\+Java\+Web\+Socket}} , {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{com.\+arena.\+server.\+Server}} and {\ttfamily \doxylink{namespacecom_1_1arena_1_1player_aade8fec7513360f537d8bb72c9ff0804}{com.\+arena.\+player.\+Player}} events. example\+: "{}\+Player joined the game"{}, "{}\+Game created"{}, "{}\+Websocket connection established"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the message to log. @impl\+Note This method enqueues a log message with the level "{}info"{}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a7aeac4d63610399caff56c2a4409b9bb}\index{com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}!server@{server}}
+\index{server@{server}!com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}}
+\doxysubsubsection{\texorpdfstring{server()}{server()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a7aeac4d63610399caff56c2a4409b9bb} 
+void com.\+arena.\+utils.\+logger.\+Logger.\+server (\begin{DoxyParamCaption}\item[{String}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+For logging {\ttfamily \doxylink{classcom_1_1arena_1_1server_1_1_server}{com.\+arena.\+server.\+Server}} actions that have been processed successfully. Must not be used if info, warn, failure or error can be used instead. example\+: "{}\+Started"{}, "{}\+Stopped"{}, "{}\+Registering player $<$uuid$>$ successfully"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the message to log. @impl\+Note This method enqueues a log message with the level "{}info server"{} and a custom prefix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a4fdf1ad0a346c7935d255a5096c2516d}\index{com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}!test@{test}}
+\index{test@{test}!com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}}
+\doxysubsubsection{\texorpdfstring{test()}{test()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a4fdf1ad0a346c7935d255a5096c2516d} 
+void com.\+arena.\+utils.\+logger.\+Logger.\+test (\begin{DoxyParamCaption}\item[{String}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Logs a test message with the level "{}test"{}. This method is used for debugging purposes and should not be used in production code. exemple\+: "{}\+Test message\+: Client connected"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the message to log. @impl\+Note This method enqueues a log message with the level "{}test"{} and a custom prefix. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a1ee4e5e40d898a25f9ca4005b0329ed7}\index{com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}!warn@{warn}}
+\index{warn@{warn}!com.arena.utils.logger.Logger@{com.arena.utils.logger.Logger}}
+\doxysubsubsection{\texorpdfstring{warn()}{warn()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1logger_1_1_logger_a1ee4e5e40d898a25f9ca4005b0329ed7} 
+void com.\+arena.\+utils.\+logger.\+Logger.\+warn (\begin{DoxyParamCaption}\item[{String}]{message}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+For logging warnings, which indicate potential issues that may lead to future failures in code execution. A warning make the code continue to run, but it is a sign that something might not be right. example\+: "{}\+Player tried to join a game that is full"{}, "{}\+Data transmitted ignored or unrecognized enum\+: Foo = \textquotesingle{}bar\textquotesingle{}"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the message to log. @impl\+Note This method enqueues a log message with the level "{}warning"{}. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/utils/logger/Logger.\+java\end{DoxyCompactItemize}

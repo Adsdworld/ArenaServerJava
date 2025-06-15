@@ -1,0 +1,35 @@
+\doxysection{Package com.\+arena.\+utils.\+json}
+\hypertarget{namespacecom_1_1arena_1_1utils_1_1json}{}\label{namespacecom_1_1arena_1_1utils_1_1json}\index{com.arena.utils.json@{com.arena.utils.json}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker}{Gson\+Worker}}
+\item 
+interface \mbox{\hyperlink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json}{IJson}}
+\item 
+class \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1json_1_1_json_service}{Json\+Service}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provides utility classes and interfaces for JSON serialization and deserialization, mainly using the Gson library. 
+
+This package includes\+: 
+\begin{DoxyItemize}
+\item {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker}{com.\+arena.\+utils.\+json.\+Gson\+Worker}}\+: A concrete implementation of {\ttfamily \doxylink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json}{com.\+arena.\+utils.\+json.\+IJson}}, using a configured {\ttfamily \doxylink{}{com.\+google.\+gson.\+Gson\+Builder}} to enable polymorphic serialization of game entities. 
+\item {\ttfamily \doxylink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json}{com.\+arena.\+utils.\+json.\+IJson}}\+: An interface defining the basic methods for JSON transformation. 
+\item {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1json_1_1_json_service}{com.\+arena.\+utils.\+json.\+Json\+Service}}\+: A static service that centralizes access to JSON serialization methods across the application. 
+\end{DoxyItemize}
+
+This system enables safe and type-\/aware serialization of game entities such as {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1entity_1_1champion_1_1_garen}{com.\+arena.\+game.\+entity.\+champion.\+Garen}}, {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_tower}{com.\+arena.\+game.\+entity.\+building.\+Tower}}, etc., by supporting dynamic typing through a Runtime\+Type\+Adapter\+Factory. ~\newline
+ It also includes a custom validation method via {\ttfamily \doxylink{}{com.\+arena.\+utils.\+json.\+Gson\+Worker\#validate\+Json(\+String, Class)}} to detect unexpected fields or unknown enum values during deserialization.
+
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxySince}{Since}
+2025-\/06-\/15 
+\end{DoxySince}

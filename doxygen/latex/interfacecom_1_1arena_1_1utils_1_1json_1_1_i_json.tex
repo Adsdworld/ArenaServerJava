@@ -1,0 +1,87 @@
+\doxysection{com.\+arena.\+utils.\+json.\+IJson Interface Reference}
+\hypertarget{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json}{}\label{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json}\index{com.arena.utils.json.IJson@{com.arena.utils.json.IJson}}
+Inheritance diagram for com.\+arena.\+utils.\+json.\+IJson\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+String \mbox{\hyperlink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_a25ea35146a035d64f25031231fa26a1b}{to\+Json}} (Object object)
+\item 
+$<$ T $>$ T \mbox{\hyperlink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_ac63e2d7350a74bcc3755f12660d2b980}{from\+Json}} (String json, Class$<$ T $>$ clazz)
+\item 
+Json\+Element \mbox{\hyperlink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_ab60d4ba3f4548ffbef97157e3e6d3057}{to\+Json\+Tree}} (Object parsed\+Object)
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_ac63e2d7350a74bcc3755f12660d2b980}\index{com.arena.utils.json.IJson@{com.arena.utils.json.IJson}!fromJson@{fromJson}}
+\index{fromJson@{fromJson}!com.arena.utils.json.IJson@{com.arena.utils.json.IJson}}
+\doxysubsubsection{\texorpdfstring{fromJson()}{fromJson()}}
+{\footnotesize\ttfamily \label{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_ac63e2d7350a74bcc3755f12660d2b980} 
+$<$ T $>$ T com.\+arena.\+utils.\+json.\+IJson.\+from\+Json (\begin{DoxyParamCaption}\item[{String}]{json}{, }\item[{Class$<$ T $>$}]{clazz}{}\end{DoxyParamCaption})}
+
+Parses a JSON string into an object of the specified class.
+
+
+\begin{DoxyParams}{Parameters}
+{\em json} & the JSON string to parse \\
+\hline
+{\em clazz} & the class of the object to return \\
+\hline
+{\em $<$\+T$>$} & the type of the object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an instance of the specified class populated with data from the JSON string 
+\end{DoxyReturn}
+\Hypertarget{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_a25ea35146a035d64f25031231fa26a1b}\index{com.arena.utils.json.IJson@{com.arena.utils.json.IJson}!toJson@{toJson}}
+\index{toJson@{toJson}!com.arena.utils.json.IJson@{com.arena.utils.json.IJson}}
+\doxysubsubsection{\texorpdfstring{toJson()}{toJson()}}
+{\footnotesize\ttfamily \label{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_a25ea35146a035d64f25031231fa26a1b} 
+String com.\+arena.\+utils.\+json.\+IJson.\+to\+Json (\begin{DoxyParamCaption}\item[{Object}]{object}{}\end{DoxyParamCaption})}
+
+Converts an object to its JSON representation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & the object to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the JSON string representation of the object 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_a7ce53ef94b13caa3599305062dfb32f9}{com.\+arena.\+utils.\+json.\+Gson\+Worker}}.
+
+\Hypertarget{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_ab60d4ba3f4548ffbef97157e3e6d3057}\index{com.arena.utils.json.IJson@{com.arena.utils.json.IJson}!toJsonTree@{toJsonTree}}
+\index{toJsonTree@{toJsonTree}!com.arena.utils.json.IJson@{com.arena.utils.json.IJson}}
+\doxysubsubsection{\texorpdfstring{toJsonTree()}{toJsonTree()}}
+{\footnotesize\ttfamily \label{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json_ab60d4ba3f4548ffbef97157e3e6d3057} 
+Json\+Element com.\+arena.\+utils.\+json.\+IJson.\+to\+Json\+Tree (\begin{DoxyParamCaption}\item[{Object}]{parsed\+Object}{}\end{DoxyParamCaption})}
+
+Converts an object to a JSON tree structure.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parsed\+Object} & the object to convert \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a JSON element representing the object 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1json_1_1_gson_worker_ad5d274428ed581f30c43509823253a81}{com.\+arena.\+utils.\+json.\+Gson\+Worker}}.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/utils/json/IJson.\+java\end{DoxyCompactItemize}

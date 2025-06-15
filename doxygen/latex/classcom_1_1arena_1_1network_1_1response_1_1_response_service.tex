@@ -1,0 +1,97 @@
+\doxysection{com.\+arena.\+network.\+response.\+Response\+Service Class Reference}
+\hypertarget{classcom_1_1arena_1_1network_1_1response_1_1_response_service}{}\label{classcom_1_1arena_1_1network_1_1response_1_1_response_service}\index{com.arena.network.response.ResponseService@{com.arena.network.response.ResponseService}}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1response_1_1_response_service_a0ea4f198fccac45fbfad38412e93bc1d}\label{classcom_1_1arena_1_1network_1_1response_1_1_response_service_a0ea4f198fccac45fbfad38412e93bc1d} 
+static void {\bfseries set\+Response\+Sender} (\mbox{\hyperlink{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender}{IResponse\+Sender}} sender)
+\item 
+\Hypertarget{classcom_1_1arena_1_1network_1_1response_1_1_response_service_a04a74ce8eb71fe478c1236953f30d82e}\label{classcom_1_1arena_1_1network_1_1response_1_1_response_service_a04a74ce8eb71fe478c1236953f30d82e} 
+static \mbox{\hyperlink{interfacecom_1_1arena_1_1network_1_1response_1_1_i_response_sender}{IResponse\+Sender}} {\bfseries get\+Response\+Sender} ()
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response_service_ae744f55aaf4db751aeb889498721fabe}{send}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} response, boolean silent)
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response_service_a6042127a7efbf92f5ae2e4b3e7f6dd01}{send\+To\+Game}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} response, \mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} game\+Name, boolean silent)
+\item 
+static void \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response_service_a96e454304742418f81bae398207cbe83}{send\+To\+Uuid}} (String uuid, \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} response, boolean silent)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This service class is responsible for sending responses to players in the game. 
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1network_1_1response_1_1_response_service_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1network_1_1response_1_1_response_service_ae744f55aaf4db751aeb889498721fabe}\index{com.arena.network.response.ResponseService@{com.arena.network.response.ResponseService}!send@{send}}
+\index{send@{send}!com.arena.network.response.ResponseService@{com.arena.network.response.ResponseService}}
+\doxysubsubsection{\texorpdfstring{send()}{send()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1network_1_1response_1_1_response_service_ae744f55aaf4db751aeb889498721fabe} 
+void com.\+arena.\+network.\+response.\+Response\+Service.\+send (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}}}]{response}{, }\item[{boolean}]{silent}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Sends a response to all players in the game.
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} to send. \\
+\hline
+{\em silent} & If true, the response will not be logged by the {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}}. @impl\+Note This method checks if a response sender is set before attempting to send the response. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1network_1_1response_1_1_response_service_a6042127a7efbf92f5ae2e4b3e7f6dd01}\index{com.arena.network.response.ResponseService@{com.arena.network.response.ResponseService}!sendToGame@{sendToGame}}
+\index{sendToGame@{sendToGame}!com.arena.network.response.ResponseService@{com.arena.network.response.ResponseService}}
+\doxysubsubsection{\texorpdfstring{sendToGame()}{sendToGame()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1network_1_1response_1_1_response_service_a6042127a7efbf92f5ae2e4b3e7f6dd01} 
+void com.\+arena.\+network.\+response.\+Response\+Service.\+send\+To\+Game (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}}}]{response}{, }\item[{\mbox{\hyperlink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}}}]{game\+Name}{, }\item[{boolean}]{silent}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Sends a response to all players in the specified game.
+
+
+\begin{DoxyParams}{Parameters}
+{\em response} & The {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} to send. \\
+\hline
+{\em game\+Name} & The name of the game as a {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}}. \\
+\hline
+{\em silent} & If true, the response will not be logged by the {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}}. @impl\+Note This method checks if a response sender is set before attempting to send the response. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1network_1_1response_1_1_response_service_a96e454304742418f81bae398207cbe83}\index{com.arena.network.response.ResponseService@{com.arena.network.response.ResponseService}!sendToUuid@{sendToUuid}}
+\index{sendToUuid@{sendToUuid}!com.arena.network.response.ResponseService@{com.arena.network.response.ResponseService}}
+\doxysubsubsection{\texorpdfstring{sendToUuid()}{sendToUuid()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1network_1_1response_1_1_response_service_a96e454304742418f81bae398207cbe83} 
+void com.\+arena.\+network.\+response.\+Response\+Service.\+send\+To\+Uuid (\begin{DoxyParamCaption}\item[{String}]{uuid}{, }\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}}}]{response}{, }\item[{boolean}]{silent}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Sends a response to a specific player identified by their UUID.
+
+
+\begin{DoxyParams}{Parameters}
+{\em uuid} & The UUID of the player to whom the message should be sent. \\
+\hline
+{\em response} & The {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} to send. \\
+\hline
+{\em silent} & If true, the response will not be logged by the {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}}. @impl\+Note This method checks if a response sender is set before attempting to send the response. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/network/response/Response\+Service.\+java\end{DoxyCompactItemize}

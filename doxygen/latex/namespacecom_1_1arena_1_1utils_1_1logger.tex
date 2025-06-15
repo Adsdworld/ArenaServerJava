@@ -1,0 +1,27 @@
+\doxysection{Package com.\+arena.\+utils.\+logger}
+\hypertarget{namespacecom_1_1arena_1_1utils_1_1logger}{}\label{namespacecom_1_1arena_1_1utils_1_1logger}\index{com.arena.utils.logger@{com.arena.utils.logger}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{Logger}}
+\item 
+class \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1logger_1_1_log_writer}{Log\+Writer}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Package {\ttfamily com.\+arena.\+utils.\+logger} provides utility classes for logging within the Arena project. 
+
+It includes\+: 
+\begin{DoxyItemize}
+\item {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_logger}{com.\+arena.\+utils.\+logger.\+Logger}} -\/ a public-\/facing logger interface for enqueuing log messages with various levels (info, warn, error, etc.) and formatting them. 
+\item {\ttfamily \doxylink{classcom_1_1arena_1_1utils_1_1logger_1_1_log_writer}{com.\+arena.\+utils.\+logger.\+Log\+Writer}} -\/ a utility class responsible for safely writing the queued log messages to a file asynchronously with concurrency control. 
+\end{DoxyItemize}
+
+The logging system uses a thread-\/safe queue to buffer log entries and periodically flushes them to disk, ensuring minimal performance impact on the main application. 
+
+Logging messages include timestamps, caller information, and customizable prefixes. 
+
+Usage of this package facilitates consistent, thread-\/safe logging across different components such as {\ttfamily Server}, {\ttfamily Game}, {\ttfamily Player}, and networking modules. 
+
+Author\+: A.\+SALLIER Date\+: 2025-\/06-\/15 

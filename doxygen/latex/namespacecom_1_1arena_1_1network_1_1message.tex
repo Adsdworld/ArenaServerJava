@@ -1,0 +1,31 @@
+\doxysection{Package com.\+arena.\+network.\+message}
+\hypertarget{namespacecom_1_1arena_1_1network_1_1message}{}\label{namespacecom_1_1arena_1_1network_1_1message}\index{com.arena.network.message@{com.arena.network.message}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This package contains classes related to the network messaging system used in the Arena game framework.
+
+The main class, {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{com.\+arena.\+network.\+message.\+Message}}, represents a network message that encapsulates an action performed by a player or entity in the game. Each message includes\+: 
+\begin{DoxyItemize}
+\item A unique identifier (UUID) to identify the sender or the entity involved. 
+\item An {\ttfamily \doxylink{enumcom_1_1arena_1_1player_1_1_action_enum}{com.\+arena.\+player.\+Action\+Enum}} specifying the type of action. 
+\item A {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{com.\+arena.\+game.\+Game\+Name\+Enum}} indicating the game context. 
+\item A timestamp representing when the action occurred, allowing message ordering. 
+\item A reference to a {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1entity_1_1_living_entity}{com.\+arena.\+game.\+entity.\+Living\+Entity}}, which represents the game entity involved in the action. 
+\end{DoxyItemize}
+
+Messages are comparable based on their timestamps to enable chronological sorting and processing in the networking logic.
+
+The package supports serialization and deserialization of messages using Gson for JSON conversion.
+
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}

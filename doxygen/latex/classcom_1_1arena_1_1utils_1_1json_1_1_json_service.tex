@@ -1,0 +1,72 @@
+\doxysection{com.\+arena.\+utils.\+json.\+Json\+Service Class Reference}
+\hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_json_service}{}\label{classcom_1_1arena_1_1utils_1_1json_1_1_json_service}\index{com.arena.utils.json.JsonService@{com.arena.utils.json.JsonService}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+String \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_aa1139105ca378002aa473902c583d4ae}{to\+Json}} (Object object)
+\item 
+Json\+Element \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_ae629fd79bfcc614130068106403ddcc9}{to\+Json\+Tree}} (Object parsed\+Object)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_a58fd67fbb73d683341788f56d6fcaf41}\label{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_a58fd67fbb73d683341788f56d6fcaf41} 
+static void {\bfseries set\+Worker} (\mbox{\hyperlink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json}{IJson}} worker)
+\item 
+\Hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_a9c75573a2086ef35d9cae8754cc00b6b}\label{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_a9c75573a2086ef35d9cae8754cc00b6b} 
+static \mbox{\hyperlink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json}{IJson}} {\bfseries get\+Worker} ()
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_aa1139105ca378002aa473902c583d4ae}\index{com.arena.utils.json.JsonService@{com.arena.utils.json.JsonService}!toJson@{toJson}}
+\index{toJson@{toJson}!com.arena.utils.json.JsonService@{com.arena.utils.json.JsonService}}
+\doxysubsubsection{\texorpdfstring{toJson()}{toJson()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_aa1139105ca378002aa473902c583d4ae} 
+String com.\+arena.\+utils.\+json.\+Json\+Service.\+to\+Json (\begin{DoxyParamCaption}\item[{Object}]{object}{}\end{DoxyParamCaption})}
+
+Converts an object to its JSON representation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & the object to convert to JSON \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a JSON string representation of the object @impl\+Note This method uses the worker instance of \doxylink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json}{IJson} to perform the conversion. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_ae629fd79bfcc614130068106403ddcc9}\index{com.arena.utils.json.JsonService@{com.arena.utils.json.JsonService}!toJsonTree@{toJsonTree}}
+\index{toJsonTree@{toJsonTree}!com.arena.utils.json.JsonService@{com.arena.utils.json.JsonService}}
+\doxysubsubsection{\texorpdfstring{toJsonTree()}{toJsonTree()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1json_1_1_json_service_ae629fd79bfcc614130068106403ddcc9} 
+Json\+Element com.\+arena.\+utils.\+json.\+Json\+Service.\+to\+Json\+Tree (\begin{DoxyParamCaption}\item[{Object}]{parsed\+Object}{}\end{DoxyParamCaption})}
+
+Converts an object to a JSON tree representation.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parsed\+Object} & the object to convert to a JSON tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a Json\+Element representing the object as a JSON tree @impl\+Note This method uses the worker instance of \doxylink{interfacecom_1_1arena_1_1utils_1_1json_1_1_i_json}{IJson} to perform the conversion. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/utils/json/Json\+Service.\+java\end{DoxyCompactItemize}

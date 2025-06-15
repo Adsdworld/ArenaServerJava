@@ -1,0 +1,53 @@
+\doxysection{com.\+arena.\+utils.\+Time\+Util Class Reference}
+\hypertarget{classcom_1_1arena_1_1utils_1_1_time_util}{}\label{classcom_1_1arena_1_1utils_1_1_time_util}\index{com.arena.utils.TimeUtil@{com.arena.utils.TimeUtil}}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static String \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_time_util_a351e00b3df4b9d706f98078a9970f297}{get\+Caller\+Info}} ()
+\item 
+static String \mbox{\hyperlink{classcom_1_1arena_1_1utils_1_1_time_util_ac7049b67cda465bc4b52cfa82e02f115}{get\+UTCTimestamp}} ()
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_time_util_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_time_util_a351e00b3df4b9d706f98078a9970f297}\index{com.arena.utils.TimeUtil@{com.arena.utils.TimeUtil}!getCallerInfo@{getCallerInfo}}
+\index{getCallerInfo@{getCallerInfo}!com.arena.utils.TimeUtil@{com.arena.utils.TimeUtil}}
+\doxysubsubsection{\texorpdfstring{getCallerInfo()}{getCallerInfo()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1_time_util_a351e00b3df4b9d706f98078a9970f297} 
+String com.\+arena.\+utils.\+Time\+Util.\+get\+Caller\+Info (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the caller\textquotesingle{}s file name and method name.
+
+\begin{DoxyReturn}{Returns}
+a string containing the file name and method name of the caller in the format "{}\+File\+Name\mbox{]}\mbox{[}\+Method\+Name"{}. @impl\+Note This method retrieves the stack trace of the current thread and extracts the file name and method name of the caller. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1utils_1_1_time_util_ac7049b67cda465bc4b52cfa82e02f115}\index{com.arena.utils.TimeUtil@{com.arena.utils.TimeUtil}!getUTCTimestamp@{getUTCTimestamp}}
+\index{getUTCTimestamp@{getUTCTimestamp}!com.arena.utils.TimeUtil@{com.arena.utils.TimeUtil}}
+\doxysubsubsection{\texorpdfstring{getUTCTimestamp()}{getUTCTimestamp()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1utils_1_1_time_util_ac7049b67cda465bc4b52cfa82e02f115} 
+String com.\+arena.\+utils.\+Time\+Util.\+get\+UTCTimestamp (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns the current UTC timestamp in the format "{}yyyy-\/\+MM-\/dd HH\+:mm\+:ss.\+SSS"{}.
+
+\begin{DoxyReturn}{Returns}
+a {\ttfamily \doxylink{}{String}} representing the current UTC date and time. @impl\+Note This method uses {\ttfamily Simple\+Date\+Format} to format the current date and time in UTC. It sets the time zone to UTC and formats the current date into a string. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/utils/Time\+Util.\+java\end{DoxyCompactItemize}

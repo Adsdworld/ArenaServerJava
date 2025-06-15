@@ -85,6 +85,13 @@ public class Core {
         }
     }
 
+    /**
+     * processMessages is a method that processes messages in the queue.
+     *
+     * @implNote It checks the timestamp of each message against the current time and a tolerance value.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     private void processMessages() {
         long now = System.currentTimeMillis();
         //Logger.info("Processing " + messageQueue.size() + " messages");

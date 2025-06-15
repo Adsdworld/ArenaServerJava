@@ -1,0 +1,36 @@
+\doxysection{com.\+arena.\+game.\+handler.\+Handlers\+Game Class Reference}
+\hypertarget{classcom_1_1arena_1_1game_1_1handler_1_1_handlers_game}{}\label{classcom_1_1arena_1_1game_1_1handler_1_1_handlers_game}\index{com.arena.game.handler.HandlersGame@{com.arena.game.handler.HandlersGame}}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final Map$<$ \mbox{\hyperlink{enumcom_1_1arena_1_1player_1_1_action_enum}{Action\+Enum}}, \mbox{\hyperlink{interfacecom_1_1arena_1_1game_1_1handler_1_1_i_message_handler}{IMessage\+Handler}} $>$ \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1handler_1_1_handlers_game_a74e452d5bff7bf10e62d87cb438bd620}{HANDLERS}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This class contains a map of action handlers for the Arena game. 
+
+\label{doc-variable-members}
+\Hypertarget{classcom_1_1arena_1_1game_1_1handler_1_1_handlers_game_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcom_1_1arena_1_1game_1_1handler_1_1_handlers_game_a74e452d5bff7bf10e62d87cb438bd620}\index{com.arena.game.handler.HandlersGame@{com.arena.game.handler.HandlersGame}!HANDLERS@{HANDLERS}}
+\index{HANDLERS@{HANDLERS}!com.arena.game.handler.HandlersGame@{com.arena.game.handler.HandlersGame}}
+\doxysubsubsection{\texorpdfstring{HANDLERS}{HANDLERS}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1game_1_1handler_1_1_handlers_game_a74e452d5bff7bf10e62d87cb438bd620} 
+final Map$<$\mbox{\hyperlink{enumcom_1_1arena_1_1player_1_1_action_enum}{Action\+Enum}}, \mbox{\hyperlink{interfacecom_1_1arena_1_1game_1_1handler_1_1_i_message_handler}{IMessage\+Handler}}$>$ com.\+arena.\+game.\+handler.\+Handlers\+Game.\+HANDLERS\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ Map.of(}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{enumcom_1_1arena_1_1player_1_1_action_enum}{ActionEnum}}.CreateGame,\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1handler_1_1_create_game_handler}{CreateGameHandler}}(),}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{enumcom_1_1arena_1_1player_1_1_action_enum}{ActionEnum}}.Join,\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1handler_1_1_join_handler}{JoinHandler}}(),}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{enumcom_1_1arena_1_1player_1_1_action_enum}{ActionEnum}}.CloseGame,\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1handler_1_1_close_game_handler}{CloseGameHandler}}(),}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{enumcom_1_1arena_1_1player_1_1_action_enum}{ActionEnum}}.PlayerStateUpdate,\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1handler_1_1_player_state_update_handler}{PlayerStateUpdateHandler}}()}
+\DoxyCodeLine{\ \ \ \ )}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/game/handler/Handlers\+Game.\+java\end{DoxyCompactItemize}

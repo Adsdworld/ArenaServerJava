@@ -1,0 +1,46 @@
+\doxysection{com.\+arena.\+game.\+handler.\+Join\+Handler Class Reference}
+\hypertarget{classcom_1_1arena_1_1game_1_1handler_1_1_join_handler}{}\label{classcom_1_1arena_1_1game_1_1handler_1_1_join_handler}\index{com.arena.game.handler.JoinHandler@{com.arena.game.handler.JoinHandler}}
+Inheritance diagram for com.\+arena.\+game.\+handler.\+Join\+Handler\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcom_1_1arena_1_1game_1_1handler_1_1_join_handler}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1handler_1_1_join_handler_ac145beae9a77a1826927b59983bc2de7}{handle}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1arena_1_1game_1_1handler_1_1_join_handler_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1arena_1_1game_1_1handler_1_1_join_handler_ac145beae9a77a1826927b59983bc2de7}\index{com.arena.game.handler.JoinHandler@{com.arena.game.handler.JoinHandler}!handle@{handle}}
+\index{handle@{handle}!com.arena.game.handler.JoinHandler@{com.arena.game.handler.JoinHandler}}
+\doxysubsubsection{\texorpdfstring{handle()}{handle()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1game_1_1handler_1_1_join_handler_ac145beae9a77a1826927b59983bc2de7} 
+void com.\+arena.\+game.\+handler.\+Join\+Handler.\+handle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
+
+Handle the {\ttfamily \doxylink{}{com.\+arena.\+player.\+Action\+Enum\#\+Join}} for a {\ttfamily \doxylink{}{Player}} in a {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} containing the join action details. @impl\+Note This method processes the join action for a player, checking if the game exists, if the player is already in the game, and if not, creating a new entity for the player and adding it to the game. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/15 
+\end{DoxyDate}
+
+
+Implements \mbox{\hyperlink{interfacecom_1_1arena_1_1game_1_1handler_1_1_i_message_handler_aa2bf0d5319c58ef1bd00be14384cd30d}{com.\+arena.\+game.\+handler.\+IMessage\+Handler}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/main/java/com/arena/game/handler/Join\+Handler.\+java\end{DoxyCompactItemize}
