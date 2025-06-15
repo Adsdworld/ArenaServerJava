@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntityPositions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.entity</a> &gt; <span class="el_source">EntityPositions.java</span></div><h1>EntityPositions.java</h1><pre class="source lang-java linenums">package com.arena.game.entity;
+
+import com.arena.game.utils.EntityInit;
+import com.arena.game.utils.Position;
+
+import java.util.List;
+import java.util.Map;
+
+<span class="nc" id="L9">public class EntityPositions {</span>
+
+    // Spawn joueurs
+<span class="fc" id="L12">    public static final Position BLUE_SPAWN = new Position(272.9823f, 15.0f, 300.6143f, 0f);</span>
+<span class="fc" id="L13">    public static final Position RED_SPAWN = new Position(723.0251f, 15.0f, 752.9824f, 0f);</span>
+<span class="fc" id="L14">    public static final Position CENTER_SPAWN = new Position(493.0f, 15.0f, 530.0f, 0f);</span>
+
+    /*
+     * Nearest from the nexus from top to bottom
+     */
+<span class="fc" id="L19">    public static final Map&lt;String, EntityInit&gt; BLUE_TOWERS = Map.ofEntries(</span>
+<span class="fc" id="L20">            Map.entry(&quot;T4_TOP_BLUE&quot;, new EntityInit(new Position(312.82f, 9.37f, 357.67f, 180f), &quot;NEXUS_BLUE&quot;)),</span>
+<span class="fc" id="L21">            Map.entry(&quot;T3_TOP_BLUE&quot;, new EntityInit(new Position(294.68f, 9.37f, 423.74f, 135f), &quot;INHIB_TOP_BLUE&quot;)),</span>
+<span class="fc" id="L22">            Map.entry(&quot;T2_TOP_BLUE&quot;, new EntityInit(new Position(304.52f, 8.07f, 499.99f, 135f), &quot;T3_TOP_BLUE&quot;)),</span>
+<span class="fc" id="L23">            Map.entry(&quot;T1_TOP_BLUE&quot;, new EntityInit(new Position(286.94f, 8.07f, 621.03f, 135f), true, &quot;T2_TOP_BLUE&quot;)),</span>
+<span class="fc" id="L24">            Map.entry(&quot;T4_BOT_BLUE&quot;, new EntityInit(new Position(327.72f, 9.37f, 342.34f, 180f), &quot;NEXUS_BLUE&quot;)),</span>
+<span class="fc" id="L25">            Map.entry(&quot;T3_MID_BLUE&quot;, new EntityInit(new Position(375.67f, 9.37f, 403.40f, 180f), &quot;INHIB_MID_BLUE&quot;)),</span>
+<span class="fc" id="L26">            Map.entry(&quot;T2_MID_BLUE&quot;, new EntityInit(new Position(419.68f, 8.07f, 438.94f, 180f), &quot;T3_MID_BLUE&quot;)),</span>
+<span class="fc" id="L27">            Map.entry(&quot;T1_MID_BLUE&quot;, new EntityInit(new Position(445.92f, 8.07f, 490.81f, 180f), true, &quot;T2_MID_BLUE&quot;)),</span>
+<span class="fc" id="L28">            Map.entry(&quot;T3_BOT_BLUE&quot;, new EntityInit(new Position(396.33f, 9.37f, 324.44f, 225f), &quot;INHIB_BOT_BLUE&quot;)),</span>
+<span class="fc" id="L29">            Map.entry(&quot;T2_BOT_BLUE&quot;, new EntityInit(new Position(478.89f, 8.07f, 332.68f, 225f), &quot;T3_BOT_BLUE&quot;)),</span>
+<span class="fc" id="L30">            Map.entry(&quot;T1_BOT_BLUE&quot;, new EntityInit(new Position(596.47f, 8.07f, 316.67f, 225f), true, &quot;T2_BOT_BLUE&quot;))</span>
+    );
+
+<span class="fc" id="L33">    public static final Map&lt;String, EntityInit&gt; RED_TOWERS = Map.ofEntries(</span>
+<span class="fc" id="L34">            Map.entry(&quot;T4_TOP_RED&quot;, new EntityInit(new Position(665.27f, 9.37f, 709.47f, 0f), &quot;NEXUS_RED&quot;)),</span>
+<span class="fc" id="L35">            Map.entry(&quot;T3_TOP_RED&quot;, new EntityInit(new Position(597.55f, 9.37f, 726.01f, 45f), &quot;INHIB_TOP_RED&quot;)),</span>
+<span class="fc" id="L36">            Map.entry(&quot;T2_TOP_RED&quot;, new EntityInit(new Position(512.38f, 8.07f, 718.81f, 45f), &quot;T3_TOP_RED&quot;)),</span>
+<span class="fc" id="L37">            Map.entry(&quot;T1_TOP_RED&quot;, new EntityInit(new Position(396.16f, 8.07f, 733.47f, 45f), true, &quot;T2_TOP_RED&quot;)),</span>
+<span class="fc" id="L38">            Map.entry(&quot;T4_BOT_RED&quot;, new EntityInit(new Position(679.5f, 9.37f, 694.41f, 0f), &quot;NEXUS_RED&quot;)),</span>
+<span class="fc" id="L39">            Map.entry(&quot;T3_MID_RED&quot;, new EntityInit(new Position(617.9f, 9.37f, 646.95f, 0f), &quot;INHIB_MID_RED&quot;)),</span>
+<span class="fc" id="L40">            Map.entry(&quot;T2_MID_RED&quot;, new EntityInit(new Position(572.77f, 8.07f, 610.8f, 0f), &quot;T3_MID_RED&quot;)),</span>
+<span class="fc" id="L41">            Map.entry(&quot;T1_MID_RED&quot;, new EntityInit(new Position(546.98f, 8.07f, 559.76f, 0f), true, &quot;T2_MID_RED&quot;)),</span>
+<span class="fc" id="L42">            Map.entry(&quot;T3_BOT_RED&quot;, new EntityInit(new Position(698.42f, 9.37f, 628.12f, 315f), &quot;INHIB_BOT_RED&quot;)),</span>
+<span class="fc" id="L43">            Map.entry(&quot;T2_BOT_RED&quot;, new EntityInit(new Position(687.22f, 8.07f, 550.48f, 315f), &quot;T3_BOT_RED&quot;)),</span>
+<span class="fc" id="L44">            Map.entry(&quot;T1_BOT_RED&quot;, new EntityInit(new Position(704.34f, 8.07f, 428.93f, 315f), true, &quot;T2_BOT_RED&quot;))</span>
+    );
+
+<span class="fc" id="L47">    public static final Map&lt;String, EntityInit&gt; BLUE_INHIBITORS = Map.of(</span>
+<span class="fc" id="L48">            &quot;INHIB_TOP_BLUE&quot;, new EntityInit(new Position(295.19f, -7.36f, 400.44f, 0f), List.of(&quot;T4_BOT_BLUE&quot;, &quot;T4_TOP_BLUE&quot;)),</span>
+<span class="fc" id="L49">            &quot;INHIB_MID_BLUE&quot;, new EntityInit(new Position(360.45f, -7.36f, 389.32f, 0f), List.of(&quot;T4_BOT_BLUE&quot;, &quot;T4_TOP_BLUE&quot;)),</span>
+<span class="fc" id="L50">            &quot;INHIB_BOT_BLUE&quot;, new EntityInit(new Position(371.75f, -7.36f, 324.39f, 0f), List.of(&quot;T4_BOT_BLUE&quot;, &quot;T4_TOP_BLUE&quot;))</span>
+    );
+
+<span class="fc" id="L53">    public static final Map&lt;String, EntityInit&gt; RED_INHIBITORS = Map.of(</span>
+<span class="fc" id="L54">            &quot;INHIB_TOP_RED&quot;, new EntityInit(new Position(623.69f, -7.36f, 726.13f, 0f), List.of(&quot;T4_BOT_RED&quot;, &quot;T4_TOP_RED&quot;)),</span>
+<span class="fc" id="L55">            &quot;INHIB_MID_RED&quot;, new EntityInit(new Position(632.51f, -7.36f, 662.37f, 0f), List.of(&quot;T4_BOT_RED&quot;, &quot;T4_TOP_RED&quot;)),</span>
+<span class="fc" id="L56">            &quot;INHIB_BOT_RED&quot;, new EntityInit(new Position(698.56f, -7.36f, 650.66f, 0f), List.of(&quot;T4_BOT_RED&quot;, &quot;T4_TOP_RED&quot;))</span>
+    );
+
+<span class="fc" id="L59">    public static final Map&lt;String, EntityInit&gt; BLUE_NEXUS = Map.of(</span>
+            &quot;NEXUS_BLUE&quot;, new EntityInit(new Position(307.62f, -13.5f, 337.96f, 0f), &quot;None&quot;)
+    );
+
+<span class="fc" id="L63">    public static final Map&lt;String, EntityInit&gt; RED_NEXUS = Map.of(</span>
+            &quot;NEXUS_RED&quot;, new EntityInit(new Position(685.20f, -13.5f, 713.00f, 0f), &quot;None&quot;)
+    );
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

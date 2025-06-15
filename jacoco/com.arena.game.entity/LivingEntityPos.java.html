@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LivingEntityPos.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.entity</a> &gt; <span class="el_source">LivingEntityPos.java</span></div><h1>LivingEntityPos.java</h1><pre class="source lang-java linenums">package com.arena.game.entity;
+
+import com.arena.game.utils.Position;
+
+public abstract class LivingEntityPos extends LivingEntityLock implements ILivingEntityPos {
+    protected float rotationY, posX, posZ, posY, posXDesired, posZDesired, posYDesired;
+
+    public LivingEntityPos(String id) {
+<span class="fc" id="L9">        super(id);</span>
+<span class="fc" id="L10">    }</span>
+
+    @Override
+<span class="fc" id="L13">    public float getPosXDesired() {return posXDesired;}</span>
+
+    @Override
+<span class="fc" id="L16">    public void setPosXDesired(float x) {this.posXDesired = x;}</span>
+
+    @Override
+<span class="fc" id="L19">    public float getPosZDesired() {return posZDesired;}</span>
+
+    @Override
+<span class="fc" id="L22">    public void setPosZDesired(float z) {this.posZDesired = z;}</span>
+
+    @Override
+<span class="fc" id="L25">    public float getPosYDesired() {return posYDesired;}</span>
+
+    @Override
+<span class="fc" id="L28">    public void setPosYDesired(float y) {this.posYDesired = y;}</span>
+
+    @Override
+<span class="fc" id="L31">    public float getPosX() {return posX;}</span>
+
+    @Override
+<span class="fc" id="L34">    public void setPosX(float x) {this.posX = x;}</span>
+
+    @Override
+<span class="fc" id="L37">    public float getPosZ() {return posZ;}</span>
+
+    @Override
+<span class="fc" id="L40">    public void setPosZ(float z) {this.posZ = z;}</span>
+
+    @Override
+<span class="fc" id="L43">    public float getPosY() {return posY;}</span>
+
+    @Override
+<span class="fc" id="L46">    public void setPosY(float y) {this.posY = y;}</span>
+
+    @Override
+<span class="fc" id="L49">    public void setRotationY(float rotationY) {this.rotationY = rotationY;}</span>
+
+    @Override
+<span class="fc" id="L52">    public float getRotationY() {return rotationY;}</span>
+
+    /**
+     * Sets the position of the entity based on a Position object.
+     *
+     * @param position the {@link Position} object containing the position and rotation data.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public void setPos(Position position) {
+<span class="fc" id="L62">        this.posX = position.pos.x;</span>
+<span class="fc" id="L63">        this.posY = position.pos.y;</span>
+<span class="fc" id="L64">        this.posZ = position.pos.z;</span>
+<span class="fc" id="L65">        this.rotationY = position.rotY;</span>
+<span class="fc" id="L66">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

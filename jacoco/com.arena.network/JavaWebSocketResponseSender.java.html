@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JavaWebSocketResponseSender.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.network</a> &gt; <span class="el_source">JavaWebSocketResponseSender.java</span></div><h1>JavaWebSocketResponseSender.java</h1><pre class="source lang-java linenums">package com.arena.network;
+
+import com.arena.game.Game;
+import com.arena.game.GameNameEnum;
+import com.arena.network.response.IResponseSender;
+import com.arena.network.response.Response;
+import com.arena.player.Player;
+import com.arena.server.Server;
+import com.arena.utils.logger.Logger;
+import com.arena.utils.json.JsonService;
+import org.java_websocket.WebSocket;
+import org.java_websocket.exceptions.WebsocketNotConnectedException;
+
+
+<span class="fc" id="L15">public class JavaWebSocketResponseSender implements IResponseSender {</span>
+
+    @Override
+    public void sendResponse(Response response, boolean silent) {
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        for (Player player : Server.getInstance().getPlayersMap().values()) {</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">            if (player.getUuid() == null) {</span>
+<span class="nc" id="L21">                Logger.failure(&quot;Player UUID is null, cannot send response: &quot; + response);</span>
+<span class="nc" id="L22">                continue;</span>
+            }
+<span class="fc" id="L24">            response.setUuid(player.getUuid());</span>
+<span class="fc" id="L25">            sendToConn(getConnByUuid(player.getUuid()), response);</span>
+<span class="fc" id="L26">        }</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (!silent) {</span>
+<span class="fc" id="L28">            Logger.game(&quot;Send To All : &quot; + response);</span>
+        }
+<span class="fc" id="L30">    }</span>
+
+    @Override
+    public void sendGameResponse(Response response, GameNameEnum gameName, boolean silent) {
+<span class="fc" id="L34">        Server server = Server.getInstance();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        for (Game game : server.getGames()) {</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">            if (game.getGameNameEnum().equals(gameName)) {</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">                for (Player player : game.getPlayersMap().values()) {</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">                    if (server.getPlayersMap().containsKey(player.getUuid())) {</span>
+<span class="fc" id="L39">                        response.setUuid(player.getUuid());</span>
+<span class="fc" id="L40">                        sendToConn(getConnByUuid(player.getUuid()), response);</span>
+                    }
+<span class="fc" id="L42">                }</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">                if (!silent) {</span>
+<span class="fc" id="L44">                    Logger.game(&quot;Send &quot; + gameName + &quot; : &quot; + response, gameName);</span>
+                }
+            }
+<span class="fc" id="L47">        }</span>
+<span class="fc" id="L48">    }</span>
+
+    @Override
+    public void sendUuidResponse(String uuid, Response response, boolean silent) {
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (Server.getInstance().getPlayersMap().containsKey(uuid)) {</span>
+<span class="fc" id="L53">            response.setUuid(uuid);</span>
+<span class="fc" id="L54">            sendToConn(getConnByUuid(uuid), response);</span>
+        }
+
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (!silent) {</span>
+<span class="fc" id="L58">            Logger.server(&quot;Send To &quot; + uuid + &quot; : &quot; + response);</span>
+        }
+<span class="fc" id="L60">    }</span>
+
+    private WebSocket getConnByUuid(String uuid) {
+<span class="fc" id="L63">        Player player = new Player(uuid);</span>
+<span class="fc" id="L64">        WebSocket conn = JavaWebSocket.getInstance().uuidToWebSocket.get(player);</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (conn != null) {</span>
+<span class="fc" id="L66">            return conn;</span>
+        }
+<span class="nc" id="L68">        Logger.failure(&quot;Player &quot; + uuid + &quot; not found in connections.&quot;);</span>
+<span class="nc" id="L69">        return null;</span>
+    }
+
+    private void sendToConn(WebSocket conn, Response response) {
+        try {
+<span class="pc bpc" id="L74" title="2 of 4 branches missed.">            if (conn != null &amp;&amp; conn.isOpen()) {</span>
+<span class="fc" id="L75">                conn.send(new JsonService().toJson(response));</span>
+            }
+<span class="nc" id="L77">        } catch (WebsocketNotConnectedException e) {</span>
+<span class="nc" id="L78">            Logger.error(&quot;WebSocket not connected while sending response to: &quot; + conn.getRemoteSocketAddress());</span>
+<span class="fc" id="L79">        }</span>
+<span class="fc" id="L80">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

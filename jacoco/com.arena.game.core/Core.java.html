@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Core.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.core</a> &gt; <span class="el_source">Core.java</span></div><h1>Core.java</h1><pre class="source lang-java linenums">package com.arena.game.core;
+
+import com.arena.game.Game;
+import com.arena.game.handler.HandlersCast;
+import com.arena.game.handler.HandlersGame;
+import com.arena.game.handler.IMessageHandler;
+import com.arena.network.message.Message;
+import com.arena.network.response.Response;
+import com.arena.player.ActionEnum;
+import com.arena.player.ResponseEnum;
+import com.arena.server.Server;
+import com.arena.utils.logger.Logger;
+
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+public class Core {
+
+    private static Core core;
+    private static boolean isEnteringTick;
+
+    /**
+     * getInstance is a method that returns the singleton instance of Core.
+     *
+     * @return Core instance.
+     * @implNote If the instance is not initialized, it creates a new instance.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public static Core getInstance() {
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (core == null) {</span>
+<span class="fc" id="L39">            core = new Core();</span>
+        }
+<span class="fc" id="L41">        return core;</span>
+    }
+
+<span class="fc" id="L44">    private final Map&lt;ActionEnum, IMessageHandler&gt; handlers = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L46">    private final PriorityBlockingQueue&lt;Message&gt; messageQueue = new PriorityBlockingQueue&lt;&gt;();</span>
+
+<span class="fc" id="L48">    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();</span>
+
+<span class="fc" id="L50">    public Core() {</span>
+        /*handlers.put(ActionEnum.CreateGame, new CreateGameHandler());
+        handlers.put(ActionEnum.Join, new JoinHandler());
+        handlers.put(ActionEnum.CloseGame, new CloseGameHandler());
+        handlers.put(ActionEnum.PlayerStateUpdate, new PlayerStateUpdateHandler());
+        handlers.put(ActionEnum.CastQ, new CastQHandler());
+        handlers.put(ActionEnum.CastW, new CastWHandler());
+        handlers.put(ActionEnum.CastE, new CastEHandler());
+        handlers.put(ActionEnum.CastR, new CastRHandler());*/
+<span class="fc" id="L59">        handlers.putAll(HandlersGame.HANDLERS);</span>
+<span class="fc" id="L60">        handlers.putAll(HandlersCast.HANDLERS);</span>
+
+
+<span class="fc" id="L63">        isEnteringTick = false;</span>
+<span class="fc" id="L64">        scheduler.scheduleAtFixedRate(this::processMessages, 0, 10, TimeUnit.MILLISECONDS);</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Receive is a method that receives a message and adds it to the message queue.
+     *
+     * @param message the {@link Message} to be processed.
+     * @implNote Checks if the message is null or if the action is invalid, logging an error if so.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public void receive(Message message) {
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (message == null) {</span>
+<span class="nc" id="L77">            Logger.failure(&quot;Received null message&quot;);</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        } else if (message.getAction() == null) {</span>
+<span class="nc" id="L79">            Logger.failure(&quot;Unknown or invalid action in message: &quot; + message);</span>
+        } else {
+<span class="fc" id="L81">            messageQueue.offer(message);</span>
+<span class="fc" id="L82">            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss.SSS&quot;)</span>
+<span class="fc" id="L83">                    .withZone(ZoneOffset.UTC);</span>
+            //Logger.info(&quot;Offered message to queue: &quot; + message.getAction() + &quot; with timestamp: &quot; + formatter.format(Instant.ofEpochMilli(message.getTimeStamp())));
+        }
+<span class="fc" id="L86">    }</span>
+
+    /**
+     * processMessages is a method that processes messages in the queue.
+     *
+     * @implNote It checks the timestamp of each message against the current time and a tolerance value.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    private void processMessages() {
+<span class="fc" id="L96">        long now = System.currentTimeMillis();</span>
+        //Logger.info(&quot;Processing &quot; + messageQueue.size() + &quot; messages&quot;);
+
+
+        /* Raspberry Pi 3b+ (1 Go) : max 178ms for a CreateGame action
+         * VivoBook A.SALLIER (16 Go) : max 9ms for a CreateGame action
+         *
+         */
+<span class="fc" id="L104">        long tolerance = 200;</span>
+<span class="fc" id="L105">        isEnteringTick = true;</span>
+<span class="fc" id="L106">        boolean isQueueEmpty = messageQueue.isEmpty();</span>
+<span class="fc" id="L107">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss.SSS&quot;)</span>
+<span class="fc" id="L108">                .withZone(ZoneOffset.UTC);</span>
+
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        while (!messageQueue.isEmpty()) {</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            if (isEnteringTick) {</span>
+<span class="fc" id="L112">                StringBuilder stringBuilder = new StringBuilder(&quot;Actions in queue (&quot; + messageQueue.size() + &quot;) : &quot;);</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">                for (Message message : messageQueue) {</span>
+<span class="fc" id="L114">                    stringBuilder.append(message.getAction()).append(&quot;, &quot;);</span>
+<span class="fc" id="L115">                }</span>
+<span class="fc" id="L116">                Logger.server(stringBuilder.toString());</span>
+<span class="fc" id="L117">                isEnteringTick = false;</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">                if (!isQueueEmpty) {</span>
+<span class="fc" id="L119">                    Logger.server(&quot;Processing messages at &quot; + formatter.format(Instant.ofEpochMilli(now)) + &quot; with tolerance: &quot; + tolerance + &quot;ms&quot;);</span>
+                }
+            }
+
+
+
+<span class="fc" id="L125">            Message next = messageQueue.peek(); // pas encore retiré</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">            if (next == null) {</span>
+<span class="nc" id="L127">                break;</span>
+            }
+
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">            if (next.getTimeStamp() &lt; now - tolerance) {</span>
+<span class="nc" id="L131">                Logger.server(&quot;Skipping message: &quot; + next.getUuid() + &quot; &gt;&gt;&gt; &quot;+ next.getAction() + &quot; (timestamp: &quot; + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + &quot;)&quot;);</span>
+<span class="nc" id="L132">                messageQueue.poll();</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">            } else if (next.getTimeStamp() &lt;= now + tolerance) {</span>
+<span class="fc" id="L134">                Logger.server(&quot;Processing message: &quot; + next.getUuid() + &quot; &gt;&gt;&gt; &quot; + next.getAction() + &quot; (timestamp: &quot; + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + &quot;)&quot;);</span>
+<span class="fc" id="L135">                handleMessage(next);</span>
+<span class="fc" id="L136">                messageQueue.poll();</span>
+            } else {
+<span class="nc" id="L138">                Logger.server(&quot;Message not ready yet: &quot; + next.getUuid() + &quot; &gt;&gt;&gt; &quot; + next.getAction() + &quot; (timestamp: &quot; + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + &quot;)&quot;);</span>
+<span class="nc" id="L139">                break;</span>
+            }
+<span class="fc" id="L141">        }</span>
+
+<span class="fc" id="L143">        sendGameState();</span>
+
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (!isQueueEmpty) {</span>
+<span class="fc" id="L146">            long endTime = System.currentTimeMillis();</span>
+<span class="fc" id="L147">            long duration = endTime - now;</span>
+<span class="fc" id="L148">            Logger.info(&quot;processMessages total duration: &quot; + duration + &quot; ms&quot;);</span>
+        }
+<span class="fc" id="L150">    }</span>
+
+    private void handleMessage(Message message) {
+        //Logger.info(&quot;Traitement du message : &quot; + message.toString());
+
+<span class="fc" id="L155">        IMessageHandler handler = handlers.get(message.getAction());</span>
+
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        if (handler != null) {</span>
+<span class="fc" id="L158">            handler.handle(message);</span>
+            //Logger.info(&quot;Handled action: &quot; + message.getAction() + &quot; for player: &quot; + message.getUuid());
+        } else {
+<span class="nc" id="L161">            Logger.failure(&quot;Couldn't find handler for action &quot; + message.getAction());</span>
+        }
+<span class="fc" id="L163">    }</span>
+
+    private void sendGameState() {
+            //Logger.info(&quot;Starting to send game state to all clients...&quot; + new Date());
+<span class="fc bfc" id="L167" title="All 2 branches covered.">            for (Game game : Server.getInstance().getGames()) {</span>
+<span class="fc" id="L168">                Response response = new Response();</span>
+<span class="fc" id="L169">                response.setResponse(ResponseEnum.GameState);</span>
+<span class="fc" id="L170">                response.setGameName(game.getGameNameEnum());</span>
+<span class="fc" id="L171">                response.setLivingEntities(game.getLivingEntities());</span>
+<span class="fc" id="L172">                response.send(game.getGameNameEnum(), true);</span>
+<span class="fc" id="L173">            }</span>
+            //Logger.server(&quot;Game state sent to all clients at &quot; + new Date());
+<span class="fc" id="L175">    }</span>
+
+    /*public void retryLater(Message message) {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.schedule(() -&gt; {
+            Core.getInstance().receive(message);
+            scheduler.shutdown();
+        }, 100, TimeUnit.MILLISECONDS);
+    }*/
+
+    /*public void shutdown() {
+        scheduler.shutdown();
+    }*/
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ZoneRectangle.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.zone</a> &gt; <span class="el_source">ZoneRectangle.java</span></div><h1>ZoneRectangle.java</h1><pre class="source lang-java linenums">package com.arena.game.zone;
+
+import com.arena.game.entity.LivingEntity;
+import com.arena.utils.Vector2f;
+
+public class ZoneRectangle implements Zone {
+    private final float width;    // largeur du rectangle (gauche/droite)
+    private final float length;   // profondeur (distance devant soi)
+
+<span class="nc" id="L10">    public ZoneRectangle(float width, float length) {</span>
+<span class="nc" id="L11">        this.width = width;</span>
+<span class="nc" id="L12">        this.length = length;</span>
+<span class="nc" id="L13">    }</span>
+
+    @Override
+    public boolean isInZone(LivingEntity attacker, LivingEntity target) {
+<span class="nc" id="L17">        Vector2f attackerPos = new Vector2f(attacker.getPosX(), attacker.getPosZ());</span>
+<span class="nc" id="L18">        Vector2f targetPos = new Vector2f(target.getPosX(), target.getPosZ());</span>
+
+<span class="nc" id="L20">        Vector2f toTarget = targetPos.sub(attackerPos);</span>
+
+<span class="nc" id="L22">        Vector2f forward = Vector2f.rotationToDirection(attacker.getRotationY());</span>
+<span class="nc" id="L23">        Vector2f right = new Vector2f(forward.y, -forward.x); // vecteur perpendiculaire à gauche/droite</span>
+
+<span class="nc" id="L25">        float forwardDist = toTarget.dot(forward);  // projection sur la direction (profondeur)</span>
+<span class="nc" id="L26">        float rightDist = toTarget.dot(right);      // projection sur le côté (largeur)</span>
+
+<span class="nc bnc" id="L28" title="All 6 branches missed.">        return (forwardDist &gt;= 0 &amp;&amp; forwardDist &lt;= length &amp;&amp; Math.abs(rightDist) &lt;= width / 2f);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

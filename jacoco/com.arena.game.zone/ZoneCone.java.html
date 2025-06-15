@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ZoneCone.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.zone</a> &gt; <span class="el_source">ZoneCone.java</span></div><h1>ZoneCone.java</h1><pre class="source lang-java linenums">package com.arena.game.zone;
+
+import com.arena.game.entity.LivingEntity;
+import com.arena.utils.Vector2f;
+
+public class ZoneCone implements Zone {
+    private final float distance;
+    private final float angleDeg;
+
+<span class="fc" id="L10">    public ZoneCone(float distance, float angleDeg) {</span>
+<span class="fc" id="L11">        this.distance = distance;</span>
+<span class="fc" id="L12">        this.angleDeg = angleDeg;</span>
+<span class="fc" id="L13">    }</span>
+
+    @Override
+    public boolean isInZone(LivingEntity attacker, LivingEntity target) {
+<span class="fc" id="L17">        Vector2f attackerPos = new Vector2f(attacker.getPosX(), attacker.getPosZ());</span>
+<span class="fc" id="L18">        Vector2f targetPos = new Vector2f(target.getPosX(), target.getPosZ());</span>
+
+        // Vecteur de l’attaquant vers la cible
+<span class="fc" id="L21">        Vector2f toTarget = targetPos.sub(attackerPos);</span>
+<span class="fc" id="L22">        float distanceToTarget = toTarget.len();</span>
+
+<span class="fc" id="L24">        System.out.println(&quot;========== [ZoneCone Debug] ==========&quot;);</span>
+<span class="fc" id="L25">        System.out.println(&quot;Attacker Position      : (&quot; + attackerPos.x + &quot;, &quot; + attackerPos.y + &quot;)&quot;);</span>
+<span class="fc" id="L26">        System.out.println(&quot;Target Position        : (&quot; + targetPos.x + &quot;, &quot; + targetPos.y + &quot;)&quot;);</span>
+<span class="fc" id="L27">        System.out.println(&quot;Vector to Target       : (&quot; + toTarget.x + &quot;, &quot; + toTarget.y + &quot;)&quot;);</span>
+<span class="fc" id="L28">        System.out.println(&quot;Distance to Target     : &quot; + distanceToTarget + &quot; / max: &quot; + distance);</span>
+
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (distanceToTarget &gt; this.distance) {</span>
+<span class="fc" id="L31">            System.out.println(&quot;🟥 Target is out of range.&quot;);</span>
+<span class="fc" id="L32">            System.out.println(&quot;=======================================&quot;);</span>
+<span class="fc" id="L33">            return false;</span>
+        }
+
+<span class="fc" id="L36">        float rotationY = attacker.getRotationY();</span>
+<span class="fc" id="L37">        Vector2f attackerDir = Vector2f.rotationToDirection(rotationY);</span>
+
+<span class="fc" id="L39">        System.out.println(&quot;Attacker Rotation Y    : &quot; + rotationY);</span>
+<span class="fc" id="L40">        System.out.println(&quot;Attacker Dir Vector    : (&quot; + attackerDir.x + &quot;, &quot; + attackerDir.y + &quot;)&quot;);</span>
+
+<span class="fc" id="L42">        float dot = attackerDir.dot(toTarget);</span>
+<span class="fc" id="L43">        float len1 = attackerDir.len();</span>
+<span class="fc" id="L44">        float len2 = toTarget.len();</span>
+<span class="fc" id="L45">        float cos = dot / (len1 * len2);</span>
+<span class="fc" id="L46">        cos = Math.max(-1f, Math.min(1f, cos));</span>
+<span class="fc" id="L47">        float angleBetween = (float) Math.toDegrees(Math.acos(cos));</span>
+
+<span class="fc" id="L49">        System.out.println(&quot;Dot product            : &quot; + dot);</span>
+<span class="fc" id="L50">        System.out.println(&quot;Len AttackerDir        : &quot; + len1);</span>
+<span class="fc" id="L51">        System.out.println(&quot;Len ToTarget           : &quot; + len2);</span>
+<span class="fc" id="L52">        System.out.println(&quot;Cosine(angle)          : &quot; + cos);</span>
+<span class="fc" id="L53">        System.out.println(&quot;Angle Between Vectors  : &quot; + angleBetween + &quot;° / max: &quot; + (angleDeg / 2f) + &quot;°&quot;);</span>
+
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        boolean inCone = angleBetween &lt;= (angleDeg / 2f);</span>
+<span class="fc" id="L56">        System.out.println(&quot;✅ Is in Cone           : &quot; + inCone);</span>
+<span class="fc" id="L57">        System.out.println(&quot;=======================================&quot;);</span>
+
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if (!inCone) {</span>
+<span class="fc" id="L60">            inCone = new ZoneCircle(distance/3f).isInZone(attacker, target);</span>
+        }
+
+<span class="fc" id="L63">        return inCone;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

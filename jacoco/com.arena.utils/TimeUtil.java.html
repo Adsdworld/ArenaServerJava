@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TimeUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.utils</a> &gt; <span class="el_source">TimeUtil.java</span></div><h1>TimeUtil.java</h1><pre class="source lang-java linenums">package com.arena.utils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
+<span class="nc" id="L7">public class TimeUtil {</span>
+    /**
+     * Return the caller's file name and method name.
+     *
+     * @return a string containing the file name and method name of the caller in the format &quot;FileName][MethodName&quot;.
+     * @implNote This method retrieves the stack trace of the current thread and extracts the file name and method name of the caller.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public static String getCallerInfo() {
+<span class="fc" id="L17">        StackTraceElement[] stack = Thread.currentThread().getStackTrace();</span>
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">        if (stack.length &gt; 4) {</span>
+<span class="fc" id="L19">            StackTraceElement caller = stack[4];</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">            String fileName = caller.getFileName() != null ? caller.getFileName().replace(&quot;.java&quot;, &quot;&quot;) : &quot;UnknownFile&quot;;</span>
+<span class="fc" id="L21">            String methodName = caller.getMethodName();</span>
+<span class="fc" id="L22">            return fileName + &quot;][&quot; + methodName;</span>
+        }
+<span class="nc" id="L24">        return &quot;UnknownCaller&quot;;</span>
+    }
+
+    /**
+     * Returns the current UTC timestamp in the format &quot;yyyy-MM-dd HH:mm:ss.SSS&quot;.
+     *
+     * @return a {@link String}  representing the current UTC date and time.
+     * @implNote This method uses `SimpleDateFormat` to format the current date and time in UTC. It sets the time zone to UTC and formats the current date into a string.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public static String getUTCTimestamp() {
+<span class="fc" id="L36">        SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss.SSS&quot;);</span>
+<span class="fc" id="L37">        sdf.setTimeZone(TimeZone.getTimeZone(&quot;UTC&quot;));</span>
+<span class="fc" id="L38">        return sdf.format(new Date());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Server.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.server</a> &gt; <span class="el_source">Server.java</span></div><h1>Server.java</h1><pre class="source lang-java linenums">package com.arena.server;
+
+import com.arena.game.Game;
+import com.arena.game.GameNameEnum;
+import com.arena.game.entity.EntityPositions;
+import com.arena.game.entity.LivingEntity;
+import com.arena.game.entity.building.Inhibitor;
+import com.arena.game.entity.building.Nexus;
+import com.arena.game.entity.building.Tower;
+import com.arena.game.utils.EntityInit;
+import com.arena.network.message.Message;
+import com.arena.network.response.Response;
+import com.arena.player.Player;
+import com.arena.player.ResponseEnum;
+import com.arena.utils.logger.Logger;
+import com.arena.game.utils.Position;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class Server {
+
+    private static Server instance;
+
+    private final ConcurrentHashMap&lt;String, Player&gt; players;
+
+    public ArrayList&lt;Game&gt; games;
+
+    private static final int MAX_GAMES = 5;
+
+<span class="fc" id="L33">    private Server() {</span>
+<span class="fc" id="L34">        games = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L35">        players = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L36">    }</span>
+
+    /**
+     * Singleton pattern to ensure only one instance of Server exists.
+     * jc
+     *
+     * @return {@link Server} instance
+     * @implNote This method initializes the {@link Server} instance if it is not already created.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
+    public static synchronized Server getInstance() {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L49">            instance = new Server();</span>
+        }
+<span class="fc" id="L51">        return instance;</span>
+    }
+
+    /**
+     * Creates a new game based on the provided {@link Message}.
+     *
+     * @param message the {@link Message}  containing the {@link GameNameEnum}  to create the {@link Game}.
+     * @implNote This method checks if a {@link Game}  is already being created. If so, it logs a warning and retries later. If not, it proceeds to create the {@link Game} , checking if it already exists or if the maximum number of games has been reached. It sends a {@link Response}  back to the client with the result of the operation.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
+    public void createGame(Message message) {
+<span class="fc" id="L63">        GameNameEnum gameNameEnum = message.getGameName();</span>
+<span class="fc" id="L64">        Game game = gameExists(gameNameEnum);</span>
+
+<span class="fc" id="L66">        Response response = new Response();</span>
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (game != null) {</span>
+<span class="fc" id="L69">            Logger.warn(gameNameEnum.getGameName() + &quot; already exists.&quot;);</span>
+<span class="fc" id="L70">            response.setResponse(ResponseEnum.GameAlreadyExists);</span>
+<span class="fc" id="L71">            response.setNotify(gameNameEnum.getGameName() + &quot; already exists.&quot;);</span>
+<span class="fc" id="L72">            response.send(message.getUuid());</span>
+
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        } else if (games.size() &gt;= MAX_GAMES) {</span>
+<span class="fc" id="L75">            Logger.warn(&quot;Cannot create more than &quot; + MAX_GAMES + &quot; games.&quot;);</span>
+<span class="fc" id="L76">            response.setResponse(ResponseEnum.GamesLimitReached);</span>
+<span class="fc" id="L77">            response.setNotify(&quot;Cannot create more than &quot; + MAX_GAMES + &quot; games.&quot;);</span>
+<span class="fc" id="L78">            response.send(message.getUuid());</span>
+
+        } else {
+<span class="fc" id="L81">            Logger.game(&quot;Creating &quot; + gameNameEnum.getGameName());</span>
+<span class="fc" id="L82">            Game newGame = new Game(gameNameEnum);</span>
+
+<span class="fc" id="L84">            createNexusInhibitorAndTowers(newGame);</span>
+
+<span class="fc" id="L86">            games.add(newGame);</span>
+
+<span class="fc" id="L88">            response.setResponse(ResponseEnum.GameCreated);</span>
+<span class="fc" id="L89">            response.setNotify(gameNameEnum.getGameName() + &quot; created successfully.&quot;);</span>
+<span class="fc" id="L90">            response.setGameName(gameNameEnum);</span>
+<span class="fc" id="L91">            response.send();</span>
+        }
+<span class="fc" id="L93">    }</span>
+
+    /**
+     * Retrieves a Game instance based on the provided Player.
+     *
+     * @param player the {@link Player} whose game is to be retrieved.
+     * @return the {@link Game} instance that contains the specified player, or {@code null} if no such game exists.
+     * @implNote This method iterates through the list of games and returns the first game that contains the specified player in its list of players.
+     * @author A.SALLIER
+     * @date 2025-06-10
+     */
+    public Game getGameOfPlayer(Player player) {
+<span class="fc" id="L105">        Game game = games.stream()</span>
+<span class="fc" id="L106">                .filter(g -&gt; g.getPlayers().contains(player))</span>
+<span class="fc" id="L107">                .findFirst()</span>
+<span class="fc" id="L108">                .orElse(null);</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (game == null) {</span>
+<span class="nc" id="L110">            Response response = new Response();</span>
+<span class="nc" id="L111">            response.setResponse(ResponseEnum.Info);</span>
+<span class="nc" id="L112">            response.setNotify(&quot;Game not found for player: &quot; + player.getUuid() + &quot;. Please check if you have sent a Create Game Action.&quot;);</span>
+<span class="nc" id="L113">            response.send(player.getUuid());</span>
+<span class="nc" id="L114">            Logger.warn(&quot;Game not found for player: &quot; + player.getUuid() + &quot;. Please check if you have sent a Create Game Action.&quot;);</span>
+        }
+<span class="fc" id="L116">        return game;</span>
+    }
+
+    /**
+     * Retrieves the {@link Game}  of a given {@link LivingEntity} .
+     *
+     * @param entity the {@link LivingEntity} whose game is to be retrieved.
+     * @return the {@link Game} instance that contains the specified entity, or {@code null} if no such game exists.
+     * @implNote This method iterates through the list of games and returns the first game that contains the specified entity in its map of living entities.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public Game getGameOfEntity(LivingEntity entity) {
+<span class="fc" id="L129">        Server server = Server.getInstance();</span>
+
+<span class="fc" id="L131">        Game game = server.getGames().stream()</span>
+<span class="fc" id="L132">                .filter(g -&gt; g.getLivingEntitiesMap().containsKey(entity.getId()))</span>
+<span class="fc" id="L133">                .findFirst()</span>
+<span class="fc" id="L134">                .orElse(null);</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (game == null) {</span>
+<span class="nc" id="L136">            Logger.warn(&quot;Game not found for entity: &quot; + entity.getId() + &quot;. Please check if the entity is present in a game.&quot;);</span>
+        }
+<span class="fc" id="L138">        return game;</span>
+    }
+
+    /**
+     * Retrieves a player by their UUID.
+     *
+     * @param uuid the UUID of the player to retrieve
+     * @return the {@link Player} with the specified UUID, or {@code null} if not found.
+     * @implNote This method iterates through the list of players and returns the first one that matches the given UUID.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
+    public Player getPlayerByUuid(String uuid) {
+<span class="fc" id="L151">        Player player = getPlayersMap().values().stream()</span>
+<span class="fc" id="L152">                .filter(p -&gt; p.getUuid().equals(uuid))</span>
+<span class="fc" id="L153">                .findFirst()</span>
+<span class="fc" id="L154">                .orElse(null);</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (player == null) {</span>
+<span class="nc" id="L156">            Logger.warn(&quot;Player with UUID &quot; + uuid + &quot; not found. Please check if you have sent a Login Action.&quot;);</span>
+        }
+<span class="fc" id="L158">        return player;</span>
+    }
+
+    /**
+     * Subscribe a player to a game.
+     * {@code Game.players} receive {@code ResponseEnum.GameState} events, that allow them to receive updates.
+     *
+     * @param player the {@link Player} to subscribe.
+     * @param game   the {@link Game} to which the player is subscribing.
+     * @implNote This method iterates through all {@code Server.games}  in the {@link Server}  and removes the {@code player}  from any game they were previously subscribed to, then adds him to the specified game.
+     * @author A.SALLIER
+     * @date 2025-06-09
+     */
+    public void subscribePlayerToGame(Player player, Game game) {
+<span class="fc" id="L172">        Server server = Server.getInstance();</span>
+
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        for (Game g : server.getGames()) {</span>
+<span class="fc" id="L175">            g.getPlayers().removeIf(p -&gt; p.equals(player));</span>
+<span class="fc" id="L176">        }</span>
+<span class="fc" id="L177">        game.getPlayersMap().putIfAbsent(player.getUuid(), player);</span>
+<span class="fc" id="L178">    }</span>
+
+    private void createNexusInhibitorAndTowers(Game game) {
+<span class="fc" id="L181">        createEntities(game, EntityPositions.BLUE_TOWERS, &quot;Tower&quot;, 1);</span>
+<span class="fc" id="L182">        createEntities(game, EntityPositions.RED_TOWERS, &quot;Tower&quot;, 2);</span>
+<span class="fc" id="L183">        createEntities(game, EntityPositions.BLUE_INHIBITORS, &quot;Inhibitor&quot;, 1);</span>
+<span class="fc" id="L184">        createEntities(game, EntityPositions.RED_INHIBITORS, &quot;Inhibitor&quot;, 2);</span>
+<span class="fc" id="L185">        createEntities(game, EntityPositions.BLUE_NEXUS, &quot;Nexus&quot;, 1);</span>
+<span class="fc" id="L186">        createEntities(game, EntityPositions.RED_NEXUS, &quot;Nexus&quot;, 2);</span>
+<span class="fc" id="L187">    }</span>
+
+    private void createEntities(Game game, Map&lt;String, EntityInit&gt; map, String type, int team) {
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        for (Map.Entry&lt;String, EntityInit&gt; entry : map.entrySet()) {</span>
+<span class="fc" id="L191">            EntityInit entityInit = entry.getValue();</span>
+<span class="fc" id="L192">            String id = game.getGameNameEnum().getGameName() + &quot;_&quot; + entry.getKey();</span>
+<span class="fc" id="L193">            Position position = entityInit.getPosition();</span>
+
+<span class="pc bpc" id="L195" title="1 of 4 branches missed.">            LivingEntity livingEntity = switch (type) {</span>
+<span class="fc" id="L196">                case &quot;Tower&quot; -&gt; new Tower(id, team);</span>
+<span class="fc" id="L197">                case &quot;Inhibitor&quot; -&gt; new Inhibitor(id, team);</span>
+<span class="fc" id="L198">                case &quot;Nexus&quot; -&gt; new Nexus(id, team);</span>
+<span class="pc" id="L199">                default -&gt; throw new IllegalArgumentException(&quot;Unknown entity type: &quot; + type);</span>
+            };
+
+<span class="fc" id="L202">            livingEntity.setAttackable(entityInit.isAttackable());</span>
+<span class="fc" id="L203">            livingEntity.setNextObjective(entityInit.getNextObjectiveId());</span>
+<span class="fc" id="L204">            livingEntity.setPos(position);</span>
+<span class="fc" id="L205">            game.addEntity(livingEntity);</span>
+<span class="fc" id="L206">        }</span>
+<span class="fc" id="L207">    }</span>
+
+
+    /**
+     * Closes a game based on the provided {@link Message}.
+     *
+     * @param message the {@link Message} containing the {@link GameNameEnum} to close the {@link Game}.
+     * @implNote This method checks if a {@link Game}  is already being closed. If so, it logs a warning and retries later. If not, it proceeds to close the {@link Game}, checking if it exists. It sends a {@link Response} back to the client with the result of the operation.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
+    public void closeGame(Message message) {
+<span class="nc" id="L219">        Server.getInstance().getGames().removeIf(Objects::isNull);</span>
+
+<span class="nc" id="L221">        GameNameEnum gameNameEnum = message.getGameName();</span>
+<span class="nc" id="L222">        Game game = gameExists(gameNameEnum);</span>
+
+<span class="nc" id="L224">        Response response = new Response();</span>
+
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        if (game == null) {</span>
+<span class="nc" id="L227">            Logger.warn(gameNameEnum.getGameName() + &quot; does not exist.&quot;);</span>
+            // TODO: create the unity handler for this case game not found
+<span class="nc" id="L229">            response.setResponse(ResponseEnum.GameNotFound);</span>
+<span class="nc" id="L230">            response.setNotify(gameNameEnum.getGameName() + &quot; does not exist.&quot;);</span>
+<span class="nc" id="L231">            response.send(message.getUuid());</span>
+
+        } else {
+<span class="nc" id="L234">            Logger.game(&quot;Closing &quot; + gameNameEnum.getGameName());</span>
+
+            /* Switch view to default entity for all players in the game */
+<span class="nc" id="L237">            Response response1 = new Response();</span>
+<span class="nc" id="L238">            response1.setResponse(ResponseEnum.YourEntityIs);</span>
+<span class="nc" id="L239">            response1.setText(&quot;default&quot;);</span>
+<span class="nc" id="L240">            response1.setGameName(gameNameEnum);</span>
+<span class="nc" id="L241">            response1.send(gameNameEnum);</span>
+
+            /* Send a clear game state to all players before closing for removing all entities */
+<span class="nc" id="L244">            game.clearUnityGame(game);</span>
+
+<span class="nc" id="L246">            games.remove(game);</span>
+<span class="nc" id="L247">            response.setResponse(ResponseEnum.GameClosed);</span>
+<span class="nc" id="L248">            response.setGameName(gameNameEnum);</span>
+<span class="nc" id="L249">            response.setNotify(gameNameEnum.getGameName() + &quot; closed successfully.&quot;);</span>
+<span class="nc" id="L250">            response.send();</span>
+        }
+<span class="nc" id="L252">    }</span>
+
+
+    // Getters and Setters
+    public ArrayList&lt;Game&gt; getGames() {
+<span class="fc" id="L257">        return games;</span>
+    }
+
+    /**
+     * Checks if the {@link Server} instance exists.
+     *
+     * @return the {@link Server} instance if it exists; {@code null} otherwise.
+     * @implNote This method checks if the {@link Server} instance is initialized and returns {@code null} if not.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
+    public Server serverExists() {
+<span class="fc" id="L269">        Server server = Server.getInstance();</span>
+
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">        if (server == null) {</span>
+<span class="nc" id="L272">            Logger.failure(&quot;Server instance is null.&quot;);</span>
+<span class="nc" id="L273">            return null;</span>
+        }
+<span class="fc" id="L275">        return server;</span>
+    }
+
+    /**
+     * Checks if a game with the given {@link GameNameEnum} exists.
+     *
+     * @param gameNameEnum the game name to check
+     * @return the {@link Game} instance if it exists; {@code null} otherwise.
+     * @implNote @implNote This method checks if the {@link Server} instance is initialized and returns {@code null} if not.
+     * @author A.Sallier
+     * @date 2025-06-07
+     */
+    public Game gameExists(GameNameEnum gameNameEnum) {
+
+<span class="fc" id="L289">        Server server = serverExists();</span>
+
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">        if (server == null) {</span>
+<span class="nc" id="L292">            Logger.failure(&quot;Server instance is null.&quot;);</span>
+<span class="nc" id="L293">            return null;</span>
+        }
+
+<span class="fc" id="L296">        return games.stream()</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">                .filter(game -&gt; game.getGameNameEnum() == gameNameEnum)</span>
+<span class="fc" id="L298">                .findFirst()</span>
+<span class="fc" id="L299">                .orElseGet(() -&gt; {</span>
+                    //Logger.warn(&quot;Game &quot; + gameNameEnum.getGameName() + &quot; does not exist.&quot;);
+<span class="fc" id="L301">                    return null;</span>
+                });
+    }
+
+    /**
+     * Registers a {@link Player} to the {@link Server}.
+     *
+     * @param player the {@link Player} to register
+     * @implNote This method checks if the {@link  Player} is already registered on the {@link  Server}. If so, it logs a warning. If the {@code player}  is {@code null} , it logs a failure. Otherwise, it adds the {@code player}  to the list of registered {@code players}  and logs the registration.
+     * @author A.SALLIER
+     * @date 2025-06-07
+     */
+    public void registerPlayer(Player player) {
+
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">        if (players.contains(player)) {</span>
+<span class="nc" id="L316">            Logger.warn(&quot;Player &quot; + player.getUuid() + &quot; is already registered.&quot;);</span>
+
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">        } else if (player == null) {</span>
+<span class="nc" id="L319">            Logger.failure(&quot;Could not register a null player.&quot;);</span>
+
+        } else {
+<span class="fc" id="L322">            getPlayersMap().putIfAbsent(player.getUuid(), player);</span>
+<span class="fc" id="L323">            Logger.server(&quot;Registering player : &quot; + player.getUuid());</span>
+        }
+<span class="fc" id="L325">    }</span>
+
+    public ConcurrentHashMap&lt;String, Player&gt; getPlayersMap() {
+<span class="fc" id="L328">        return players;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntityTransform.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.entity</a> &gt; <span class="el_source">EntityTransform.java</span></div><h1>EntityTransform.java</h1><pre class="source lang-java linenums">package com.arena.game.entity;
+
+public class EntityTransform {
+    private float scale;
+
+<span class="fc" id="L6">    public EntityTransform () {</span>
+<span class="fc" id="L7">        this.scale = 1.0f;</span>
+<span class="fc" id="L8">    }</span>
+
+    public float getScale() {
+<span class="nc" id="L11">        return scale;</span>
+    }
+
+    /**
+     * Sets the scale of the entity in Unity.
+     *
+     * @param scale the scale factor to set for the entity.
+     * @implNote This method sets the scale of the entity in Unity. The scale must be a positive value.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public void setScale(float scale) {
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if (scale &gt; 0) {</span>
+<span class="fc" id="L24">            this.scale = scale;</span>
+        } else {
+<span class="nc" id="L26">            throw new IllegalArgumentException(&quot;Scale must be positive&quot;);</span>
+        }
+<span class="fc" id="L28">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

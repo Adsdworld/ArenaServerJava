@@ -16,8 +16,8 @@ public class Inhibitor extends LivingEntity {
     private final String skinAnimationForSpawn = "SRUAP_ChaosInhibitor_spawn.anm";
     private final long skinAnimationDurationForSpawn = 1166;
 
-    private final String skinAnimationForDeath = "Death_Base";
-    private final long skinAnimationDurationForDeath = 8333;
+    private final String skinAnimationForDeath = "Idle_Hold";//Death_Base
+    private final long skinAnimationDurationForDeath = 333;
 
     private final String skinAnimationForDeathHold = "Idle_Hold";
     private final long skinAnimationDurationForDeathHold = 333;

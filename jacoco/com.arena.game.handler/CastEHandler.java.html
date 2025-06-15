@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CastEHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.handler</a> &gt; <span class="el_source">CastEHandler.java</span></div><h1>CastEHandler.java</h1><pre class="source lang-java linenums">package com.arena.game.handler;
+
+import com.arena.game.Game;
+import com.arena.game.entity.LivingEntity;
+import com.arena.network.message.Message;
+import com.arena.player.Player;
+import com.arena.server.Server;
+
+<span class="fc" id="L9">public class CastEHandler implements IMessageHandler {</span>
+
+    /**
+     * Handle the cast E action for a player.
+     *
+     * @param message the {@link Message} containing the cast action details.
+     * @implNote This method processes the cast E action for a player, updating the cooldown start and end times for the player's living entity in the game.
+     * @author A.SALLIER
+     * @date 2025-06-12
+     */
+    public void handle(Message message) {
+
+<span class="fc" id="L21">        Server server = Server.getInstance();</span>
+
+        Player player;
+        Game game;
+
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if (server != null</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">                &amp;&amp; (player = server.getPlayerByUuid(message.getUuid())) != null</span>
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">                &amp;&amp; (game = server.getGameOfPlayer(player)) != null) {</span>
+<span class="fc" id="L29">            LivingEntity entity = game.getLivingEntity(player);</span>
+
+<span class="fc" id="L31">            long castStart = message.getLivingEntity().getCooldownEStart();</span>
+<span class="fc" id="L32">            long castDuration = entity.getCooldownEMs();</span>
+<span class="fc" id="L33">            long castEnd = castStart + castDuration;</span>
+
+<span class="pc bpc" id="L35" title="3 of 6 branches missed.">            if (castStart &gt;= entity.getCooldownEEnd() &amp;&amp; !entity.isLocked() &amp;&amp; !entity.isCastLocked()) {</span>
+<span class="fc" id="L36">                entity.lockEntityCast(true);</span>
+
+<span class="fc" id="L38">                entity.setCooldownEStart(castStart);</span>
+<span class="fc" id="L39">                entity.setCooldownEEnd(castEnd);</span>
+
+<span class="fc" id="L41">                entity.useE();</span>
+
+                /* Set the skin animation */
+<span class="fc" id="L44">                entity.setSkinAnimation(entity.getSkinAnimationForE());</span>
+
+                /* Lock the skin animation */
+<span class="fc" id="L47">                entity.lockSkinAnimation(entity.getSkinAnimationDurationForE(), () -&gt; entity.lockEntityCast(false));</span>
+            }
+        }
+<span class="fc" id="L50">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

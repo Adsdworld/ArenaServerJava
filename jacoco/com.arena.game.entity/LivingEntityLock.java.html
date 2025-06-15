@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LivingEntityLock.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.entity</a> &gt; <span class="el_source">LivingEntityLock.java</span></div><h1>LivingEntityLock.java</h1><pre class="source lang-java linenums">package com.arena.game.entity;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public abstract class LivingEntityLock extends Entity implements ILivingEntityLock {
+    protected boolean entityLocked, skinAnimationLocked, entityCastLocked, entityMoveLocked;
+
+<span class="fc" id="L10">    private static final ScheduledExecutorService SCHEDULER = Executors.newSingleThreadScheduledExecutor();</span>
+
+    public LivingEntityLock(String id) {
+<span class="fc" id="L13">        super(id);</span>
+<span class="fc" id="L14">    }</span>
+
+    @Override
+<span class="nc" id="L17">    public void lockEntity(boolean locked) {this.entityLocked = locked;}</span>
+
+    @Override
+    public boolean isLocked() {
+<span class="fc" id="L21">        return entityLocked;</span>
+    }
+
+    @Override
+    public void lockEntityCast(boolean locked) {
+<span class="fc" id="L26">        this.entityCastLocked = locked;</span>
+<span class="fc" id="L27">    }</span>
+
+    @Override
+    public boolean isCastLocked() {
+<span class="fc" id="L31">        return entityCastLocked;</span>
+    }
+
+    @Override
+    public void lockEntityMove(boolean locked) {
+<span class="nc" id="L36">        this.entityMoveLocked = locked;</span>
+<span class="nc" id="L37">    }</span>
+
+    @Override
+    public boolean isMoveLocked() {
+<span class="fc" id="L41">        return entityMoveLocked;</span>
+    }
+
+    @Override
+<span class="fc" id="L45">    public void lockSkinAnimation(boolean lock) {this.skinAnimationLocked = lock;}</span>
+
+    @Override
+<span class="fc" id="L48">    public boolean isSkinAnimationLocked() {return skinAnimationLocked;}</span>
+
+    /**
+     * Locks the skin animation for a specified duration.
+     *
+     * @param ms the duration in milliseconds to lock the skin animation.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public void lockSkinAnimation(long ms) {
+<span class="nc" id="L58">        this.lockSkinAnimation(true);</span>
+<span class="nc" id="L59">        SCHEDULER.schedule(() -&gt;</span>
+                {
+<span class="nc" id="L61">                    this.lockSkinAnimation(false);</span>
+<span class="nc" id="L62">                },</span>
+                ms,
+                TimeUnit.MILLISECONDS);
+<span class="nc" id="L65">    }</span>
+
+    /**
+     * Locks the skin animation for a specified duration and runs an action after unlocking.
+     *
+     * @param ms the duration in milliseconds to lock the skin animation.
+     * @param afterUnlock the action to run after unlocking the skin animation, can be null.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public void lockSkinAnimation(long ms, Runnable afterUnlock) {
+<span class="fc" id="L76">        this.lockSkinAnimation(true);</span>
+<span class="fc" id="L77">        SCHEDULER.schedule(() -&gt; {</span>
+<span class="fc" id="L78">            this.lockSkinAnimation(false);</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">            if (afterUnlock != null) {</span>
+<span class="fc" id="L80">                afterUnlock.run();</span>
+            }
+<span class="fc" id="L82">        }, ms, TimeUnit.MILLISECONDS);</span>
+<span class="fc" id="L83">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

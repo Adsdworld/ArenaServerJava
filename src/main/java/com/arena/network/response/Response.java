@@ -56,6 +56,10 @@ public class Response implements Comparable<Response>{
         this.notify = notify1;
     }
 
+    public String getNotify() {
+        return notify;
+    }
+
     public void setTimestamp(long timestamp1) {
         this.timestamp = timestamp1;
     }

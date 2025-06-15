@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JavaWebSocket.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.network</a> &gt; <span class="el_source">JavaWebSocket.java</span></div><h1>JavaWebSocket.java</h1><pre class="source lang-java linenums">package com.arena.network;
+
+import com.arena.game.Game;
+import com.arena.game.core.Core;
+import com.arena.network.response.Response;
+import com.arena.network.response.ResponseService;
+import com.arena.player.ActionEnum;
+import com.arena.player.Player;
+import com.arena.player.ResponseEnum;
+import com.arena.server.Server;
+import com.arena.utils.logger.Logger;
+import com.arena.network.message.Message;
+import com.arena.utils.json.JsonService;
+import com.google.gson.JsonParseException;
+import org.java_websocket.WebSocket;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.server.WebSocketServer;
+
+import java.net.InetSocketAddress;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * JavaWebSocket is a singleton WebSocket server that listens for incoming connections
+ * and processes messages in JSON format.
+ * It uses the JsonService for JSON serialization/deserialization.
+ */
+public class JavaWebSocket extends WebSocketServer {
+
+    public int port;
+    private static JavaWebSocket instance;
+<span class="fc" id="L31">    private final JsonService jsonService = new JsonService();</span>
+
+    public ConcurrentHashMap&lt;WebSocket, Player&gt; webSocketToUuid;
+    public ConcurrentHashMap&lt;Player, WebSocket&gt; uuidToWebSocket;
+
+    private JavaWebSocket(int port) {
+<span class="fc" id="L37">        super(new InetSocketAddress(port));</span>
+<span class="fc" id="L38">        this.port = port;</span>
+
+<span class="fc" id="L40">        ResponseService.setResponseSender(new JavaWebSocketResponseSender());</span>
+
+<span class="fc" id="L42">        Logger.info(&quot;JavaWebSocket created on port &quot; + port);</span>
+<span class="fc" id="L43">        webSocketToUuid = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L44">        uuidToWebSocket = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L45">    }</span>
+
+    /**
+     * getInstance is a synchronized method that returns the singleton instance of JavaWebSocket.
+     *
+     * @return JavaWebSocket instance.
+     * @implNote if the instance is not initialized, it throws an IllegalStateException.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public static synchronized JavaWebSocket getInstance() {
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (instance == null) {</span>
+<span class="nc" id="L57">            throw new IllegalStateException(&quot;JavaWebSocket not initialized. Call initialize(port) first.&quot;);</span>
+        }
+<span class="fc" id="L59">        return instance;</span>
+    }
+
+    /**
+     * initialize is a synchronized method that creates a new instance of JavaWebSocket
+     *
+     * @param port the port on which the WebSocket server will listen.
+     * @implNote checks if the instance is already initialized to avoid creating multiple instances.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public static synchronized void initialize(int port) {
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (instance == null) {</span>
+<span class="fc" id="L72">            instance = new JavaWebSocket(port);</span>
+        }
+<span class="fc" id="L74">    }</span>
+
+    @Override
+    public void onStart() {
+<span class="fc" id="L78">        Logger.info(&quot;JavaWebSocket started and listening on port &quot; + port);</span>
+<span class="fc" id="L79">    }</span>
+
+    @Override
+    public void onOpen(WebSocket conn, ClientHandshake handshake) {
+<span class="fc" id="L83">        Logger.info(&quot;New connection from: &quot; + conn.getRemoteSocketAddress());</span>
+<span class="fc" id="L84">    }</span>
+
+    @Override
+    public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+
+        try {
+            /* Reason for closing the connection:
+             * - code: the WebSocket close code.
+             * - reason: a string explaining why the connection was closed.
+             * - remote: true if the close was initiated by the remote peer, false if it was initiated by the server.
+             */
+<span class="nc bnc" id="L95" title="All 4 branches missed.">            String reason1 = reason != null &amp;&amp; !reason.isEmpty() ? reason : &quot; No reason provided&quot;;</span>
+<span class="nc" id="L96">            Logger.info(&quot;Connection closed: &quot; + conn.getRemoteSocketAddress() + reason1 + &quot; (code: &quot; + code + &quot;, remote: &quot; + remote + &quot;)&quot;);</span>
+<span class="nc" id="L97">            Player player = webSocketToUuid.get(conn);</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (player != null) {</span>
+<span class="nc" id="L99">                Server server = Server.getInstance();</span>
+
+                /* Unregister player from the server, it avoids sending response to null connections */
+<span class="nc" id="L102">                uuidToWebSocket.remove(player);</span>
+<span class="nc" id="L103">                Server.getInstance().getPlayersMap().remove(player.getUuid());</span>
+
+                /* Remove player from all games, player entity still exists in the game if he rejoins later,
+                * It avoids sending multiples 'Game State' to one Player */
+<span class="nc bnc" id="L107" title="All 2 branches missed.">                for (Game game : server.getGames()) {</span>
+<span class="nc" id="L108">                    game.getPlayersMap().remove(player.getUuid());</span>
+<span class="nc" id="L109">                }</span>
+            }
+<span class="nc" id="L111">            webSocketToUuid.remove(conn);</span>
+
+<span class="nc" id="L113">        } catch (JsonParseException e) {</span>
+<span class="nc" id="L114">            Logger.error(&quot;Exception while closing connection: &quot; + e.getMessage());</span>
+        } finally {
+<span class="nc" id="L116">            Logger.server(&quot;Connection closed successfully: &quot; + conn.getRemoteSocketAddress() + &quot; (code: &quot; + code + &quot;, remote: &quot; + remote + &quot;)&quot;);</span>
+        }
+<span class="nc" id="L118">    }</span>
+
+    /**
+     * onMessage is called when a message is received from a {@link WebSocket} connection.
+     *
+     * @param conn the {@link WebSocket} connection that sent the message.
+     * @param messageJson the message received in JSON format.
+     * @implNote
+     * @author A.BENETREAU
+     * @date 2025-06-10
+     */
+    @Override
+    public void onMessage(WebSocket conn, String messageJson) {
+        try {
+<span class="fc" id="L132">            jsonService.fromJson(messageJson, Message.class);</span>
+
+<span class="fc" id="L134">            Message message = jsonService.fromJson(messageJson, Message.class);</span>
+
+<span class="fc bfc" id="L136" title="All 2 branches covered.">            if (message.getAction() != ActionEnum.PlayerStateUpdate) {</span>
+<span class="fc" id="L137">                Logger.info(message.getUuid() + &quot; &gt;&gt;&gt; &quot; + message.getAction() + &quot; : &quot; + messageJson);</span>
+            }
+
+            /* Check if the message is a login action
+             * This logic could not be pass to the Core because we need the conn/Websocket to register the Player
+             */
+<span class="fc bfc" id="L143" title="All 2 branches covered.">            if (message.getAction() == ActionEnum.Login) {</span>
+<span class="fc" id="L144">                Player player = new Player(message.getUuid());</span>
+<span class="fc" id="L145">                JavaWebSocket.getInstance().webSocketToUuid.putIfAbsent(conn, player);</span>
+<span class="fc" id="L146">                JavaWebSocket.getInstance().uuidToWebSocket.putIfAbsent(player, conn);</span>
+
+<span class="fc" id="L148">                Server.getInstance().registerPlayer(player);</span>
+
+<span class="fc" id="L150">                Response response = new Response();</span>
+<span class="fc" id="L151">                response.setResponse(ResponseEnum.Logged);</span>
+<span class="fc" id="L152">                response.setUuid(player.getUuid());</span>
+<span class="fc" id="L153">                response.setNotify(&quot;Connected to the server ! Welcome to Arena!&quot;);</span>
+<span class="fc" id="L154">                response.send(player.getUuid());</span>
+
+<span class="fc" id="L156">                return;</span>
+            }
+
+<span class="fc" id="L159">            Core.getInstance().receive(message);</span>
+<span class="nc" id="L160">        } catch (JsonParseException e) {</span>
+<span class="nc" id="L161">            Logger.failure(&quot;Failed to parse message: &quot; + e.getMessage());</span>
+<span class="fc" id="L162">        }</span>
+<span class="fc" id="L163">    }</span>
+
+    @Override
+    public void onError(WebSocket conn, Exception ex) {
+<span class="nc" id="L167">        Logger.error(&quot;WebSocket error: &quot; + ex.getMessage());</span>
+<span class="nc" id="L168">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

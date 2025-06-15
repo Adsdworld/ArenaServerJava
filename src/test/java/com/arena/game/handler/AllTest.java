@@ -7,6 +7,8 @@ import com.arena.game.Game;
 import com.arena.game.GameNameEnum;
 import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.champion.Garen;
+import com.arena.game.utils.EntityInit;
+import com.arena.game.utils.Position;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
 import com.arena.player.ActionEnum;
@@ -22,8 +24,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -547,6 +548,71 @@ public class AllTest extends ArenaTestBase {
         assertNotNull(matchingEntity, "Entity should be present at posX:" +matchingEntity);
 
         assertEquals(entity.getSkinAnimationForIdle(), matchingEntity.getSkinAnimation(), "Idle animation should be set for the entity");
+    }
+
+    @Test
+    @Order(15)
+    void endToWin() throws InterruptedException {
+        Map<String, EntityInit> BLUE = new LinkedHashMap<>();
+        BLUE.put("T1_MID_BLUE", new EntityInit(new Position(445.92f, 8.07f, 490.81f, 180f), true, "T2_MID_BLUE"));
+        BLUE.put("T2_MID_BLUE", new EntityInit(new Position(419.68f, 8.07f, 438.94f, 180f), "T3_MID_BLUE"));
+        BLUE.put("T3_MID_BLUE", new EntityInit(new Position(375.67f, 9.37f, 403.40f, 180f), "INHIB_MID_BLUE"));
+        BLUE.put("INHIB_MID_BLUE", new EntityInit(new Position(360.45f, -7.36f, 389.32f, 0f), List.of("T4_BOT_BLUE", "T4_TOP_BLUE")));
+        BLUE.put("T4_TOP_BLUE", new EntityInit(new Position(312.82f, 9.37f, 357.67f, 180f), "NEXUS_BLUE"));
+        BLUE.put("T4_BOT_BLUE", new EntityInit(new Position(327.72f, 9.37f, 342.34f, 180f), "NEXUS_BLUE"));
+        BLUE.put("NEXUS_BLUE", new EntityInit(new Position(307.62f, -13.5f, 337.96f, 0f), "None"));
+
+        Server server = Server.getInstance();
+        Player player = server.getPlayerByUuid(TestClientJava.testUuid);
+        Game game = server.getGameOfPlayer(player);
+        LivingEntity entity = game.getLivingEntity(player);
+
+        ArrayList<Response> responses = new ArrayList<>();
+
+        for (String entityInit : BLUE.keySet()) {
+            entity.setPos(BLUE.get(entityInit).getPosition());
+            Message message = new Message();
+            message.setAction(ActionEnum.PlayerStateUpdate);
+            message.setLivingEntity(entity);
+            MessageService.Send(message);
+
+            boolean dead = false;
+            while (!dead) {
+                Message message1 = new Message();
+                message1.setAction(ActionEnum.CastQ);
+                entity.setCooldownQStart(System.currentTimeMillis());
+                message1.setLivingEntity(entity);
+                MessageService.Send(message1);
+
+                Logger.test("entry before writing response");
+                responses = TestClientJava.waitForNextMessagesStatic();
+
+                ArrayList<Response> res = TestClientJava.filterResponseStatic(List.of(ResponseEnum.GameState), responses);
+
+                Response latest = res.stream()
+                        .max(Comparator.comparingLong(Response::getTimestamp))
+                        .orElse(null);
+
+                LivingEntity enemy = latest.getLivingEntities().stream()
+                        .filter(e -> Objects.equals(e.getGeneralId(), entityInit))
+                        .findFirst()
+                        .orElse(null);
+
+                if (enemy == null || enemy.getHealth() <= 0) {
+                    dead = true;
+                }
+            }
+        }
+
+
+        Response match = responses.stream()
+                .filter(r -> r.getNotify() != null && r.getNotify().contains("wins!"))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(match, "Info response should contain a win message");
+        Logger.test(match.getNotify());
+
     }
 
 

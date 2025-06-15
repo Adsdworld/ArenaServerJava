@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Nexus.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.entity.building</a> &gt; <span class="el_source">Nexus.java</span></div><h1>Nexus.java</h1><pre class="source lang-java linenums">package com.arena.game.entity.building;
+
+import com.arena.game.Game;
+import com.arena.game.entity.LivingEntity;
+import com.arena.network.response.Response;
+import com.arena.player.ResponseEnum;
+import com.arena.server.Server;
+import com.arena.utils.logger.Logger;
+import com.arena.utils.Vector3f;
+
+public class Nexus extends LivingEntity {
+<span class="fc" id="L12">    private String skinAnimationIdle = &quot;Idle1_Base&quot;;</span>
+
+<span class="fc" id="L14">    private final String skinAnimationForSpawnHold = &quot;Nexus_spawn_hold.anm&quot;;</span>
+<span class="fc" id="L15">    private final long skinAnimationDurationForSpawnHold = 166;</span>
+
+<span class="fc" id="L17">    private final String skinAnimationForSpawn = &quot;Nexus_spawn.anm&quot;;</span>
+<span class="fc" id="L18">    private final long skinAnimationDurationForSpawn = 5166;</span>
+
+<span class="fc" id="L20">    private final String skinAnimationForDeath = &quot;Nexus_spawn_hold.anm&quot;;//Death</span>
+<span class="fc" id="L21">    private final long skinAnimationDurationForDeath = 166;//7999</span>
+
+<span class="fc" id="L23">    private final String skinAnimationForDeathHold = &quot;Nexus_spawn_hold.anm&quot;;</span>
+<span class="fc" id="L24">    private final long skinAnimationDurationForDeathHold = 166;</span>
+
+
+    public Nexus(String id, int team) {
+<span class="fc" id="L28">        super(id, 2000, team, &quot;Nexus&quot;);</span>
+
+<span class="fc" id="L30">        Building building = new Building(26f);</span>
+
+<span class="fc" id="L32">        this.setRigidbody(building.getRigidbody());</span>
+
+<span class="fc" id="L34">        this.setCollider(building.getCollider());</span>
+
+<span class="fc" id="L36">        this.setNavMeshAgent(building.getNavMeshAgent());</span>
+
+<span class="fc" id="L38">        this.setTransform(building.getTransform());</span>
+
+
+<span class="fc" id="L41">        this.setSkinScale(0.0015f);</span>
+<span class="fc" id="L42">        this.setSkinPos(new Vector3f(0.0f, 0.578f, 0.0f));</span>
+<span class="fc" id="L43">        this.setSkinAnimationSpeed(0.5f);</span>
+<span class="fc" id="L44">        this.setSkinAnimation(getSkinAnimationForSpawnHold());</span>
+<span class="fc" id="L45">    }</span>
+
+    @Override
+<span class="nc" id="L48">    public long getSkinAnimationDurationForSpawnHold() {return (long) (this.getSkinAnimationBaseSpeed()/this.getSkinAnimationSpeed()) * skinAnimationDurationForSpawnHold;}</span>
+
+    @Override
+<span class="fc" id="L51">    public String getSkinAnimationForSpawnHold() {return skinAnimationForSpawnHold;}</span>
+
+    @Override
+<span class="fc" id="L54">    public long getSkinAnimationDurationForSpawn() {return (long) (this.getSkinAnimationBaseSpeed()/this.getSkinAnimationSpeed()) * skinAnimationDurationForSpawn;}</span>
+
+    @Override
+<span class="fc" id="L57">    public String getSkinAnimationForSpawn() {return skinAnimationForSpawn;}</span>
+
+    @Override
+    public long getSkinAnimationDurationForDeath() {
+<span class="fc" id="L61">        return (long) (this.getSkinAnimationBaseSpeed()/this.getSkinAnimationSpeed()) * skinAnimationDurationForDeath;</span>
+    }
+
+    @Override
+<span class="fc" id="L65">    public String getSkinAnimationForDeath() {return skinAnimationForDeath;}</span>
+
+    @Override
+<span class="nc" id="L68">    public long getSkinAnimationDurationForDeathHold() {return (long) (this.getSkinAnimationBaseSpeed()/this.getSkinAnimationSpeed()) * skinAnimationDurationForDeathHold;}</span>
+
+    @Override
+<span class="fc" id="L71">    public String getSkinAnimationForDeathHold() {return skinAnimationForDeathHold;}</span>
+
+
+    @Override
+    public String getSkinAnimationForIdle() {
+<span class="fc" id="L76">        return skinAnimationIdle;</span>
+    }
+
+    @Override
+    public void die() {
+<span class="fc" id="L81">        Server server = Server.getInstance();</span>
+
+<span class="fc" id="L83">        Game game = server.getGameOfEntity(this);</span>
+
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (game == null) {</span>
+<span class="nc" id="L86">            Logger.failure(&quot;Game not found for entity: &quot; + this.getId());</span>
+<span class="nc" id="L87">            return;</span>
+        }
+
+<span class="fc" id="L90">        this.setSkinAnimation(getSkinAnimationForDeathHold());</span>
+
+<span class="fc" id="L92">        Response response = new Response();</span>
+<span class="fc" id="L93">        response.setResponse(ResponseEnum.Info);</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (this.getTeam() == 1) {</span>
+<span class="fc" id="L95">            response.setNotify(&quot;The Red Nexus has been destroyed! Blue Team wins!&quot;);</span>
+        } else {
+<span class="nc" id="L97">            response.setNotify(&quot;The Blue Nexus has been destroyed! Red Team wins!&quot;);</span>
+        }
+<span class="fc" id="L99">        response.send(game.getGameNameEnum());</span>
+<span class="fc" id="L100">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

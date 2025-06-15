@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResponseEnum.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.player</a> &gt; <span class="el_source">ResponseEnum.java</span></div><h1>ResponseEnum.java</h1><pre class="source lang-java linenums">package com.arena.player;
+
+import com.google.gson.annotations.SerializedName;
+
+/**
+ * Enum representing various responses that can be sent by the server to the client.
+ */
+<span class="fc" id="L8">public enum ResponseEnum {</span>
+
+    /**
+     * Info : success
+     */
+<span class="fc" id="L13">    @SerializedName(&quot;Info&quot;)</span>
+    Info(&quot;Info&quot;),
+
+
+    /**
+     * Login : success
+     * Response to login.
+     * This is sent when the {@link Player} have been added to the {@link com.arena.server.Server} .
+     */
+<span class="fc" id="L22">    @SerializedName(&quot;Logged&quot;)</span>
+    Logged(&quot;Logged&quot;),
+
+
+    /*
+     * CreateGame : success
+     * Response to create a game.
+     */
+<span class="fc" id="L30">    @SerializedName(&quot;Game Created&quot;)</span>
+    GameCreated(&quot;Game Created&quot;),
+    /**
+     * CreateGame : failure
+     * Response game already exists.
+     */
+<span class="fc" id="L36">    @SerializedName(&quot;Game Already Exists&quot;)</span>
+    GameAlreadyExists(&quot;Game Already Exists&quot;),
+    /**
+     * CreateGame : failure
+     * Response games limit reached.
+     * Use gameNameEnum Game 6 to test this.
+     */
+<span class="fc" id="L43">    @SerializedName(&quot;Games Limit Reached&quot;)</span>
+    GamesLimitReached(&quot;Games Limit Reached&quot;),
+
+
+    /**
+     * JoinGame : success
+     * Response to join a game.
+     */
+<span class="fc" id="L51">    @SerializedName(&quot;Joined&quot;)</span>
+    Joined(&quot;Joined&quot;),
+    /**
+     * JoinGame : failure
+     * Response player already in game.
+     */
+<span class="fc" id="L57">    @SerializedName(&quot;Player Already In Game&quot;)</span>
+    PlayerAlreadyInGame(&quot;Player Already In Game&quot;),
+
+
+    /**
+     * CloseGame : success
+     * Response to close a game.
+     */
+<span class="fc" id="L65">    @SerializedName(&quot;Game Closed&quot;)</span>
+    GameClosed(&quot;Game Closed&quot;),
+    /**
+     * CloseGame : failure
+     * Response game not found.
+     */
+<span class="fc" id="L71">    @SerializedName(&quot;Game Not Found&quot;)</span>
+    GameNotFound(&quot;Game Not Found&quot;),
+
+    /**
+     * Game State : None
+     * Response to send a game state.
+     */
+<span class="fc" id="L78">    @SerializedName(&quot;Game State&quot;)</span>
+    GameState(&quot;Game State&quot;),
+
+    /**
+     * Your Entity Is : None
+     * Response to set the entity controlled by the {@link Player}.
+     */
+<span class="fc" id="L85">    @SerializedName(&quot;Your Entity Is&quot;)</span>
+    YourEntityIs(&quot;Your Entity Is&quot;);
+
+    private final String response;
+
+<span class="fc" id="L90">    ResponseEnum(String response) {</span>
+<span class="fc" id="L91">        this.response = response;</span>
+<span class="fc" id="L92">    }</span>
+
+    public String getResponse() {
+<span class="nc" id="L95">        return response;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

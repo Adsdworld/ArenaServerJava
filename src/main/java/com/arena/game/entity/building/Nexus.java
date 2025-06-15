@@ -17,8 +17,8 @@ public class Nexus extends LivingEntity {
     private final String skinAnimationForSpawn = "Nexus_spawn.anm";
     private final long skinAnimationDurationForSpawn = 5166;
 
-    private final String skinAnimationForDeath = "Death";
-    private final long skinAnimationDurationForDeath = 7999;
+    private final String skinAnimationForDeath = "Nexus_spawn_hold.anm";//Death
+    private final long skinAnimationDurationForDeath = 166;//7999
 
     private final String skinAnimationForDeathHold = "Nexus_spawn_hold.anm";
     private final long skinAnimationDurationForDeathHold = 166;

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Response.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.network.response</a> &gt; <span class="el_source">Response.java</span></div><h1>Response.java</h1><pre class="source lang-java linenums">package com.arena.network.response;
+
+import com.arena.game.GameNameEnum;
+import com.arena.game.entity.LivingEntity;
+import com.arena.player.ResponseEnum;
+import com.google.gson.Gson;
+
+import java.util.Collection;
+
+/**
+ * Represents a response sent over the network.
+ * This class is used to encapsulate the data that is sent by the {@link com.arena.server.Server} to the {@link com.arena.player.Player} .
+ */
+public class Response implements Comparable&lt;Response&gt;{
+    private String uuid;
+    private ResponseEnum response;
+    private GameNameEnum gameName;
+    private String text;
+    private String notify;
+    private long timestamp;
+    private Collection&lt;LivingEntity&gt; livingEntities;
+
+    /* Constructor for json */
+<span class="fc" id="L24">    public Response() {</span>
+<span class="fc" id="L25">    }</span>
+
+    public GameNameEnum getGameName() {
+<span class="nc" id="L28">        return gameName;</span>
+    }
+
+    public void setGameName(GameNameEnum gameName) {
+<span class="fc" id="L32">        this.gameName = gameName;</span>
+<span class="fc" id="L33">    }</span>
+
+    public ResponseEnum getResponse() {
+<span class="fc" id="L36">        return response;</span>
+    }
+
+    public void setResponse(ResponseEnum res) {
+<span class="fc" id="L40">        this.response = res;</span>
+<span class="fc" id="L41">    }</span>
+
+    public String getUuid() {
+<span class="fc" id="L44">        return uuid;</span>
+    }
+
+    public void setUuid(String uuid) {
+<span class="fc" id="L48">        this.uuid = uuid;</span>
+<span class="fc" id="L49">    }</span>
+
+    public void setText(String text) {
+<span class="fc" id="L52">        this.text = text;</span>
+<span class="fc" id="L53">    }</span>
+
+    public void setNotify(String notify1) {
+<span class="fc" id="L56">        this.notify = notify1;</span>
+<span class="fc" id="L57">    }</span>
+
+    public String getNotify() {
+<span class="fc" id="L60">        return notify;</span>
+    }
+
+    public void setTimestamp(long timestamp1) {
+<span class="nc" id="L64">        this.timestamp = timestamp1;</span>
+<span class="nc" id="L65">    }</span>
+
+    public long getTimestamp() {
+<span class="fc" id="L68">        return timestamp;</span>
+    }
+
+    public void setLivingEntities(Collection&lt;LivingEntity&gt; entities) {
+<span class="fc" id="L72">        livingEntities = entities;</span>
+<span class="fc" id="L73">    }</span>
+
+    public Collection&lt;LivingEntity&gt; getLivingEntities() {
+<span class="fc" id="L76">        return livingEntities;</span>
+    }
+
+    @Override
+    public int compareTo(Response other) {
+<span class="fc" id="L81">        return Long.compare(this.timestamp, other.timestamp);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L86">        return new Gson().toJson(this);</span>
+    }
+
+    /**
+     * Send to server.
+     */
+    public void send() {
+<span class="fc" id="L93">        timestamp = System.currentTimeMillis();</span>
+<span class="fc" id="L94">        ResponseService.send(this, false);</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * Send to server silently
+     * @param silent whether to send the response silently or not.
+     */
+    public void send(boolean silent) {
+<span class="nc" id="L102">        timestamp = System.currentTimeMillis();</span>
+<span class="nc" id="L103">        ResponseService.send(this, silent);</span>
+<span class="nc" id="L104">    }</span>
+
+
+    /**
+     * Send to game.
+     * @param game the name of the game as a {@link GameNameEnum}.
+     */
+    public void send(GameNameEnum game) {
+<span class="fc" id="L112">        timestamp = System.currentTimeMillis();</span>
+<span class="fc" id="L113">        ResponseService.sendToGame(this, game, false);</span>
+<span class="fc" id="L114">    }</span>
+
+    /**
+     * Send to game silently.
+     * @param game the name of the game as a {@link GameNameEnum}.
+     * @param silent whether to send the response silently or not.
+     */
+    public void send(GameNameEnum game, boolean silent) {
+<span class="fc" id="L122">        timestamp = System.currentTimeMillis();</span>
+<span class="fc" id="L123">        ResponseService.sendToGame(this, game, silent);</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Send to uuid.
+     * @param id the unique identifier of the player as a {@link String}.
+     */
+    public void send(String id) {
+<span class="fc" id="L131">        timestamp = System.currentTimeMillis();</span>
+<span class="fc" id="L132">        ResponseService.sendToUuid(id, this, false);</span>
+<span class="fc" id="L133">    }</span>
+
+    /**
+     * Send to uuid silently
+     * @param id the unique identifier of the player as a {@link String}.
+     * @param silent whether to send the response silently or not.
+     */
+    public void send(String id, boolean silent) {
+<span class="fc" id="L141">        timestamp = System.currentTimeMillis();</span>
+<span class="fc" id="L142">        ResponseService.sendToUuid(id, this, silent);</span>
+<span class="fc" id="L143">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

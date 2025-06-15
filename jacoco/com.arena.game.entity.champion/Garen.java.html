@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Garen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.entity.champion</a> &gt; <span class="el_source">Garen.java</span></div><h1>Garen.java</h1><pre class="source lang-java linenums">package com.arena.game.entity.champion;
+
+import com.arena.game.Game;
+import com.arena.game.entity.LivingEntity;
+import com.arena.game.zone.Zone;
+import com.arena.game.zone.ZoneCircle;
+import com.arena.game.zone.ZoneCone;
+import com.arena.network.response.Response;
+import com.arena.player.Player;
+import com.arena.player.ResponseEnum;
+import com.arena.server.Server;
+import com.arena.utils.Vector3f;
+
+/**
+ * Garen is a champion in the game with specific abilities and animations.
+ * This class extends LivingEntity and implements the champion's abilities.
+ * It includes methods for handling abilities Q, W, E, and R, as well as death and respawn logic.
+ */
+public class Garen extends LivingEntity {
+<span class="fc" id="L20">    private String skinAnimationForIdle = &quot;Idle1_Base&quot;;</span>
+<span class="fc" id="L21">    private String skinAnimationForRun = &quot;Run&quot;;</span>
+<span class="fc" id="L22">    private String skinAnimationForQ = &quot;Spell1&quot;;</span>
+<span class="fc" id="L23">    private long skinAnimationDurationForQ = 1000;</span>
+<span class="fc" id="L24">    private String skinAnimationForW = &quot;Dance_Base&quot;;</span>
+<span class="fc" id="L25">    private long skinAnimationDurationForW = 2666;</span>
+<span class="fc" id="L26">    private String skinAnimationForE = &quot;Spell3_90&quot;;</span>
+<span class="fc" id="L27">    private long skinAnimationDurationForE = 3000;</span>
+<span class="fc" id="L28">    private String skinAnimationForR = &quot;Spell4_Base&quot;;</span>
+<span class="fc" id="L29">    private long skinAnimationDurationForR = 1566;</span>
+<span class="fc" id="L30">    private String skinAnimationForDeath = &quot;Death&quot;;</span>
+<span class="fc" id="L31">    private long skinAnimationDurationForDeath = 4300;</span>
+
+<span class="fc" id="L33">    private int qDamage = 50;</span>
+<span class="fc" id="L34">    private int wShield = 300;</span>
+<span class="fc" id="L35">    private int eDamage = 100;</span>
+<span class="fc" id="L36">    private int rDamage = 250;</span>
+
+    /**
+     * Constructor for Garen.
+     *
+     * @param id   the unique identifier for the Garen entity.
+     * @param team the team number (1 or 2) that Garen belongs to.
+     */
+    public Garen(String id, int team) {
+<span class="fc" id="L45">        super(id, 600, team, &quot;Garen&quot;); // maxHealth</span>
+<span class="fc" id="L46">        this.setMoveSpeed(12f);</span>
+
+<span class="fc" id="L48">        this.setAttackable(true);</span>
+
+<span class="fc" id="L50">        this.setCooldownQMs(1200);</span>
+<span class="fc" id="L51">        this.setCooldownWMs(5000);</span>
+<span class="fc" id="L52">        this.setCooldownEMs(20000);</span>
+<span class="fc" id="L53">        this.setCooldownRMs(60000);</span>
+
+<span class="fc" id="L55">        this.setSkinScale(0.007f);</span>
+<span class="fc" id="L56">        this.setSkinPos(new Vector3f(0.0f, -1.04f, 0.0f));</span>
+<span class="fc" id="L57">        this.setSkinAnimation(getSkinAnimationForIdle());</span>
+
+<span class="fc" id="L59">        Champion champion = new Champion(5f);</span>
+
+<span class="fc" id="L61">        this.setRigidbody(champion.getRigidbody());</span>
+
+<span class="fc" id="L63">        this.setCollider(champion.getCollider());</span>
+
+<span class="fc" id="L65">        this.setNavMeshAgent(champion.getNavMeshAgent());</span>
+
+<span class="fc" id="L67">        this.setTransform(champion.getTransform());</span>
+<span class="fc" id="L68">    }</span>
+
+    @Override
+    public String getSkinAnimationForRunning() {
+<span class="fc" id="L72">        return skinAnimationForRun;</span>
+    }
+
+    @Override
+    public String getSkinAnimationForIdle() {
+<span class="fc" id="L77">        return skinAnimationForIdle;</span>
+    }
+
+    @Override
+    public String getSkinAnimationForQ() {
+<span class="fc" id="L82">        return skinAnimationForQ;</span>
+    }
+
+    @Override
+    public String getSkinAnimationForW() {
+<span class="fc" id="L87">        return skinAnimationForW;</span>
+    }
+
+    @Override
+    public String getSkinAnimationForE() {
+<span class="fc" id="L92">        return skinAnimationForE;</span>
+    }
+
+    @Override
+    public String getSkinAnimationForR() {
+<span class="fc" id="L97">        return skinAnimationForR;</span>
+    }
+
+    @Override
+    public String getSkinAnimationForDeath() {
+<span class="nc" id="L102">        return skinAnimationForDeath;</span>
+    }
+
+    @Override
+<span class="fc" id="L106">    public long getSkinAnimationDurationForQ() {return (long) (this.getSkinAnimationBaseSpeed() / this.getSkinAnimationSpeed()) * skinAnimationDurationForQ;}</span>
+
+    @Override
+    public long getSkinAnimationDurationForW() {
+<span class="fc" id="L110">        return (long) (this.getSkinAnimationBaseSpeed() / this.getSkinAnimationSpeed()) * skinAnimationDurationForW;</span>
+    }
+
+    @Override
+    public long getSkinAnimationDurationForE() {
+<span class="fc" id="L115">        return (long) (this.getSkinAnimationBaseSpeed() / this.getSkinAnimationSpeed()) * skinAnimationDurationForE;</span>
+    }
+
+    @Override
+    public long getSkinAnimationDurationForR() {
+<span class="fc" id="L120">        return (long) (this.getSkinAnimationBaseSpeed() / this.getSkinAnimationSpeed()) * skinAnimationDurationForR;</span>
+    }
+
+    @Override
+    public long getSkinAnimationDurationForDeath() {
+<span class="nc" id="L125">        return (long) (this.getSkinAnimationBaseSpeed() / this.getSkinAnimationSpeed()) * skinAnimationDurationForDeath;</span>
+    }
+
+    @Override
+    public int getQTotalDamage() {
+<span class="fc" id="L130">        return qDamage; // Q deals 120% of AD as damage</span>
+    }
+
+    @Override
+    public int getWTotalShield() {
+<span class="fc" id="L135">        return wShield; // W does not deal damage, it provides a shield</span>
+    }
+
+    @Override
+    public int getETotalDamage() {
+<span class="fc" id="L140">        return eDamage; // E deals 150% of AD as damage</span>
+    }
+
+    @Override
+    public int getRTotalDamage() {
+<span class="fc" id="L145">        return rDamage; // R deals 250% of AD as damage</span>
+    }
+
+    @Override
+    public Zone getQZone() {
+<span class="fc" id="L150">        return new ZoneCone(15, 120);</span>
+    }
+
+    @Override
+    public void useQ() {
+<span class="fc" id="L155">        Server server = Server.getInstance();</span>
+
+<span class="fc" id="L157">        Player player = new Player(this.getId());</span>
+
+<span class="fc" id="L159">        Game game = server.getGameOfPlayer(player);</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">        if (game != null) {</span>
+<span class="fc" id="L161">            game.dealDamageToEnnemies(this, this.getQZone(), this.getQTotalDamage());</span>
+        }
+<span class="fc" id="L163">    }</span>
+
+    @Override
+    public void useW() {
+<span class="fc" id="L167">        Server server = Server.getInstance();</span>
+
+<span class="fc" id="L169">        Player player = new Player(this.getId());</span>
+
+<span class="fc" id="L171">        Game game = server.getGameOfPlayer(player);</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        if (game != null) {</span>
+<span class="fc" id="L173">            game.healSelf(this);</span>
+        }
+<span class="fc" id="L175">    }</span>
+
+    @Override
+    public Zone getEZone() {
+<span class="fc" id="L179">        return new ZoneCircle(15);</span>
+    }
+
+    @Override
+    public void useE() {
+<span class="fc" id="L184">        Server server = Server.getInstance();</span>
+
+<span class="fc" id="L186">        Player player = new Player(this.getId());</span>
+
+<span class="fc" id="L188">        Game game = server.getGameOfPlayer(player);</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">        if (game != null) {</span>
+<span class="fc" id="L190">            game.dealDamageToEnnemies(this, this.getEZone(), this.getETotalDamage());</span>
+        }
+<span class="fc" id="L192">    }</span>
+
+    @Override
+    public Zone getRZone() {
+<span class="fc" id="L196">        return new ZoneCircle(20);</span>
+    }
+
+    @Override
+    public void useR() {
+<span class="fc" id="L201">        Server server = Server.getInstance();</span>
+
+<span class="fc" id="L203">        Player player = new Player(this.getId());</span>
+
+<span class="fc" id="L205">        Game game = server.getGameOfPlayer(player);</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">        if (game != null) {</span>
+<span class="fc" id="L207">            game.dealDamageToEnnemies(this, this.getRZone(), this.getRTotalDamage());</span>
+        }
+<span class="fc" id="L209">    }</span>
+
+    @Override
+    public void die() {
+<span class="nc" id="L213">        this.lockEntity(true);</span>
+
+<span class="nc" id="L215">        Server server = Server.getInstance();</span>
+
+<span class="nc" id="L217">        Player player = new Player(this.getId());</span>
+<span class="nc" id="L218">        Game game = server.getGameOfPlayer(player);</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">        if (game != null) {</span>
+<span class="nc" id="L220">            int entityTeam = this.getTeam();</span>
+
+<span class="nc" id="L222">            game.removeEntity(this);</span>
+
+<span class="nc" id="L224">            Garen garen = new Garen(player.getUuid(), entityTeam);</span>
+<span class="nc" id="L225">            garen.spawnAtTeamSpawn();</span>
+<span class="nc" id="L226">            game.addEntity(garen);</span>
+
+<span class="nc" id="L228">            Response response = new Response();</span>
+<span class="nc" id="L229">            response.setGameName(game.getGameNameEnum());</span>
+<span class="nc" id="L230">            response.setResponse(ResponseEnum.Info);</span>
+<span class="nc" id="L231">            response.setNotify(this.getName() + &quot; &quot; + this.getId() + &quot; have respawn.&quot;);</span>
+<span class="nc" id="L232">            response.send(game.getGameNameEnum());</span>
+
+            /* Clear the Unity game of the player */
+<span class="nc" id="L235">            game.clearUnityGame(player);</span>
+
+            /* Subscribe player to the game */
+<span class="nc" id="L238">            server.subscribePlayerToGame(player, game);</span>
+
+            /* Assign the new entity to the player */
+<span class="nc" id="L241">            game.yourEntityIs(player.getUuid());</span>
+        }
+<span class="nc" id="L243">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

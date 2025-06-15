@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Message.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.network.message</a> &gt; <span class="el_source">Message.java</span></div><h1>Message.java</h1><pre class="source lang-java linenums">package com.arena.network.message;
+
+import com.arena.game.GameNameEnum;
+import com.arena.game.entity.LivingEntity;
+import com.arena.player.ActionEnum;
+import com.google.gson.Gson;
+
+/**
+ * Represents a message sent over the network.
+ * This class is used to encapsulate the data that is sent by the {@link com.arena.player.Player} to the {@link com.arena.server.Server} .
+ */
+public class Message implements Comparable&lt;Message&gt; {
+    private String uuid;
+    private ActionEnum action;
+    private GameNameEnum gameName;
+    private long timestamp;
+
+    private LivingEntity livingEntity;
+
+    /* Constructor for json */
+<span class="fc" id="L21">    public Message() {}</span>
+
+<span class="fc" id="L23">    public long getTimeStamp() {return timestamp;}</span>
+    public void setTimeStamp(long newTimestamp) {
+<span class="fc" id="L25">        this.timestamp = newTimestamp;</span>
+<span class="fc" id="L26">    }</span>
+
+    public GameNameEnum getGameName() {
+<span class="fc" id="L29">        return gameName;</span>
+    }
+    public void setGameName(GameNameEnum gameName) {
+<span class="fc" id="L32">        this.gameName = gameName;</span>
+<span class="fc" id="L33">    }</span>
+
+    public ActionEnum getAction() {
+<span class="fc" id="L36">        return action;</span>
+    }
+    public void setAction(ActionEnum action) {
+<span class="fc" id="L39">        this.action = action;</span>
+<span class="fc" id="L40">    }</span>
+
+    public String getUuid() {
+<span class="fc" id="L43">        return uuid;</span>
+    }
+    public void setUuid(String uuid) {
+<span class="fc" id="L46">        this.uuid = uuid;</span>
+<span class="fc" id="L47">    }</span>
+
+    public LivingEntity getLivingEntity() {
+<span class="fc" id="L50">        return livingEntity;</span>
+    }
+    public void setLivingEntity(LivingEntity livingEntity) {
+<span class="fc" id="L53">        this.livingEntity = livingEntity;</span>
+<span class="fc" id="L54">    }</span>
+
+    @Override
+    public int compareTo(Message other) {
+<span class="fc" id="L58">        return Long.compare(this.timestamp, other.timestamp);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L63">        return new Gson().toJson(this);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

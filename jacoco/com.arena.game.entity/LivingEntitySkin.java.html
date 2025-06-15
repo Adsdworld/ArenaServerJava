@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LivingEntitySkin.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ArenaServerJava</a> &gt; <a href="index.source.html" class="el_package">com.arena.game.entity</a> &gt; <span class="el_source">LivingEntitySkin.java</span></div><h1>LivingEntitySkin.java</h1><pre class="source lang-java linenums">package com.arena.game.entity;
+
+import com.arena.utils.Vector3f;
+
+public abstract class LivingEntitySkin extends LivingEntityCast implements ILivingEntitySkin {
+    protected float skinAnimationSpeed, skinAnimationBaseSpeed, posSkinX, posSkinZ, posSkinY, skinScale;
+    protected String skinAnimation;
+
+    public LivingEntitySkin(String id) {
+<span class="fc" id="L10">        super(id);</span>
+<span class="fc" id="L11">    }</span>
+
+<span class="fc" id="L13">    @Override public String getSkinAnimation() { return skinAnimation; }</span>
+<span class="fc" id="L14">    @Override public void setSkinAnimation(String animation) { this.skinAnimation = animation;}</span>
+<span class="fc" id="L15">    @Override public float getSkinAnimationBaseSpeed() { return skinAnimationBaseSpeed; }</span>
+<span class="fc" id="L16">    @Override public void setSkinAnimationBaseSpeed(float speed) {this.skinAnimationBaseSpeed = speed;}</span>
+<span class="fc" id="L17">    @Override public float getSkinAnimationSpeed() { return skinAnimationSpeed; }</span>
+<span class="fc" id="L18">    @Override public void setSkinAnimationSpeed(float skinAnimationSpeed) { this.skinAnimationSpeed = skinAnimationSpeed; }</span>
+    @Override public String getSkinAnimationForRunning() {
+<span class="nc" id="L20">        return &quot;None&quot;;</span>
+    }
+    @Override public String getSkinAnimationForIdle() {
+<span class="fc" id="L23">        return &quot;None&quot;;</span>
+    }
+    @Override public String getSkinAnimationForQ() {
+<span class="nc" id="L26">        return &quot;None&quot;;</span>
+    }
+    @Override public String getSkinAnimationForW() {
+<span class="nc" id="L29">        return &quot;None&quot;;</span>
+    }
+    @Override public String getSkinAnimationForE() {
+<span class="nc" id="L32">        return &quot;None&quot;;</span>
+    }
+    @Override public String getSkinAnimationForR() {
+<span class="nc" id="L35">        return &quot;None&quot;;</span>
+    }
+    @Override public String getSkinAnimationForDeath() {
+<span class="fc" id="L38">        return &quot;None&quot;;</span>
+    }
+<span class="nc" id="L40">    @Override public String getSkinAnimationForSpawnHold() {return &quot;None&quot;;}</span>
+<span class="nc" id="L41">    @Override public String getSkinAnimationForSpawn() {return &quot;None&quot;;}</span>
+<span class="nc" id="L42">    @Override public String getSkinAnimationForDeathHold() {return &quot;None&quot;;}</span>
+    @Override public long getSkinAnimationDurationForQ() {
+<span class="nc" id="L44">        return 0;</span>
+    }
+    @Override public long getSkinAnimationDurationForW() {
+<span class="nc" id="L47">        return 0;</span>
+    }
+    @Override public long getSkinAnimationDurationForE() {
+<span class="nc" id="L50">        return 0;</span>
+    }
+    @Override public long getSkinAnimationDurationForR() {
+<span class="nc" id="L53">        return 0;</span>
+    }
+    @Override public long getSkinAnimationDurationForDeath() {
+<span class="fc" id="L56">        return 0;</span>
+    }
+<span class="nc" id="L58">    @Override public long getSkinAnimationDurationForSpawnHold() {return 0;}</span>
+<span class="nc" id="L59">    @Override public long getSkinAnimationDurationForSpawn() {return 0;}</span>
+<span class="nc" id="L60">    @Override public long getSkinAnimationDurationForDeathHold() {return 0;}</span>
+
+    @Override
+<span class="nc" id="L63">    public float getPosSkinX() {return posSkinX;}</span>
+
+    @Override
+<span class="nc" id="L66">    public void setPosSkinX(float x) {this.posSkinX = x;}</span>
+
+    @Override
+<span class="nc" id="L69">    public float getPosSkinZ() {return posSkinZ;}</span>
+
+    @Override
+<span class="nc" id="L72">    public void setPosSkinZ(float z) {this.posSkinZ = z;}</span>
+
+    @Override
+<span class="nc" id="L75">    public float getPosSkinY() {return posSkinY;}</span>
+
+    @Override
+<span class="nc" id="L78">    public void setPosSkinY(float y) {this.posSkinY = y;}</span>
+
+    @Override
+<span class="nc" id="L81">    public float getSkinScale() {return skinScale;}</span>
+
+    @Override
+<span class="fc" id="L84">    public void setSkinScale(float skinScale) {this.skinScale = skinScale;}</span>
+
+    /**
+     * Set the position of the skin using a {@link Vector3f} .
+     *
+     * @param vector3f the position vector containing x, y, z coordinates.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public void setSkinPos(Vector3f vector3f) {
+<span class="fc" id="L94">        this.posSkinX = vector3f.x;</span>
+<span class="fc" id="L95">        this.posSkinY = vector3f.y;</span>
+<span class="fc" id="L96">        this.posSkinZ = vector3f.z;</span>
+<span class="fc" id="L97">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
