@@ -72,24 +72,25 @@ public class Core {
      * Receive is a method that receives a message and adds it to the message queue.
      *
      * @param message the {@link Message} to be processed.
+     * @return true if the message was successfully added to the queue, false otherwise.
      * @implNote Checks if the message is null or if the action is invalid, logging an error if so.
      * @author A.SALLIER
      * @date 2025-06-15
      */
     public boolean receive(Message message) {
+        boolean result = false;
         if (message == null) {
             Logger.failure("Received null message");
-            return false;
         } else if (message.getAction() == null) {
             Logger.failure("Unknown or invalid action in message: " + message);
-            return false;
         } else {
             messageQueue.offer(message);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
                     .withZone(ZoneOffset.UTC);
             //Logger.info("Offered message to queue: " + message.getAction() + " with timestamp: " + formatter.format(Instant.ofEpochMilli(message.getTimeStamp())));
-            return true;
+            result = true;
         }
+        return result;
     }
 
     /**
@@ -156,6 +157,15 @@ public class Core {
         }
     }
 
+    /**
+     * handleMessage is a method that handles a message by finding the appropriate handler and processing it.
+     *
+     * @param message the {@link Message} to be handled.
+     * @return true if the handler was found, false otherwise.
+     * @implNote It retrieves the handler for the action specified in the message and calls its handle method.
+     * @author A.SALLIER
+     * @date 2025-06-16
+     */
     public boolean handleMessage(Message message) {
         //Logger.info("Traitement du message : " + message.toString());
 
