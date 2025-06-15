@@ -3,12 +3,14 @@ package com.arena.game.handler;
 import com.arena.ArenaTestBase;
 import com.arena.MessageService;
 import com.arena.TestClientJava;
+import com.arena.game.Game;
 import com.arena.game.GameNameEnum;
 import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.champion.Garen;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
 import com.arena.player.ActionEnum;
+import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.logger.Logger;
@@ -464,6 +466,45 @@ public class AllTest extends ArenaTestBase {
         } catch (Exception e) {
             Logger.test("Error while waiting for R to end" + e.getMessage());
         }
+    }
+
+    @Test
+    @Order(13)
+    void testUnityPlayerUpdate() throws InterruptedException {
+
+        Message message = new Message();
+        message.setAction(ActionEnum.PlayerStateUpdate);
+        Server server = Server.getInstance();
+
+        Player player = server.getPlayerByUuid(TestClientJava.testUuid);
+        Game game = server.getGameOfPlayer(player);
+        LivingEntity entity = game.getLivingEntity(player);
+
+        entity.setPosX(445);
+        entity.setPosY(8);
+        entity.setPosZ(490);
+        entity.setRotationY(180);
+        entity.setMoving(true);
+        entity.setHasArrived(false);
+        entity.setPosXDesired(101);
+        entity.setPosYDesired(201);
+        entity.setPosZDesired(101);
+
+        message.setLivingEntity(entity);
+        MessageService.Send(message);
+
+        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+
+        ArrayList<Response> res = TestClientJava.filterResponseStatic(List.of(ResponseEnum.GameState), responses);
+
+        LivingEntity matchingEntity = res.stream()
+                .flatMap(response -> response.getLivingEntities().stream())
+                .filter(e -> e.getPosX() == 445)
+                .findFirst()
+                .orElse(null);
+        assertNotNull(matchingEntity, "Entity should be present at posX:" +matchingEntity);
+
+        assertEquals(entity.getSkinAnimationForRunning(), matchingEntity.getSkinAnimation(), "Running animation should be set for the entity");
     }
 
 
