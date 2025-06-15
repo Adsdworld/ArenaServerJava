@@ -2,21 +2,29 @@ package com.arena.utils;
 
 import com.arena.game.GameNameEnum;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.concurrent.*;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class Logger {
 
     private static final String LOG_FILE_PATH = Paths.get("..", "server_log.txt").toString();
 
-    private static final ConcurrentLinkedQueue<String> logQueue = new ConcurrentLinkedQueue<>();
-    private static final Semaphore logSemaphore = new Semaphore(1);
+    private static final ConcurrentLinkedQueue<String> LOG_QUEUE = new ConcurrentLinkedQueue<>();
+    private static final Semaphore LOG_SEMAPHORE = new Semaphore(1);
 
     // Thread dédié pour l'écriture
     private static volatile boolean isWriting = false;
@@ -107,16 +115,16 @@ public class Logger {
         String formatted = String.format("[%s][%s][%s] %s %s", timestamp, callerInfo, level, customBefore, message);
         System.out.println(formatted); // Affichage console
 
-        logQueue.add(formatted);
+        LOG_QUEUE.add(formatted);
 
-        if (logQueue.size() >= MAX_BUFFER_SIZE && !isWriting) {
+        if (LOG_QUEUE.size() >= MAX_BUFFER_SIZE && !isWriting) {
             isWriting = true;
             new Thread(Logger::processLogQueue).start();
         }
     }
 
     public static void flush() {
-        if (!logQueue.isEmpty() && !isWriting) {
+        if (!LOG_QUEUE.isEmpty() && !isWriting) {
             isWriting = true;
             new Thread(Logger::processLogQueue).start();
         }
@@ -133,7 +141,7 @@ public class Logger {
         String formatted = String.format("[%s][%s][%s] %s", timestamp, callerInfo, level, message);
         System.out.println(formatted); // Affichage console
 
-        logQueue.add(formatted);
+        LOG_QUEUE.add(formatted);
 
         if (!isWriting) {
             isWriting = true;
@@ -145,7 +153,7 @@ public class Logger {
 
     private static void processLogQueue() {
         try {
-            logSemaphore.acquire();
+            LOG_SEMAPHORE.acquire();
 
             File logFile = new File(LOG_FILE_PATH);
             File parentDir = logFile.getParentFile();
@@ -158,8 +166,8 @@ public class Logger {
             }
 
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile, true), StandardCharsets.UTF_8))) {
-                while (!logQueue.isEmpty()) {
-                    String logEntry = logQueue.poll();
+                while (!LOG_QUEUE.isEmpty()) {
+                    String logEntry = LOG_QUEUE.poll();
                     if (logEntry != null) {
                         writer.write(logEntry);
                         writer.newLine();
@@ -172,7 +180,7 @@ public class Logger {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {
-            logSemaphore.release();
+            LOG_SEMAPHORE.release();
             isWriting = false;
         }
     }
