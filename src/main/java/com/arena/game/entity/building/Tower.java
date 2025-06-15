@@ -1,7 +1,8 @@
 package com.arena.game.entity.building;
 
 import com.arena.game.Game;
-import com.arena.game.entity.*;
+import com.arena.game.entity.EntityPositions;
+import com.arena.game.entity.LivingEntity;
 import com.arena.network.response.Response;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
@@ -16,21 +17,15 @@ public class Tower extends LivingEntity {
 
         this.setAttackDamage(100);
 
-        EntityRigidbody rigidbody = new EntityRigidbody();
-        rigidbody.setKinematic(true);
-        this.setRigidbody(rigidbody);
+        Building building = new Building(13f);
 
-        EntityCollider collider = new EntityCollider();
-        collider.setEnabled(true);
-        this.setCollider(collider);
+        this.setRigidbody(building.getRigidbody());
 
-        EntityNavMeshAgent navMeshAgent = new EntityNavMeshAgent();
-        navMeshAgent.setEnabled(false);
-        this.setNavMeshAgent(navMeshAgent);
+        this.setCollider(building.getCollider());
 
-        EntityTransform transform = new EntityTransform();
-        transform.setScale(13f);
-        this.setTransform(transform);
+        this.setNavMeshAgent(building.getNavMeshAgent());
+
+        this.setTransform(building.getTransform());
 
         this.setSkinScale(0.004f);
         this.setSkinPos(new Vector3f(0.0f, -0.65f, 0.0f));
@@ -57,9 +52,6 @@ public class Tower extends LivingEntity {
 
         Position position;
         switch (entityTeam) {
-            case 1:
-                position = EntityPositions.BLUE_TOWERS.get(entityId).getPosition();
-                break;
             case 2:
                 position = EntityPositions.RED_TOWERS.get(entityId).getPosition();
                 break;

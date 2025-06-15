@@ -17,9 +17,6 @@ public class Game {
     /* Identifier for the game */
     GameNameEnum gameNameEnum;
 
-    /* Status of the game */
-    GameStatusEnum gameStatusEnum;
-
     //private ArrayList<LivingEntity> livingEntities;
     private final ConcurrentHashMap<String, LivingEntity> livingEntities;
 
@@ -34,8 +31,6 @@ public class Game {
 
         this.livingEntities = new ConcurrentHashMap<>();
         this.players = new ConcurrentHashMap<>();
-
-        this.gameStatusEnum = GameStatusEnum.Created;
     }
 
     public LivingEntity getLivingEntity(Player player) {

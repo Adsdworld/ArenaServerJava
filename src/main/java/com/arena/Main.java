@@ -11,13 +11,16 @@ import com.arena.utils.json.GsonWorker;
  * It starts the JavaWebSocket server.
  */
 public class Main {
+    /**
+     * Main method, entry point of the application.
+     * This method initializes the WebSocket server and starts the Arena server.
+     *
+     * @param args command line arguments, <port> to specify the port number for the WebSocket server.
+     * @implNote If no port is specified, it defaults to 54099.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public static void main(String[] args) {
-
-        /*
-         * Surefire in pom.xml handle UTF-8 for tests and code.
-         * //System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
-         * //System.setErr(new PrintStream(System.err, true, StandardCharsets.UTF_8));
-         */
 
         /* Port configuration */
         int port = 54099;

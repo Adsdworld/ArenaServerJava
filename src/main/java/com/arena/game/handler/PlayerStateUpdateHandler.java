@@ -9,6 +9,14 @@ import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 
 public class PlayerStateUpdateHandler implements IMessageHandler {
+    /**
+     * Handles the PlayerStateUpdate message.
+     *
+     * @param message the {@link Message}  containing the player state update
+     * @implNote This method processes the PlayerStateUpdate message, updating the state of the player's living entity in the game.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public void handle(Message message) {
         Server server = Server.getInstance();
 

@@ -1,7 +1,7 @@
 package com.arena.game.entity.building;
 
 import com.arena.game.Game;
-import com.arena.game.entity.*;
+import com.arena.game.entity.LivingEntity;
 import com.arena.network.response.Response;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
@@ -27,23 +27,15 @@ public class Nexus extends LivingEntity {
     public Nexus(String id, int team) {
         super(id, 2000, team, "Nexus");
 
-        this.setAttackDamage(0);
+        Building building = new Building(26f);
 
-        EntityRigidbody rigidbody = new EntityRigidbody();
-        rigidbody.setKinematic(true);
-        this.setRigidbody(rigidbody);
+        this.setRigidbody(building.getRigidbody());
 
-        EntityCollider collider = new EntityCollider();
-        collider.setEnabled(true);
-        this.setCollider(collider);
+        this.setCollider(building.getCollider());
 
-        EntityNavMeshAgent navMeshAgent = new EntityNavMeshAgent();
-        navMeshAgent.setEnabled(false);
-        this.setNavMeshAgent(navMeshAgent);
+        this.setNavMeshAgent(building.getNavMeshAgent());
 
-        EntityTransform transform = new EntityTransform();
-        transform.setScale(26f);
-        this.setTransform(transform);
+        this.setTransform(building.getTransform());
 
 
         this.setSkinScale(0.0015f);

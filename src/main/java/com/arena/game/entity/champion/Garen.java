@@ -1,7 +1,7 @@
 package com.arena.game.entity.champion;
 
 import com.arena.game.Game;
-import com.arena.game.entity.*;
+import com.arena.game.entity.LivingEntity;
 import com.arena.game.zone.Zone;
 import com.arena.game.zone.ZoneCircle;
 import com.arena.game.zone.ZoneCone;
@@ -11,6 +11,11 @@ import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
 import com.arena.utils.Vector3f;
 
+/**
+ * Garen is a champion in the game with specific abilities and animations.
+ * This class extends LivingEntity and implements the champion's abilities.
+ * It includes methods for handling abilities Q, W, E, and R, as well as death and respawn logic.
+ */
 public class Garen extends LivingEntity {
     private String skinAnimationForIdle = "Idle1_Base";
     private String skinAnimationForRun = "Run";
@@ -30,7 +35,12 @@ public class Garen extends LivingEntity {
     private int eDamage = 100;
     private int rDamage = 250;
 
-
+    /**
+     * Constructor for Garen.
+     *
+     * @param id   the unique identifier for the Garen entity.
+     * @param team the team number (1 or 2) that Garen belongs to.
+     */
     public Garen(String id, int team) {
         super(id, 600, team, "Garen"); // maxHealth
         this.setArmor(30);
@@ -48,21 +58,15 @@ public class Garen extends LivingEntity {
         this.setSkinPos(new Vector3f(0.0f, -1.04f, 0.0f));
         this.setSkinAnimation(getSkinAnimationForIdle());
 
-        EntityRigidbody rigidbody = new EntityRigidbody();
-        rigidbody.setKinematic(true);
-        this.setRigidbody(rigidbody);
+        Champion champion = new Champion(5f);
 
-        EntityCollider collider = new EntityCollider();
-        collider.setEnabled(true);
-        this.setCollider(collider);
+        this.setRigidbody(champion.getRigidbody());
 
-        EntityNavMeshAgent navMeshAgent = new EntityNavMeshAgent();
-        navMeshAgent.setEnabled(true);
-        this.setNavMeshAgent(navMeshAgent);
+        this.setCollider(champion.getCollider());
 
-        EntityTransform transform = new EntityTransform();
-        transform.setScale(5f);
-        this.setTransform(transform);
+        this.setNavMeshAgent(champion.getNavMeshAgent());
+
+        this.setTransform(champion.getTransform());
     }
 
     @Override

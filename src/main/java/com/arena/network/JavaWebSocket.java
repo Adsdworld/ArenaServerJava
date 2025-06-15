@@ -11,6 +11,7 @@ import com.arena.server.Server;
 import com.arena.utils.logger.Logger;
 import com.arena.network.message.Message;
 import com.arena.utils.json.JsonService;
+import com.google.gson.JsonParseException;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -43,7 +44,14 @@ public class JavaWebSocket extends WebSocketServer {
         uuidToWebSocket = new ConcurrentHashMap<>();
     }
 
-    // Méthode d'accès au singleton
+    /**
+     * getInstance is a synchronized method that returns the singleton instance of JavaWebSocket.
+     *
+     * @return JavaWebSocket instance.
+     * @implNote if the instance is not initialized, it throws an IllegalStateException.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public static synchronized JavaWebSocket getInstance() {
         if (instance == null) {
             throw new IllegalStateException("JavaWebSocket not initialized. Call initialize(port) first.");
@@ -51,6 +59,14 @@ public class JavaWebSocket extends WebSocketServer {
         return instance;
     }
 
+    /**
+     * initialize is a synchronized method that creates a new instance of JavaWebSocket
+     *
+     * @param port the port on which the WebSocket server will listen.
+     * @implNote checks if the instance is already initialized to avoid creating multiple instances.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public static synchronized void initialize(int port) {
         if (instance == null) {
             instance = new JavaWebSocket(port);
@@ -76,8 +92,8 @@ public class JavaWebSocket extends WebSocketServer {
              * - reason: a string explaining why the connection was closed.
              * - remote: true if the close was initiated by the remote peer, false if it was initiated by the server.
              */
-            String reason_ = reason != null && !reason.isEmpty() ? reason : " No reason provided";
-            Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason_ + " (code: " + code + ", remote: " + remote + ")");
+            String reason1 = reason != null && !reason.isEmpty() ? reason : " No reason provided";
+            Logger.info("Connection closed: " + conn.getRemoteSocketAddress() + reason1 + " (code: " + code + ", remote: " + remote + ")");
             Player player = webSocketToUuid.get(conn);
             if (player != null) {
                 Server server = Server.getInstance();
@@ -94,9 +110,8 @@ public class JavaWebSocket extends WebSocketServer {
             }
             webSocketToUuid.remove(conn);
 
-        } catch (Exception e) {
+        } catch (JsonParseException e) {
             Logger.error("Exception while closing connection: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             Logger.server("Connection closed successfully: " + conn.getRemoteSocketAddress() + " (code: " + code + ", remote: " + remote + ")");
         }
@@ -142,7 +157,7 @@ public class JavaWebSocket extends WebSocketServer {
             }
 
             Core.getInstance().receive(message);
-        } catch (Exception e) {
+        } catch (JsonParseException e) {
             Logger.failure("Failed to parse message: " + e.getMessage());
         }
     }

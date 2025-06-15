@@ -2,6 +2,7 @@ package com.arena.game.handler;
 
 import com.arena.game.Game;
 import com.arena.game.GameNameEnum;
+import com.arena.game.entity.EntityPositions;
 import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.champion.Garen;
 import com.arena.network.message.Message;
@@ -14,9 +15,15 @@ import com.arena.utils.logger.Logger;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.arena.game.entity.EntityPositions.*;
-
 public class JoinHandler implements IMessageHandler {
+    /**
+     * Handle the {@link com.arena.player.ActionEnum#Join}  for a {@link Player}  in a {@link Game}.
+     *
+     * @param message the {@link Message} containing the join action details.
+     * @implNote This method processes the join action for a player, checking if the game exists, if the player is already in the game, and if not, creating a new entity for the player and adding it to the game.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public void handle(Message message) {
 
         /* Get the server instance */
@@ -56,13 +63,13 @@ public class JoinHandler implements IMessageHandler {
 
                 if (blue >= red) {
                     team = 2;
-                    buildings.addAll(game.getLivingEntityByGeneralId(RED_NEXUS.keySet()));
-                    buildings.addAll(game.getLivingEntityByGeneralId(RED_INHIBITORS.keySet()));
+                    buildings.addAll(game.getLivingEntityByGeneralId(EntityPositions.RED_NEXUS.keySet()));
+                    buildings.addAll(game.getLivingEntityByGeneralId(EntityPositions.RED_INHIBITORS.keySet()));
 
                 } else {
                     team = 1;
-                    buildings.addAll(game.getLivingEntityByGeneralId(BLUE_NEXUS.keySet()));
-                    buildings.addAll(game.getLivingEntityByGeneralId(BLUE_INHIBITORS.keySet()));
+                    buildings.addAll(game.getLivingEntityByGeneralId(EntityPositions.BLUE_NEXUS.keySet()));
+                    buildings.addAll(game.getLivingEntityByGeneralId(EntityPositions.BLUE_INHIBITORS.keySet()));
                 }
 
                 if (blue == 0 || red == 0) {

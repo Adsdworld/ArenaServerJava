@@ -13,8 +13,8 @@ public class EntityRigidbody {
         this.isKinematic = true;
     }
 
-    public void setKinematic(boolean isKinematic) {
-        this.isKinematic = isKinematic;
+    public void setKinematic(boolean kinematic) {
+        this.isKinematic = kinematic;
     }
 
     public boolean isKinematic() {
