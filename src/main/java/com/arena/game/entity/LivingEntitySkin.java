@@ -1,7 +1,9 @@
 package com.arena.game.entity;
 
-public abstract class LivingEntitySkin extends Entity implements ILivingEntitySkin {
-    protected float skinAnimationSpeed, skinAnimationBaseSpeed;
+import com.arena.utils.Vector3f;
+
+public abstract class LivingEntitySkin extends LivingEntityCast implements ILivingEntitySkin {
+    protected float skinAnimationSpeed, skinAnimationBaseSpeed, posSkinX, posSkinZ, posSkinY, skinScale;
     protected String skinAnimation;
 
     public LivingEntitySkin(String id) {
@@ -56,4 +58,41 @@ public abstract class LivingEntitySkin extends Entity implements ILivingEntitySk
     @Override public long getSkinAnimationDurationForSpawnHold() {return 0;}
     @Override public long getSkinAnimationDurationForSpawn() {return 0;}
     @Override public long getSkinAnimationDurationForDeathHold() {return 0;}
+
+    @Override
+    public float getPosSkinX() {return posSkinX;}
+
+    @Override
+    public void setPosSkinX(float x) {this.posSkinX = x;}
+
+    @Override
+    public float getPosSkinZ() {return posSkinZ;}
+
+    @Override
+    public void setPosSkinZ(float z) {this.posSkinZ = z;}
+
+    @Override
+    public float getPosSkinY() {return posSkinY;}
+
+    @Override
+    public void setPosSkinY(float y) {this.posSkinY = y;}
+
+    @Override
+    public float getSkinScale() {return skinScale;}
+
+    @Override
+    public void setSkinScale(float skinScale) {this.skinScale = skinScale;}
+
+    /**
+     * Set the position of the skin using a {@link Vector3f} .
+     *
+     * @param vector3f the position vector containing x, y, z coordinates.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public void setSkinPos(Vector3f vector3f) {
+        this.posSkinX = vector3f.x;
+        this.posSkinY = vector3f.y;
+        this.posSkinZ = vector3f.z;
+    }
 }

@@ -75,7 +75,7 @@ public class JoinHandler implements IMessageHandler {
                 if (blue == 0 || red == 0) {
                     for (LivingEntity building : buildings) {
                         building.setSkinAnimation(building.getSkinAnimationForSpawn());
-                        building.LockSkinAnimation(building.getSkinAnimationDurationForSpawn(), () -> {
+                        building.lockSkinAnimation(building.getSkinAnimationDurationForSpawn(), () -> {
                             building.setSkinAnimation(building.getSkinAnimationForIdle());
                         });
                     }

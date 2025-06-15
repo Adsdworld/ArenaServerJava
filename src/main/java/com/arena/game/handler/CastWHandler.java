@@ -44,7 +44,7 @@ public class CastWHandler implements IMessageHandler {
                     entity.setSkinAnimation(entity.getSkinAnimationForW());
 
                     /* Lock the skin animation */
-                    entity.LockSkinAnimation(entity.getSkinAnimationDurationForW(), () -> entity.lockEntityCast(false));
+                    entity.lockSkinAnimation(entity.getSkinAnimationDurationForW(), () -> entity.lockEntityCast(false));
                 }
             }
         }

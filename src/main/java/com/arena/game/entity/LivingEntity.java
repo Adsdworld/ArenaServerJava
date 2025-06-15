@@ -3,26 +3,18 @@ package com.arena.game.entity;
 import com.arena.game.Game;
 import com.arena.game.entity.building.Inhibitor;
 import com.arena.game.entity.building.Nexus;
-import com.arena.game.zone.Zone;
-import com.arena.game.zone.ZoneCircle;
 import com.arena.server.Server;
 import com.arena.utils.logger.Logger;
-import com.arena.game.utils.Position;
-import com.arena.utils.Vector3f;
 
 import java.util.Collection;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
+public abstract class LivingEntity extends LivingEntitySkin implements ILivingEntity {
     protected int health, maxHealth;
-    protected boolean moving, hasArrived, skinAnimationLocked, attackable, entityLocked, entityCastLocked, entityMoveLocked;
-    protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, skinScale, posXDesired, posZDesired, posYDesired;
+    protected boolean moving, hasArrived, attackable;
+    protected float moveSpeed;
     protected String name;
     /* Team 1 = Blue Team, Team 2 = Red Team */
     protected int team;
-    protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd, cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs;
     protected EntityCollider collider;
     protected EntityNavMeshAgent navMeshAgent;
     protected EntityRigidbody rigidbody;
@@ -30,7 +22,6 @@ public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
 
     protected Collection<String> nextObjective;
 
-    private static final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 
     public LivingEntity(String id, int maxHealth, int team, String name) {
@@ -44,60 +35,42 @@ public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
         this.setAttackable(false);
     }
 
-    public void setPos(Vector3f vector3f) {
-        this.posX = vector3f.x;
-        this.posY = vector3f.y;
-        this.posZ = vector3f.z;
-    }
-
-    public void setPos(Position position) {
-        this.posX = position.pos.x;
-        this.posY = position.pos.y;
-        this.posZ = position.pos.z;
-        this.rotationY = position.rotY;
-    }
-
-    public void setSkinPos(Vector3f vector3f) {
-        this.posSkinX = vector3f.x;
-        this.posSkinY = vector3f.y;
-        this.posSkinZ = vector3f.z;
-    }
-
-    public void setSkinPos(Position position) {
-        this.posSkinX = position.pos.x;
-        this.posSkinY = position.pos.y;
-        this.posSkinZ = position.pos.z;
-    }
-
     public void setRigidbody(EntityRigidbody rigidbody) {
         this.rigidbody = rigidbody;
     }
+
     public EntityRigidbody getRigidbody() {
         return rigidbody;
     }
+
     public void setCollider(EntityCollider collider) {
         this.collider = collider;
     }
+
     public EntityCollider getCollider() {
         return collider;
     }
+
     public void setNavMeshAgent(EntityNavMeshAgent navMeshAgent) {
         this.navMeshAgent = navMeshAgent;
     }
+
     public EntityNavMeshAgent getNavMeshAgent() {
         return navMeshAgent;
     }
+
     public void setTransform(EntityTransform transform) {
         this.transform = transform;
     }
+
     public EntityTransform getTransform() {
         return transform;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
         LivingEntity that = (LivingEntity) o;
 
         return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
@@ -109,47 +82,24 @@ public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
     }
 
     @Override
-    public void lockEntity(boolean locked) {
-        this.entityLocked = locked;
-    }
+    public int getHealth() {return health;}
 
     @Override
-    public boolean isLocked() {
-        return entityLocked;
-    }
-
-    @Override
-    public void lockEntityCast(boolean locked) {
-        this.entityCastLocked = locked;
-    }
-
-    @Override
-    public boolean isCastLocked() {
-        return entityCastLocked;
-    }
-
-    @Override
-    public void lockEntityMove(boolean locked) {
-        this.entityMoveLocked = locked;
-    }
-    @Override
-    public boolean isMoveLocked() {
-        return entityMoveLocked;
-    }
-
-    @Override public void lockSkinAnimation(boolean lock) { this.skinAnimationLocked = lock; }
-    @Override public boolean isSkinAnimationLocked() { return skinAnimationLocked; }
-
-    @Override public int getHealth() { return health; }
-    @Override public void heal(int amount) {
+    public void heal(int amount) {
         this.health = Math.min(this.health + amount, maxHealth);
     }
-    @Override public int getMaxHealth() { return maxHealth; }
-    @Override public int setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
+
+    @Override
+    public int getMaxHealth() {return maxHealth;}
+
+    @Override
+    public int setMaxHealth(int maxHealth1) {
+        this.maxHealth = maxHealth1;
         return this.maxHealth;
     }
-    @Override public void takeDamage(int amount) {
+
+    @Override
+    public void takeDamage(int amount) {
         this.health = Math.max(0, this.health - amount);
         if (this.health == 0) {
             this.setSkinAnimation(this.getSkinAnimationForDeath());
@@ -168,7 +118,7 @@ public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
                     }
                 }
             }
-            this.LockSkinAnimation(this.getSkinAnimationDurationForDeath(), this::die);
+            this.lockSkinAnimation(this.getSkinAnimationDurationForDeath(), this::die);
         }
     }
 
@@ -185,6 +135,7 @@ public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
     public void setNextObjective(Collection<String> nextObjective) {
         this.nextObjective = nextObjective;
     }
+
     public Collection<String> getNextObjective() {
         return nextObjective;
     }
@@ -194,6 +145,13 @@ public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
         Logger.game(this.getName() + " (ID: " + this.getId() + ") has died.", Server.getInstance().getGameOfEntity(this).getGameNameEnum());
     }
 
+    /**
+     * Spawns the player at their team spawn location.
+     *
+     * @implNote This method sets the player's position to the designated spawn point based on their team.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public void spawnAtTeamSpawn() {
         switch (this.getTeam()) {
             case 1:
@@ -209,88 +167,29 @@ public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
         }
     }
 
+    @Override
+    public float getMoveSpeed() {return moveSpeed;}
 
-    @Override public int getQTotalDamage() { return 0; }
-    @Override public int getWTotalShield() { return 0; }
-    @Override public int getETotalDamage() { return 0; }
-    @Override public int getRTotalDamage() { return 0; }
+    @Override
+    public void setMoveSpeed(float moveSpeed) {this.moveSpeed = moveSpeed;}
 
-    @Override public Zone getQZone() {
-        return new ZoneCircle(0);
-    }
-    @Override public Zone getWZone() {
-        return new ZoneCircle(0);
-    }
-    @Override public Zone getEZone() {
-        return new ZoneCircle(0);
-    }
-    @Override public Zone getRZone() {
-        return new ZoneCircle(0);
-    }
+    @Override
+    public boolean isMoving() {return moving;}
 
-    @Override public void useQ() {}
-    @Override public void useW() {}
-    @Override public void useE() {}
-    @Override public void useR() {}
+    @Override
+    public void setMoving(boolean moving) {this.moving = moving;}
 
-    @Override public float getMoveSpeed() { return moveSpeed; }
-    @Override public void setMoveSpeed(float moveSpeed) { this.moveSpeed = moveSpeed; }
-    @Override public boolean isMoving() { return moving; }
-    @Override public void setMoving(boolean moving) { this.moving = moving; }
-    @Override public boolean hasArrived() { return hasArrived; }
-    @Override public void setHasArrived(boolean hasArrived) { this.hasArrived = hasArrived; }
+    @Override
+    public boolean hasArrived() {return hasArrived;}
 
-    @Override public float getPosXDesired() { return posXDesired; }
-    @Override public void setPosXDesired(float x) { this.posXDesired = x; }
-    @Override public float getPosZDesired() { return posZDesired; }
-    @Override public void setPosZDesired(float z) { this.posZDesired = z; }
-    @Override public float getPosYDesired() { return posYDesired; }
-    @Override public void setPosYDesired(float y) { this.posYDesired = y; }
-
-    @Override public float getPosX() { return posX; }
-    @Override public void setPosX(float x) { this.posX = x; }
-    @Override public float getPosZ() { return posZ; }
-    @Override public void setPosZ(float z) { this.posZ = z; }
-    @Override public float getPosY() { return posY; }
-    @Override public void setPosY(float y) { this.posY = y; }
-
-    @Override public float getPosSkinX() { return posSkinX; }
-    @Override public void setPosSkinX(float x) { this.posSkinX = x; }
-    @Override public float getPosSkinZ() { return posSkinZ; }
-    @Override public void setPosSkinZ(float z) { this.posSkinZ = z; }
-    @Override public float getPosSkinY() { return posSkinY; }
-    @Override public void setPosSkinY(float y) { this.posSkinY = y; }
-
-    public void LockSkinAnimation(long ms) {
-        this.lockSkinAnimation(true);
-        scheduler.schedule(() ->
-                {
-                    this.lockSkinAnimation(false);
-                },
-                ms,
-                TimeUnit.MILLISECONDS);
-    }
-    public void LockSkinAnimation(long ms, Runnable afterUnlock) {
-        this.lockSkinAnimation(true);
-        scheduler.schedule(() -> {
-            this.lockSkinAnimation(false);
-            if (afterUnlock != null) {
-                afterUnlock.run();
-            }
-        }, ms, TimeUnit.MILLISECONDS);
-    }
-
-
-    @Override public float getSkinScale() { return skinScale; }
-    @Override public void setSkinScale(float skinScale) { this.skinScale = skinScale; }
-
-    @Override public void setRotationY(float rotationY) { this.rotationY = rotationY; }
-    @Override public float getRotationY() { return rotationY; }
+    @Override
+    public void setHasArrived(boolean hasArrived) {this.hasArrived = hasArrived;}
 
     @Override
     public int getTeam() {
         return team;
     }
+
     @Override
     public void setTeam(int team) {
         this.team = team;
@@ -300,83 +199,20 @@ public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
     public String getName() {
         return name;
     }
+
     private void setName(String name) {
         this.name = name;
     }
 
-    @Override public void setCooldownQStart(long cooldownQStart) {
-        this.cooldownQStart = cooldownQStart;
-    }
-    @Override public long getCooldownQStart() {
-        return cooldownQStart;
-    }
-    @Override public void setCooldownWStart(long cooldownWStart) {
-        this.cooldownWStart = cooldownWStart;
-    }
-    @Override public long getCooldownWStart() {
-        return cooldownWStart;
-    }
-    @Override public void setCooldownEStart(long cooldownEStart) {
-        this.cooldownEStart = cooldownEStart;
-    }
-    @Override public long getCooldownEStart() {
-        return cooldownEStart;
-    }
-    @Override public void setCooldownRStart(long cooldownRStart) {
-        this.cooldownRStart = cooldownRStart;
-    }
-    @Override public long getCooldownRStart() {
-        return cooldownRStart;
-    }
-    @Override public void setCooldownQEnd(long cooldownQEnd) {
-        this.cooldownQEnd = cooldownQEnd;
-    }
-    @Override public long getCooldownQEnd() {
-        return cooldownQEnd;
-    }
-    @Override public void setCooldownWEnd(long cooldownWEnd) {
-        this.cooldownWEnd = cooldownWEnd;
-    }
-    @Override public long getCooldownWEnd() {
-        return cooldownWEnd;
-    }
-    @Override public void setCooldownEEnd(long cooldownEEnd) {
-        this.cooldownEEnd = cooldownEEnd;
-    }
-    @Override public long getCooldownEEnd() {
-        return cooldownEEnd;
-    }
-    @Override public void setCooldownREnd(long cooldownREnd) {
-        this.cooldownREnd = cooldownREnd;
-    }
-    @Override public long getCooldownREnd() {
-        return cooldownREnd;
-    }
-    @Override public void setCooldownQMs(long cooldownQMs) {
-        this.cooldownQMs = cooldownQMs;
-    }
-    @Override public long getCooldownQMs() {
-        return cooldownQMs;
-    }
-    @Override public void setCooldownWMs(long cooldownWMs) {
-        this.cooldownWMs = cooldownWMs;
-    }
-    @Override public long getCooldownWMs() {
-        return cooldownWMs;
-    }
-    @Override public void setCooldownEMs(long cooldownEMs) {
-        this.cooldownEMs = cooldownEMs;
-    }
-    @Override public long getCooldownEMs() {
-        return cooldownEMs;
-    }
-    @Override public void setCooldownRMs(long cooldownRMs) {
-        this.cooldownRMs = cooldownRMs;
-    }
-    @Override public long getCooldownRMs() {
-        return cooldownRMs;
-    }
-
+    /**
+     * Updates the LivingEntity's position and state based on the provided LivingEntity.
+     * This method is typically called to synchronize the state of the entity with the server.
+     *
+     * @param livingEntity The LivingEntity whose state will be used to update this entity.
+     * @implNote update this entity's position, rotation, movement state, and desired position according to locks.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public void update(LivingEntity livingEntity) {
         if (!isLocked()) {
             /* We trust player position
@@ -389,12 +225,10 @@ public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
                 this.setRotationY(livingEntity.getRotationY());
 
                 this.setMoving(livingEntity.isMoving());
-                if (!isSkinAnimationLocked()) {
-                    if (this.isMoving()) {
-                        this.setSkinAnimation(this.getSkinAnimationForRunning());
-                    } else {
-                        this.setSkinAnimation(this.getSkinAnimationForIdle());
-                    }
+                if (!isSkinAnimationLocked() && this.isMoving()) {
+                    this.setSkinAnimation(this.getSkinAnimationForRunning());
+                } else if (!isSkinAnimationLocked()){
+                    this.setSkinAnimation(this.getSkinAnimationForIdle());
                 }
                 this.setHasArrived(livingEntity.hasArrived());
 

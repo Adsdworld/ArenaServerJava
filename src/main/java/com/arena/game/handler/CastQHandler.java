@@ -45,7 +45,7 @@ public class CastQHandler implements IMessageHandler {
                     entity.setSkinAnimation(entity.getSkinAnimationForQ());
 
                     /* Lock the skin animation */
-                    entity.LockSkinAnimation(entity.getSkinAnimationDurationForQ(), () -> entity.lockEntityCast(false));
+                    entity.lockSkinAnimation(entity.getSkinAnimationDurationForQ(), () -> entity.lockEntityCast(false));
                 }
             }
         }

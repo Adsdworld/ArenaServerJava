@@ -1,14 +1,13 @@
 package com.arena.game.entity;
 
 public interface ILivingEntitySkin {
-    void lockSkinAnimation(boolean lock);
-    boolean isSkinAnimationLocked();
     String getSkinAnimation();
     void setSkinAnimation(String animation);
     float getSkinAnimationBaseSpeed();
     void setSkinAnimationBaseSpeed(float speed);
     float getSkinAnimationSpeed();
     void setSkinAnimationSpeed(float speed);
+
     String getSkinAnimationForRunning();
     String getSkinAnimationForIdle();
     String getSkinAnimationForQ();
@@ -19,6 +18,7 @@ public interface ILivingEntitySkin {
     String getSkinAnimationForDeathHold();
     String getSkinAnimationForSpawn();
     String getSkinAnimationForSpawnHold();
+
     long getSkinAnimationDurationForQ();
     long getSkinAnimationDurationForW();
     long getSkinAnimationDurationForE();
@@ -27,4 +27,14 @@ public interface ILivingEntitySkin {
     long getSkinAnimationDurationForDeathHold();
     long getSkinAnimationDurationForSpawn();
     long getSkinAnimationDurationForSpawnHold();
+
+    float getPosSkinX();
+    void setPosSkinX(float x);
+    float getPosSkinZ();
+    void setPosSkinZ(float z);
+    float getPosSkinY();
+    void setPosSkinY(float y);
+
+    float getSkinScale();
+    void setSkinScale(float scale);
 }
