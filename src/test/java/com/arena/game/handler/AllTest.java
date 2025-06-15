@@ -324,7 +324,7 @@ public class AllTest extends ArenaTestBase {
      */
     @Test
     @Order(8)
-    void testUnityCooldownStart() throws InterruptedException {
+    void testUnityCooldownQStart() throws InterruptedException {
 
         Message message = new Message();
         message.setAction(ActionEnum.CastQ);
@@ -336,18 +336,135 @@ public class AllTest extends ArenaTestBase {
 
         long qtimestamp = TestClientJava.getLastSentTimestampStatic();
 
-        Logger.test("Avant pause et reception des réponses");
         ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
-        Logger.test("Après la pause");
 
         ArrayList<Response> res = TestClientJava.filterResponseStatic(List.of(ResponseEnum.GameState), responses);
 
-        Logger.test("nombre de réponses " + String.valueOf(res.size()));
+        LivingEntity matchingEntity = res.stream()
+                .flatMap(response -> response.getLivingEntities().stream())
+                .filter(e -> e.getCooldownQStart() == qtimestamp)
+                .findFirst()
+                .orElse(null);
+        assertNotNull(matchingEntity, "Entity with cooldown Q should be present in GameState:" +matchingEntity);
 
-        boolean cooldownUpToDate = res.stream()
-                .anyMatch(response -> response.getLivingEntities().stream()
-                        .anyMatch(e -> e.getCooldownQStart() == qtimestamp));
+        assertEquals(qtimestamp, matchingEntity.getCooldownQStart(), "Cooldown Q start should be updated by casting Q");
+        assertEquals(qtimestamp + entity.getCooldownQMs(), matchingEntity.getCooldownQEnd(), "Cooldown Q End should be updated by casting Q");
 
-        assertTrue(cooldownUpToDate, "Cooldown Q should be updated in GameState");
+        try {
+            LivingEntity e = new Garen(TestClientJava.testUuid, 2);
+            Thread.sleep(e.getSkinAnimationDurationForQ() + 1000);
+        } catch (Exception e) {
+            Logger.test("Error while waiting for Q to end" + e.getMessage());
+        }
     }
+
+    @Test
+    @Order(9)
+    void testUnityCooldownWStart() throws InterruptedException {
+
+        Message message = new Message();
+        message.setAction(ActionEnum.CastW);
+        LivingEntity entity = new Garen(TestClientJava.testUuid, 2);
+        entity.setCooldownWStart(System.currentTimeMillis());
+        message.setLivingEntity(entity);
+
+        MessageService.Send(message);
+
+        long timestamp = TestClientJava.getLastSentTimestampStatic();
+
+        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+
+        ArrayList<Response> res = TestClientJava.filterResponseStatic(List.of(ResponseEnum.GameState), responses);
+
+        LivingEntity matchingEntity = res.stream()
+                .flatMap(response -> response.getLivingEntities().stream())
+                .filter(e -> e.getCooldownWStart() == timestamp)
+                .findFirst()
+                .orElse(null);
+        assertNotNull(matchingEntity, "Entity with cooldown W should be present in GameState:" +matchingEntity);
+
+        assertEquals(timestamp, matchingEntity.getCooldownWStart(), "Cooldown Q start should be updated by casting W");
+        assertEquals(timestamp + entity.getCooldownWMs(), matchingEntity.getCooldownWEnd(), "Cooldown Q End should be updated by casting W");
+
+        try {
+            LivingEntity e = new Garen(TestClientJava.testUuid, 2);
+            Thread.sleep(e.getSkinAnimationDurationForW() + 1000);
+        } catch (Exception e) {
+            Logger.test("Error while waiting for W to end" + e.getMessage());
+        }
+    }
+
+    @Test
+    @Order(11)
+    void testUnityCooldownEStart() throws InterruptedException {
+
+        Message message = new Message();
+        message.setAction(ActionEnum.CastE);
+        LivingEntity entity = new Garen(TestClientJava.testUuid, 2);
+        entity.setCooldownEStart(System.currentTimeMillis());
+        message.setLivingEntity(entity);
+
+        MessageService.Send(message);
+
+        long timestamp = TestClientJava.getLastSentTimestampStatic();
+
+        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+
+        ArrayList<Response> res = TestClientJava.filterResponseStatic(List.of(ResponseEnum.GameState), responses);
+
+        LivingEntity matchingEntity = res.stream()
+                .flatMap(response -> response.getLivingEntities().stream())
+                .filter(e -> e.getCooldownEStart() == timestamp)
+                .findFirst()
+                .orElse(null);
+        assertNotNull(matchingEntity, "Entity with cooldown E should be present in GameState:" +matchingEntity);
+
+        assertEquals(timestamp, matchingEntity.getCooldownEStart(), "Cooldown Q start should be updated by casting E");
+        assertEquals(timestamp + entity.getCooldownEMs(), matchingEntity.getCooldownEEnd(), "Cooldown Q End should be updated by casting E");
+
+        try {
+            LivingEntity e = new Garen(TestClientJava.testUuid, 2);
+            Thread.sleep(e.getSkinAnimationDurationForE() + 1000);
+        } catch (Exception e) {
+            Logger.test("Error while waiting for E to end" + e.getMessage());
+        }
+    }
+
+    @Test
+    @Order(12)
+    void testUnityCooldownRStart() throws InterruptedException {
+
+        Message message = new Message();
+        message.setAction(ActionEnum.CastR);
+        LivingEntity entity = new Garen(TestClientJava.testUuid, 2);
+        entity.setCooldownRStart(System.currentTimeMillis());
+        message.setLivingEntity(entity);
+
+        MessageService.Send(message);
+
+        long timestamp = TestClientJava.getLastSentTimestampStatic();
+
+        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+
+        ArrayList<Response> res = TestClientJava.filterResponseStatic(List.of(ResponseEnum.GameState), responses);
+
+        LivingEntity matchingEntity = res.stream()
+                .flatMap(response -> response.getLivingEntities().stream())
+                .filter(e -> e.getCooldownRStart() == timestamp)
+                .findFirst()
+                .orElse(null);
+        assertNotNull(matchingEntity, "Entity with cooldown R should be present in GameState:" +matchingEntity);
+
+        assertEquals(timestamp, matchingEntity.getCooldownRStart(), "Cooldown Q start should be updated by casting R");
+        assertEquals(timestamp + entity.getCooldownRMs(), matchingEntity.getCooldownREnd(), "Cooldown Q End should be updated by casting R");
+
+        try {
+            LivingEntity e = new Garen(TestClientJava.testUuid, 2);
+            Thread.sleep(e.getSkinAnimationDurationForR() + 1000);
+        } catch (Exception e) {
+            Logger.test("Error while waiting for R to end" + e.getMessage());
+        }
+    }
+
+
 }
