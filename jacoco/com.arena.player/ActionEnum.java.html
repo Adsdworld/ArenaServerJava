@@ -58,16 +58,22 @@ import com.google.gson.annotations.SerializedName;
      * To send your player state to the server.
      */
 <span class="fc" id="L60">    @SerializedName(&quot;Player State Update&quot;)</span>
-    PlayerStateUpdate(&quot;Player State Update&quot;);
+    PlayerStateUpdate(&quot;Player State Update&quot;),
+
+    /**
+     * Action to perform a test.
+     */
+<span class="fc" id="L66">    @SerializedName(&quot;Unknown&quot;)</span>
+    Unknown(&quot;Unknown&quot;);
 
     private final String action;
 
-<span class="fc" id="L65">    ActionEnum(String action) {</span>
-<span class="fc" id="L66">        this.action = action;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L71">    ActionEnum(String action) {</span>
+<span class="fc" id="L72">        this.action = action;</span>
+<span class="fc" id="L73">    }</span>
 
     public String getAction() {
-<span class="nc" id="L70">        return action;</span>
+<span class="nc" id="L76">        return action;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

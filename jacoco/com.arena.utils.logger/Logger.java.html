@@ -97,8 +97,8 @@ import java.util.concurrent.TimeUnit;
      * @date 2025-06-15
      */
     public static void failure(String message) {
-<span class="nc" id="L100">        enqueueLog(&quot;failure&quot;, message);</span>
-<span class="nc" id="L101">    }</span>
+<span class="fc" id="L100">        enqueueLog(&quot;failure&quot;, message);</span>
+<span class="fc" id="L101">    }</span>
 
     /**
      * For logging errors, an error is raised by Java Runtime or a library exception.
@@ -178,7 +178,7 @@ import java.util.concurrent.TimeUnit;
      * @date 2025-06-15
      */
     public static void flush() {
-<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        if (!LOG_QUEUE.isEmpty()) {</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        if (!LOG_QUEUE.isEmpty()) {</span>
 <span class="fc" id="L182">            new Thread(() -&gt; LogWriter.processLogQueue(LOG_QUEUE)).start();</span>
         }
 <span class="fc" id="L184">    }</span>

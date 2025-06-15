@@ -101,7 +101,7 @@ public abstract class LivingEntity extends LivingEntitySkin implements ILivingEn
     @Override
     public void takeDamage(int amount) {
 <span class="fc" id="L103">        this.health = Math.max(0, this.health - amount);</span>
-<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (this.health == 0) {</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (this.health == 0) {</span>
 <span class="fc" id="L105">            this.setSkinAnimation(this.getSkinAnimationForDeath());</span>
 <span class="fc bfc" id="L106" title="All 4 branches covered.">            if (this instanceof Nexus || this instanceof Inhibitor) {</span>
 <span class="fc" id="L107">                this.setAttackable(false);</span>

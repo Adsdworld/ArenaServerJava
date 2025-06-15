@@ -615,5 +615,36 @@ public class AllTest extends ArenaTestBase {
 
     }
 
+    @Test
+    @Order(16)
+    void testUnityCloseGame() throws InterruptedException {
+        Message message = new Message();
+        message.setAction(ActionEnum.CloseGame);
+        message.setGameName(GameNameEnum.Game1);
+
+        MessageService.Send(message);
+
+        ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+        Response response = TestClientJava.filterResponseStatic(ResponseEnum.GameClosed, responses);
+
+        assertNotNull(response, "Response should not be null");
+        assertEquals(ResponseEnum.GameClosed, response.getResponse(), "Expected response to be " + ResponseEnum.GameClosed);
+
+        /**
+         * Check if the game is created on the server
+         * This checks if the game with the specified name is present in the server's game list.
+         */
+        assertFalse(Server.getInstance().getGames()
+                        .stream()
+                        .anyMatch(game -> {
+                                    if (game.getGameNameEnum().equals(GameNameEnum.Game1)) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                        ),
+                "Game with name '" + GameNameEnum.Game1 + "' should be closed on server");
+    }
+
 
 }

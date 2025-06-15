@@ -200,12 +200,12 @@ public class Game {
      * @date 2025-06-09
      */
     public void clearUnityGame(Game game) {
-<span class="nc" id="L203">        Response response = new Response();</span>
-<span class="nc" id="L204">        response.setResponse(ResponseEnum.GameState);</span>
-<span class="nc" id="L205">        response.setGameName(gameNameEnum);</span>
-<span class="nc" id="L206">        response.setLivingEntities(new ArrayList&lt;&gt;());</span>
-<span class="nc" id="L207">        response.send(game.getGameNameEnum(), true);</span>
-<span class="nc" id="L208">    }</span>
+<span class="fc" id="L203">        Response response = new Response();</span>
+<span class="fc" id="L204">        response.setResponse(ResponseEnum.GameState);</span>
+<span class="fc" id="L205">        response.setGameName(gameNameEnum);</span>
+<span class="fc" id="L206">        response.setLivingEntities(new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L207">        response.send(game.getGameNameEnum(), true);</span>
+<span class="fc" id="L208">    }</span>
 
     /**
      * Deals damage to all enemies of the attacker in the specified zone.

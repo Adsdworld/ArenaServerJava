@@ -13,7 +13,7 @@ import com.arena.utils.Vector3f;
 public class Tower extends LivingEntity {
 
     public Tower(String id, int team) {
-        super(id, 300, team, "Tower");
+        super(id, 50, team, "Tower");
 
         Building building = new Building(13f);
 

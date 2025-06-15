@@ -216,14 +216,14 @@ public class Server {
      * @date 2025-06-07
      */
     public void closeGame(Message message) {
-<span class="nc" id="L219">        Server.getInstance().getGames().removeIf(Objects::isNull);</span>
+<span class="fc" id="L219">        Server.getInstance().getGames().removeIf(Objects::isNull);</span>
 
-<span class="nc" id="L221">        GameNameEnum gameNameEnum = message.getGameName();</span>
-<span class="nc" id="L222">        Game game = gameExists(gameNameEnum);</span>
+<span class="fc" id="L221">        GameNameEnum gameNameEnum = message.getGameName();</span>
+<span class="fc" id="L222">        Game game = gameExists(gameNameEnum);</span>
 
-<span class="nc" id="L224">        Response response = new Response();</span>
+<span class="fc" id="L224">        Response response = new Response();</span>
 
-<span class="nc bnc" id="L226" title="All 2 branches missed.">        if (game == null) {</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">        if (game == null) {</span>
 <span class="nc" id="L227">            Logger.warn(gameNameEnum.getGameName() + &quot; does not exist.&quot;);</span>
             // TODO: create the unity handler for this case game not found
 <span class="nc" id="L229">            response.setResponse(ResponseEnum.GameNotFound);</span>
@@ -231,25 +231,25 @@ public class Server {
 <span class="nc" id="L231">            response.send(message.getUuid());</span>
 
         } else {
-<span class="nc" id="L234">            Logger.game(&quot;Closing &quot; + gameNameEnum.getGameName());</span>
+<span class="fc" id="L234">            Logger.game(&quot;Closing &quot; + gameNameEnum.getGameName());</span>
 
             /* Switch view to default entity for all players in the game */
-<span class="nc" id="L237">            Response response1 = new Response();</span>
-<span class="nc" id="L238">            response1.setResponse(ResponseEnum.YourEntityIs);</span>
-<span class="nc" id="L239">            response1.setText(&quot;default&quot;);</span>
-<span class="nc" id="L240">            response1.setGameName(gameNameEnum);</span>
-<span class="nc" id="L241">            response1.send(gameNameEnum);</span>
+<span class="fc" id="L237">            Response response1 = new Response();</span>
+<span class="fc" id="L238">            response1.setResponse(ResponseEnum.YourEntityIs);</span>
+<span class="fc" id="L239">            response1.setText(&quot;default&quot;);</span>
+<span class="fc" id="L240">            response1.setGameName(gameNameEnum);</span>
+<span class="fc" id="L241">            response1.send(gameNameEnum);</span>
 
             /* Send a clear game state to all players before closing for removing all entities */
-<span class="nc" id="L244">            game.clearUnityGame(game);</span>
+<span class="fc" id="L244">            game.clearUnityGame(game);</span>
 
-<span class="nc" id="L246">            games.remove(game);</span>
-<span class="nc" id="L247">            response.setResponse(ResponseEnum.GameClosed);</span>
-<span class="nc" id="L248">            response.setGameName(gameNameEnum);</span>
-<span class="nc" id="L249">            response.setNotify(gameNameEnum.getGameName() + &quot; closed successfully.&quot;);</span>
-<span class="nc" id="L250">            response.send();</span>
+<span class="fc" id="L246">            games.remove(game);</span>
+<span class="fc" id="L247">            response.setResponse(ResponseEnum.GameClosed);</span>
+<span class="fc" id="L248">            response.setGameName(gameNameEnum);</span>
+<span class="fc" id="L249">            response.setNotify(gameNameEnum.getGameName() + &quot; closed successfully.&quot;);</span>
+<span class="fc" id="L250">            response.send();</span>
         }
-<span class="nc" id="L252">    }</span>
+<span class="fc" id="L252">    }</span>
 
 
     // Getters and Setters

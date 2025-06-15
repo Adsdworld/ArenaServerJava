@@ -58,7 +58,13 @@ public enum ActionEnum {
      * To send your player state to the server.
      */
     @SerializedName("Player State Update")
-    PlayerStateUpdate("Player State Update");
+    PlayerStateUpdate("Player State Update"),
+
+    /**
+     * Action to perform a test.
+     */
+    @SerializedName("Unknown")
+    Unknown("Unknown");
 
     private final String action;
 

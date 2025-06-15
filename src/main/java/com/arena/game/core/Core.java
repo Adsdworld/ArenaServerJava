@@ -41,6 +41,10 @@ public class Core {
         return core;
     }
 
+    public PriorityBlockingQueue<Message> getQueue() {
+        return messageQueue;
+    }
+
     private final Map<ActionEnum, IMessageHandler> handlers = new HashMap<>();
 
     private final PriorityBlockingQueue<Message> messageQueue = new PriorityBlockingQueue<>();
@@ -72,16 +76,19 @@ public class Core {
      * @author A.SALLIER
      * @date 2025-06-15
      */
-    public void receive(Message message) {
+    public boolean receive(Message message) {
         if (message == null) {
             Logger.failure("Received null message");
+            return false;
         } else if (message.getAction() == null) {
             Logger.failure("Unknown or invalid action in message: " + message);
+            return false;
         } else {
             messageQueue.offer(message);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
                     .withZone(ZoneOffset.UTC);
             //Logger.info("Offered message to queue: " + message.getAction() + " with timestamp: " + formatter.format(Instant.ofEpochMilli(message.getTimeStamp())));
+            return true;
         }
     }
 
@@ -123,9 +130,9 @@ public class Core {
 
 
             Message next = messageQueue.peek(); // pas encore retiré
-            if (next == null) {
+            /*if (next == null) {
                 break;
-            }
+            }*/
 
             if (next.getTimeStamp() < now - tolerance) {
                 Logger.server("Skipping message: " + next.getUuid() + " >>> "+ next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
@@ -149,7 +156,7 @@ public class Core {
         }
     }
 
-    private void handleMessage(Message message) {
+    public boolean handleMessage(Message message) {
         //Logger.info("Traitement du message : " + message.toString());
 
         IMessageHandler handler = handlers.get(message.getAction());
@@ -157,8 +164,10 @@ public class Core {
         if (handler != null) {
             handler.handle(message);
             //Logger.info("Handled action: " + message.getAction() + " for player: " + message.getUuid());
+            return true;
         } else {
             Logger.failure("Couldn't find handler for action " + message.getAction());
+            return false;
         }
     }
 
