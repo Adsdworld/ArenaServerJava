@@ -1,18 +1,8 @@
-package com.arena.utils;
+package com.arena.utils.logger;
 
 import com.arena.game.GameNameEnum;
+import com.arena.utils.TimeUtil;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,14 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class Logger {
-
-    private static final String LOG_FILE_PATH = Paths.get("..", "server_log.txt").toString();
-
     private static final ConcurrentLinkedQueue<String> LOG_QUEUE = new ConcurrentLinkedQueue<>();
-    private static final Semaphore LOG_SEMAPHORE = new Semaphore(1);
-
-    // Thread dédié pour l'écriture
-    private static volatile boolean isWriting = false;
 
     private static final int MAX_BUFFER_SIZE = 100;
 
@@ -37,164 +20,166 @@ public class Logger {
         scheduler.scheduleAtFixedRate(Logger::flush, 5, 5, TimeUnit.SECONDS);
     }
 
-
-
-    /// <summary>
-    /// For logging System, Websocket, Server and Player events.
-    /// example: "Player joined the game", "Game created", "Websocket connection established".
-    /// </summary>
+    /**
+     * For logging {@code System} , {@link com.arena.network.JavaWebSocket} , {@link com.arena.server.Server}  and {@link com.arena.player.Player}  events.
+     * example: "Player joined the game", "Game created", "Websocket connection established".
+     *
+     * @param message the message to log.
+     * @implNote This method enqueues a log message with the level "info".
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public static void info(String message) {
         enqueueLog("info", message);
     }
 
-    /// <summary>
-    /// For logging Server actions that have been processed successfully.
-    /// Must not be used if info, warn, failure or error can be used instead.
-    /// example: "Started", "Stopped", "Registering player <uuid> successfully".
-    /// </summary>
+    /**
+     * For logging {@link com.arena.server.Server}  actions that have been processed successfully.
+     * Must not be used if info, warn, failure or error can be used instead.
+     * example: "Started", "Stopped", "Registering player <uuid> successfully".
+     *
+     * @param message the message to log.
+     * @implNote This method enqueues a log message with the level "info server" and a custom prefix.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public static void server(String message) {
-        enqueueLog("info", message, "...___---{([||| SERVER |||]})---<___... >>>");
+        enqueueLog("info server", message, "...___---{([||| SERVER |||]})---<___... >>>");
     }
 
-    /// <summary>
-    /// For logging General Games actions that have been processed successfully.
-    /// </summary>
+    /**
+     * For logging {@link com.arena.game.Game}  actions that have been processed successfully.
+     *
+     * @param message the message to log.
+     * @implNote This method enqueues a log message with the level "info game" and a custom prefix.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public static  void game(String message) {
-        enqueueLog("info", message, "...___---{([||| GAME |||]})---<___... >>>");
+        enqueueLog("info game", message, "...___---{([||| GAME |||]})---<___... >>>");
     }
 
-    /// <summary>
-    /// For logging Game actions that have been processed successfully.
-    /// </summary>
+    /**
+     * For logging {@link com.arena.game.Game}  actions that have been processed successfully with a specific {@link GameNameEnum} .
+     *
+     * @param message the message to log.
+     * @param gameName the name of the game as an enum.
+     * @implNote This method enqueues a log message with the level "info game" and a custom prefix that includes the game name.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public static  void game(String message, GameNameEnum gameName) {
-        enqueueLog("info", message, "...___---{([|| " + gameName.getGameName() + " ||]})---<___... >>>");
+        enqueueLog("info game", message, "...___---{([|| " + gameName.getGameName() + " ||]})---<___... >>>");
     }
 
-    /// <summary>
-    /// For logging warnings, warning can potentially cause a future failure in code execution.
-    /// A warning make code continue to run, but it is a sign that something might not be right.
-    /// example: "Player tried to join a game that is full", "Donnée transmise ignorée ou enum non reconnue : Foo = 'bar'".
-    /// </summary>
+    /**
+     * For logging warnings, which indicate potential issues that may lead to future failures in code execution.
+     * A warning make the code continue to run, but it is a sign that something might not be right.
+     * example: "Player tried to join a game that is full", "Data transmitted ignored or unrecognized enum: Foo = 'bar'".
+     *
+     * @param message the message to log.
+     * @implNote This method enqueues a log message with the level "warning".
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public static void warn(String message) {
         enqueueLog("warning", message);
     }
 
-    /// <summary>
-    /// For logging failures, a failure says that something went wrong, but the code can still continue to run.
-    /// Used for game logic failures.
-    /// example: "Player tried to join a game that does not exist", "Game creation failed due to invalid parameters".
-    /// </summary>
+    /**
+     * For logging failures, which indicate that something went wrong but the code can still continue to run.
+     * Used for game logic failures.
+     * example: "Player tried to join a game that does not exist", "Game creation failed due to invalid parameters".
+     *
+     * @param message the message to log.
+     * @implNote This method enqueues a log message with the level "failure".
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public static void failure(String message) {
         enqueueLog("failure", message);
     }
 
-    /// <summary>
-    /// For logging errors, an error is raised by Java Runtime or a library exception.
-    /// example: "NullPointerException in Player class", "Websocket error: Connection lost".
-    /// </summary>
-    public static void error(String message) {
-        enqueueLog("error", message);
-    }
+    /**
+     * For logging errors, an error is raised by Java Runtime or a library exception.
+     *
+     * @param message the message to log.
+     * @implNote This method enqueues a log message with the level "error".
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public static void error(String message) {enqueueLog("error", message);}
 
-    /// <summary>
-    /// For logging all test messages.
-    /// example: Cient connected
-    /// </summary>
+    /**
+     * Logs a test message with the level "test".
+     * This method is used for debugging purposes and should not be used in production code.
+     * exemple: "Test message: Client connected".
+     *
+     * @param message the message to log.
+     * @implNote This method enqueues a log message with the level "test" and a custom prefix.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public static void test(String message) {
         enqueueLog("@TEST", message);
     }
 
+    /**
+     * Enqueues a log message with a custom prefix before the message.
+     * This method is used to format the log message with a timestamp, caller information, and a custom prefix.
+     *
+     * @param level the log level (e.g., "info", "warning", "error").
+     * @param message the message to log.
+     * @param customBefore the custom prefix to include before the message.
+     * @implNote This method formats the log message and adds it to the log queue for processing.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     private static void enqueueLog(String level, String message, String customBefore) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String timestamp = sdf.format(new Date());
+        String timestamp = TimeUtil.getUTCTimestamp();
 
-        // Récupérer le nom de la méthode appelante (optionnel)
-        String callerInfo = getCallerInfo();
+        String callerInfo = TimeUtil.getCallerInfo();
 
         String formatted = String.format("[%s][%s][%s] %s %s", timestamp, callerInfo, level, customBefore, message);
-        System.out.println(formatted); // Affichage console
+        System.out.println(formatted);
 
         LOG_QUEUE.add(formatted);
 
-        if (LOG_QUEUE.size() >= MAX_BUFFER_SIZE && !isWriting) {
-            isWriting = true;
-            new Thread(Logger::processLogQueue).start();
+        if (LOG_QUEUE.size() >= MAX_BUFFER_SIZE) {
+            new Thread(() -> LogWriter.processLogQueue(LOG_QUEUE)).start();
         }
     }
-
-    public static void flush() {
-        if (!LOG_QUEUE.isEmpty() && !isWriting) {
-            isWriting = true;
-            new Thread(Logger::processLogQueue).start();
-        }
-    }
-
+    /**
+     * Enqueues a log message with a custom prefix before the message.
+     * This method is used to format the log message with a timestamp, caller information.
+     *
+     * @param level the log level (e.g., "info", "warning", "error").
+     * @param message the message to log.
+     * @implNote This method formats the log message and adds it to the log queue for processing.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     private static void enqueueLog(String level, String message) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String timestamp = sdf.format(new Date());
+        String timestamp = TimeUtil.getUTCTimestamp();
 
-        // Récupérer le nom de la méthode appelante (optionnel)
-        String callerInfo = getCallerInfo();
+        String callerInfo = TimeUtil.getCallerInfo();
 
         String formatted = String.format("[%s][%s][%s] %s", timestamp, callerInfo, level, message);
-        System.out.println(formatted); // Affichage console
+        System.out.println(formatted);
 
         LOG_QUEUE.add(formatted);
-
-        if (!isWriting) {
-            isWriting = true;
-            new Thread(Logger::processLogQueue).start();
-        }
     }
 
-    //TODO: Create a mecanism of 15262772x <text> for avoiding heavy files and console flooding
-
-    private static void processLogQueue() {
-        try {
-            LOG_SEMAPHORE.acquire();
-
-            File logFile = new File(LOG_FILE_PATH);
-            File parentDir = logFile.getParentFile();
-            if (!parentDir.exists()) {
-                if (parentDir.mkdirs()) {
-                    info("Log directory created.");
-                } else {
-                    System.err.println("[Logger][WriteError] Failed to create log directory.");
-                }
-            }
-
-            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile, true), StandardCharsets.UTF_8))) {
-                while (!LOG_QUEUE.isEmpty()) {
-                    String logEntry = LOG_QUEUE.poll();
-                    if (logEntry != null) {
-                        writer.write(logEntry);
-                        writer.newLine();
-                    }
-                }
-                writer.flush();
-            } catch (IOException e) {
-                System.err.println("[Logger][WriteError] " + e.getMessage());
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        } finally {
-            LOG_SEMAPHORE.release();
-            isWriting = false;
+    /**
+     * Flushes the log queue buffer to write all pending log messages to the log file.
+     *
+     * @implNote This method checks if the log queue is not empty and call the LogWriter to process the queue.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
+    public static void flush() {
+        if (!LOG_QUEUE.isEmpty()) {
+            new Thread(() -> LogWriter.processLogQueue(LOG_QUEUE)).start();
         }
-    }
-
-
-    private static String getCallerInfo() {
-        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-        // index 0: getStackTrace, 1: getCallerInfo, 2: enqueueLog, 3: info/warn/failure, 4: caller
-        if (stack.length > 4) {
-            StackTraceElement caller = stack[4];
-            String fileName = caller.getFileName() != null ? caller.getFileName().replace(".java", "") : "UnknownFile";
-            String methodName = caller.getMethodName();
-            return fileName + "][" + methodName+"]";
-        }
-        return "UnknownCaller";
     }
 }

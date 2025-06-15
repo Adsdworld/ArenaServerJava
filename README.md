@@ -33,7 +33,7 @@ Pour vous aider dans votre choix du sujet et dans le développement du projet, l
 - [OK] @A.Sallier
 - file :
 
-**Respect ds règles qualité Checkstyle** : 
+**Respect des règles qualité Checkstyle** : 
 - [TODO] 
 - 138/0 erreur de style.
 
@@ -84,12 +84,12 @@ Diagramme de classes détaillé (hors IHM) : attributs, méthodes, visibilités,
 - [TODO]
 - 
 
-- **Tests "End to End" (scénarios de validations simple)**
+**Tests "End to End" (scénarios de validations simple)**
 - [TODO]
 - 
 
 **Tests Unitaires (JUnit)**
-- [TODO] Test consturcteur faire plusieurs classes et pas les test get set.
+- [TODO] **Test consturcteur vector3f...** faire plusieurs classes et pas les test get set.
 - 
 
 **couvrant 100% des instructions et branches par méthode avec algorithmie**

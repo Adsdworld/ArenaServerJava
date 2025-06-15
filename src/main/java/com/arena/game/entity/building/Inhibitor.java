@@ -5,7 +5,6 @@ import com.arena.game.entity.*;
 import com.arena.network.response.Response;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
-import com.arena.utils.Logger;
 import com.arena.utils.Vector3f;
 
 public class Inhibitor extends LivingEntity {

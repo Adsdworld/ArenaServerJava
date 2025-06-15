@@ -2,8 +2,6 @@ package com.arena.game.handler;
 
 import com.arena.game.Game;
 import com.arena.game.GameNameEnum;
-import com.arena.game.entity.Entity;
-import com.arena.game.entity.EntityPositions;
 import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.champion.Garen;
 import com.arena.network.message.Message;
@@ -11,12 +9,10 @@ import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
-import com.arena.utils.Logger;
-import com.google.gson.Gson;
+import com.arena.utils.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static com.arena.game.entity.EntityPositions.*;
 
@@ -69,11 +65,13 @@ public class JoinHandler implements IMessageHandler {
                     buildings.addAll(game.getLivingEntityByGeneralId(BLUE_INHIBITORS.keySet()));
                 }
 
-                for (LivingEntity building : buildings) {
-                    building.setSkinAnimation(building.getSkinAnimationForSpawn());
-                    building.LockSkinAnimation(building.getSkinAnimationDurationForSpawn(), () -> {
-                        building.setSkinAnimation(building.getSkinAnimationForIdle());
-                    });
+                if (blue == 0 || red == 0) {
+                    for (LivingEntity building : buildings) {
+                        building.setSkinAnimation(building.getSkinAnimationForSpawn());
+                        building.LockSkinAnimation(building.getSkinAnimationDurationForSpawn(), () -> {
+                            building.setSkinAnimation(building.getSkinAnimationForIdle());
+                        });
+                    }
                 }
 
                 /* Create entity  and add it to game */

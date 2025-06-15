@@ -8,7 +8,7 @@ import com.arena.player.ActionEnum;
 import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
-import com.arena.utils.Logger;
+import com.arena.utils.logger.Logger;
 import com.arena.network.message.Message;
 import com.arena.utils.json.JsonService;
 import org.java_websocket.WebSocket;

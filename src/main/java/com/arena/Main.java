@@ -2,9 +2,8 @@ package com.arena;
 
 import com.arena.network.JavaWebSocket;
 import com.arena.server.Server;
-import com.arena.utils.Logger;
+import com.arena.utils.logger.Logger;
 import com.arena.utils.json.GsonWorker;
-import com.google.gson.Gson;
 
 /**
  * Main class

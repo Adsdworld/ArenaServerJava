@@ -1,7 +1,7 @@
 package com.arena;
 
 import com.arena.network.message.Message;
-import com.arena.utils.Logger;
+import com.arena.utils.logger.Logger;
 
 import static com.arena.ArenaTestBase.client_test;
 

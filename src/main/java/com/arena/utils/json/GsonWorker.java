@@ -6,7 +6,7 @@ import com.arena.game.entity.building.Nexus;
 import com.arena.game.entity.building.Tower;
 import com.arena.game.entity.building.TowerDead;
 import com.arena.game.entity.champion.Garen;
-import com.arena.utils.Logger;
+import com.arena.utils.logger.Logger;
 import com.google.gson.*;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 

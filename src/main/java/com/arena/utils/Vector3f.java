@@ -1,26 +1,25 @@
 package com.arena.utils;
 
+/**
+ * Vector3f is a simple class representing a 3D vector with float coordinates.
+ */
 public class Vector3f {
     public float x, y, z;
 
+    /**
+     * Creates a new Vector3f.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param z the z coordinate
+     * @implNote This constructor initializes the vector with the given coordinates.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public Vector3f(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
-    }
-
-    // Méthodes utiles (exemple)
-    public void add(Vector3f other) {
-        this.x += other.x;
-        this.y += other.y;
-        this.z += other.z;
-    }
-
-    public float distance(Vector3f other) {
-        float dx = this.x - other.x;
-        float dy = this.y - other.y;
-        float dz = this.z - other.z;
-        return (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
     @Override

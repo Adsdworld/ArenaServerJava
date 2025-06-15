@@ -10,7 +10,7 @@ import com.arena.network.response.Response;
 import com.arena.player.ActionEnum;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
-import com.arena.utils.Logger;
+import com.arena.utils.logger.Logger;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

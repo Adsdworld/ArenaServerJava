@@ -7,7 +7,6 @@ import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
-import com.arena.utils.Logger;
 
 public class PlayerStateUpdateHandler implements IMessageHandler {
     public void handle(Message message) {

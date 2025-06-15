@@ -2,7 +2,7 @@ package com.arena.server;
 
 import com.arena.game.Game;
 import com.arena.game.GameNameEnum;
-import com.arena.game.core.Core;
+import com.arena.game.entity.EntityPositions;
 import com.arena.game.entity.LivingEntity;
 import com.arena.game.entity.building.Inhibitor;
 import com.arena.game.entity.building.Nexus;
@@ -12,13 +12,13 @@ import com.arena.network.message.Message;
 import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
-import com.arena.utils.Logger;
+import com.arena.utils.logger.Logger;
 import com.arena.game.utils.Position;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.arena.game.entity.EntityPositions.*;
 
 public class Server {
 
@@ -28,14 +28,10 @@ public class Server {
 
     public ArrayList<Game> games;
 
-    private boolean creatingGame;
-    private boolean closingGame;
-
-    private final int MAX_GAMES = 5;
+    private static final int MAX_GAMES = 5;
 
     private Server() {
         games = new ArrayList<>();
-        creatingGame = false;
         players = new ConcurrentHashMap<>();
     }
 
@@ -55,14 +51,6 @@ public class Server {
         return instance;
     }
 
-    public boolean isCreatingGame() {
-        return creatingGame;
-    }
-
-    public boolean isClosingGame() {
-        return closingGame;
-    }
-
     /**
      * Creates a new game based on the provided {@link Message}.
      *
@@ -72,48 +60,35 @@ public class Server {
      * @date 2025-06-07
      */
     public void createGame(Message message) {
-        if (creatingGame) {
-            Logger.warn("A game is already being created, please wait.");
-            Core.getInstance().retryLater(message);
+        GameNameEnum gameNameEnum = message.getGameName();
+        Game game = gameExists(gameNameEnum);
+
+        Response response = new Response();
+
+        if (game != null) {
+            Logger.warn(gameNameEnum.getGameName() + " already exists.");
+            response.setResponse(ResponseEnum.GameAlreadyExists);
+            response.setNotify(gameNameEnum.getGameName() + " already exists.");
+            response.Send(message.getUuid());
+
+        } else if (games.size() >= MAX_GAMES) {
+            Logger.warn("Cannot create more than " + MAX_GAMES + " games.");
+            response.setResponse(ResponseEnum.GamesLimitReached);
+            response.setNotify("Cannot create more than " + MAX_GAMES + " games.");
+            response.Send(message.getUuid());
 
         } else {
-            creatingGame = true;
+            Logger.game("Creating " + gameNameEnum.getGameName());
+            Game newGame = new Game(gameNameEnum);
 
-            try {
-                GameNameEnum gameNameEnum = message.getGameName();
-                Game game = gameExists(gameNameEnum);
+            createNexusInhibitorAndTowers(newGame);
 
-                Response response = new Response();
+            games.add(newGame);
 
-                if (game != null) {
-                    Logger.warn(gameNameEnum.getGameName() + " already exists.");
-                    response.setResponse(ResponseEnum.GameAlreadyExists);
-                    response.setNotify(gameNameEnum.getGameName() + " already exists.");
-                    response.Send(message.getUuid());
-
-                } else if (games.size() >= MAX_GAMES) {
-                    Logger.warn("Cannot create more than " + MAX_GAMES + " games.");
-                    response.setResponse(ResponseEnum.GamesLimitReached);
-                    response.setNotify("Cannot create more than " + MAX_GAMES + " games.");
-                    response.Send(message.getUuid());
-
-                } else {
-                    Logger.game("Creating " + gameNameEnum.getGameName());
-                    Game newGame = new Game(gameNameEnum);
-
-                    CreateNexusInhibitorAndTowers(newGame);
-
-                    games.add(newGame);
-
-                    response.setResponse(ResponseEnum.GameCreated);
-                    response.setNotify(gameNameEnum.getGameName() + " created successfully.");
-                    response.setGameName(gameNameEnum);
-                    response.Send();
-                }
-
-            } finally {
-                creatingGame = false;
-            }
+            response.setResponse(ResponseEnum.GameCreated);
+            response.setNotify(gameNameEnum.getGameName() + " created successfully.");
+            response.setGameName(gameNameEnum);
+            response.Send();
         }
     }
 
@@ -141,6 +116,15 @@ public class Server {
         return game;
     }
 
+    /**
+     * Retrieves the {@link Game}  of a given {@link LivingEntity} .
+     *
+     * @param entity the {@link LivingEntity} whose game is to be retrieved.
+     * @return the {@link Game} instance that contains the specified entity, or {@code null} if no such game exists.
+     * @implNote This method iterates through the list of games and returns the first game that contains the specified entity in its map of living entities.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public Game getGameOfEntity(LivingEntity entity) {
         Server server = Server.getInstance();
 
@@ -193,79 +177,35 @@ public class Server {
         game.getPlayersMap().putIfAbsent(player.getUuid(), player);
     }
 
-    private void CreateNexusInhibitorAndTowers(Game game) {
-        /* Towers */
-        for (Map.Entry<String, EntityInit> map : BLUE_TOWERS.entrySet()) {
-            EntityInit entityInit = map.getValue();
-            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
+    private void createNexusInhibitorAndTowers(Game game) {
+        createEntities(game, EntityPositions.BLUE_TOWERS, "Tower", 1);
+        createEntities(game, EntityPositions.RED_TOWERS, "Tower", 2);
+        createEntities(game, EntityPositions.BLUE_INHIBITORS, "Inhibitor", 1);
+        createEntities(game, EntityPositions.RED_INHIBITORS, "Inhibitor", 2);
+        createEntities(game, EntityPositions.BLUE_NEXUS, "Nexus", 1);
+        createEntities(game, EntityPositions.RED_NEXUS, "Nexus", 2);
+    }
+
+    private void createEntities(Game game, Map<String, EntityInit> map, String type, int team) {
+        for (Map.Entry<String, EntityInit> entry : map.entrySet()) {
+            EntityInit entityInit = entry.getValue();
+            String id = game.getGameNameEnum().getGameName() + "_" + entry.getKey();
             Position position = entityInit.getPosition();
 
-            LivingEntity livingEntity = new Tower(id, 1);
-            livingEntity.setAttackable(entityInit.isAttackable());
-            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
-            livingEntity.setPos(position);
-            game.addEntity(livingEntity);
-        }
-        for (Map.Entry<String, EntityInit> map : RED_TOWERS.entrySet()) {
-            EntityInit entityInit = map.getValue();
-            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = entityInit.getPosition();
+            LivingEntity livingEntity = switch (type) {
+                case "Tower" -> new Tower(id, team);
+                case "Inhibitor" -> new Inhibitor(id, team);
+                case "Nexus" -> new Nexus(id, team);
+                default -> throw new IllegalArgumentException("Unknown entity type: " + type);
+            };
 
-            LivingEntity livingEntity = new Tower(id, 2);
-            livingEntity.setAttackable(entityInit.isAttackable());
-            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
-            livingEntity.setPos(position);
-            game.addEntity(livingEntity);
-        }
-
-        /* Inhibitors */
-        for (Map.Entry<String, EntityInit> map : BLUE_INHIBITORS.entrySet()) {
-            EntityInit entityInit = map.getValue();
-            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = entityInit.getPosition();
-
-            LivingEntity livingEntity = new Inhibitor(id, 1);
-            livingEntity.setAttackable(entityInit.isAttackable());
-            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
-            livingEntity.setPos(position);
-            game.addEntity(livingEntity);
-        }
-        for (Map.Entry<String, EntityInit> map : RED_INHIBITORS.entrySet()) {
-            EntityInit entityInit = map.getValue();
-            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = entityInit.getPosition();
-
-            LivingEntity livingEntity = new Inhibitor(id, 2);
-            livingEntity.setAttackable(entityInit.isAttackable());
-            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
-            livingEntity.setPos(position);
-            game.addEntity(livingEntity);
-        }
-
-        /* Nexus */
-        for (Map.Entry<String, EntityInit> map : BLUE_NEXUS.entrySet()) {
-            EntityInit entityInit = map.getValue();
-            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = entityInit.getPosition();
-
-            LivingEntity livingEntity = new Nexus(id, 1);
-            livingEntity.setAttackable(entityInit.isAttackable());
-            livingEntity.setNextObjective(entityInit.getNextObjectiveId());
-            livingEntity.setPos(position);
-            game.addEntity(livingEntity);
-        }
-        for (Map.Entry<String, EntityInit> map : RED_NEXUS.entrySet()) {
-            EntityInit entityInit = map.getValue();
-            String id = game.getGameNameEnum().getGameName()+ "_" + map.getKey();
-            Position position = entityInit.getPosition();
-
-            LivingEntity livingEntity = new Nexus(id, 2);
             livingEntity.setAttackable(entityInit.isAttackable());
             livingEntity.setNextObjective(entityInit.getNextObjectiveId());
             livingEntity.setPos(position);
             game.addEntity(livingEntity);
         }
     }
+
 
     /**
      * Closes a game based on the provided {@link Message}.
@@ -276,50 +216,38 @@ public class Server {
      * @date 2025-06-07
      */
     public void closeGame(Message message) {
-        if (closingGame) {
-            Logger.warn("A game is already being closed, please wait.");
-            Core.getInstance().retryLater(message);
+        Server.getInstance().getGames().removeIf(Objects::isNull);
+
+        GameNameEnum gameNameEnum = message.getGameName();
+        Game game = gameExists(gameNameEnum);
+
+        Response response = new Response();
+
+        if (game == null) {
+            Logger.warn(gameNameEnum.getGameName() + " does not exist.");
+            // TODO: create the unity handler for this case game not found
+            response.setResponse(ResponseEnum.GameNotFound);
+            response.setNotify(gameNameEnum.getGameName() + " does not exist.");
+            response.Send(message.getUuid());
+
         } else {
+            Logger.game("Closing " + gameNameEnum.getGameName());
 
-            closingGame = true;
-            try {
-                Server.getInstance().getGames().removeIf(Objects::isNull);
+            /* Switch view to default entity for all players in the game */
+            Response response1 = new Response();
+            response1.setResponse(ResponseEnum.YourEntityIs);
+            response1.setText("default");
+            response1.setGameName(gameNameEnum);
+            response1.Send(gameNameEnum);
 
-                GameNameEnum gameNameEnum = message.getGameName();
-                Game game = gameExists(gameNameEnum);
+            /* Send a clear game state to all players before closing for removing all entities */
+            game.clearUnityGame(game);
 
-                Response response = new Response();
-
-                if (game == null) {
-                    Logger.warn(gameNameEnum.getGameName() + " does not exist.");
-                    // TODO: create the unity handler for this case game not found
-                    response.setResponse(ResponseEnum.GameNotFound);
-                    response.setNotify(gameNameEnum.getGameName() + " does not exist.");
-                    response.Send(message.getUuid());
-
-                } else {
-                    Logger.game("Closing " + gameNameEnum.getGameName());
-
-                    /* Switch view to default entity for all players in the game */
-                    Response response1 = new Response();
-                    response1.setResponse(ResponseEnum.YourEntityIs);
-                    response1.setText("default");
-                    response1.setGameName(gameNameEnum);
-                    response1.Send(gameNameEnum);
-
-                    /* Send a clear game state to all players before closing for removing all entities */
-                    game.clearUnityGame(game);
-
-                    games.remove(game);
-                    response.setResponse(ResponseEnum.GameClosed);
-                    response.setGameName(gameNameEnum);
-                    response.setNotify(gameNameEnum.getGameName() + " closed successfully.");
-                    response.Send();
-                }
-
-            } finally {
-                closingGame = false;
-            }
+            games.remove(game);
+            response.setResponse(ResponseEnum.GameClosed);
+            response.setGameName(gameNameEnum);
+            response.setNotify(gameNameEnum.getGameName() + " closed successfully.");
+            response.Send();
         }
     }
 
@@ -393,23 +321,6 @@ public class Server {
         } else {
             getPlayersMap().putIfAbsent(player.getUuid(), player);
             Logger.server("Registering player : " + player.getUuid());
-        }
-    }
-
-    /**
-     * Unregisters a player from the server.
-     *
-     * @param player the player to unregister
-     * @implNote This method checks if the {@code player} is already registered on the {@link Server} before attempting to remove him.
-     * @author A.SALLIER
-     * @date 2025-06-07
-     */
-    public void unregisterPlayer(Player player) {
-        if (player != null && players.contains(player)) {
-            players.remove(player);
-            Logger.server("Unregistering player : " + player.getUuid());
-        } else {
-            Logger.failure("Could not unregister player : " + (player != null ? player.getUuid() : "null"));
         }
     }
 

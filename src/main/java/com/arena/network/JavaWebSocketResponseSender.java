@@ -6,7 +6,7 @@ import com.arena.network.response.IResponseSender;
 import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.server.Server;
-import com.arena.utils.Logger;
+import com.arena.utils.logger.Logger;
 import com.arena.utils.json.JsonService;
 import org.java_websocket.WebSocket;
 import org.java_websocket.exceptions.WebsocketNotConnectedException;

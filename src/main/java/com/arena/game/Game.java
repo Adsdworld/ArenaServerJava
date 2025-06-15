@@ -6,7 +6,7 @@ import com.arena.network.response.Response;
 import com.arena.player.Player;
 import com.arena.player.ResponseEnum;
 import com.arena.server.Server;
-import com.arena.utils.Logger;
+import com.arena.utils.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
