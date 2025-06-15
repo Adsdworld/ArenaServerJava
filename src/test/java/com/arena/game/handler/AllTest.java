@@ -57,7 +57,7 @@ public class AllTest extends ArenaTestBase {
         Response response = TestClientJava.filterResponseStatic(ResponseEnum.Logged, responses);
 
         assertNotNull(response, "Response should not be null");
-        assertEquals(ResponseEnum.Logged, response.getReponse(), "Expected response to be " + ResponseEnum.Logged);
+        assertEquals(ResponseEnum.Logged, response.getResponse(), "Expected response to be " + ResponseEnum.Logged);
 
         /**
          * Check if the UUID is set correctly
@@ -102,7 +102,7 @@ public class AllTest extends ArenaTestBase {
         Response response = TestClientJava.filterResponseStatic(ResponseEnum.GameCreated, responses);
 
         assertNotNull(response, "Response should not be null");
-        assertEquals(ResponseEnum.GameCreated, response.getReponse(), "Expected response to be " + ResponseEnum.GameCreated);
+        assertEquals(ResponseEnum.GameCreated, response.getResponse(), "Expected response to be " + ResponseEnum.GameCreated);
 
         /**
          * Check if the game is created on the server
@@ -145,7 +145,7 @@ public class AllTest extends ArenaTestBase {
         Response response = TestClientJava.filterResponseStatic(ResponseEnum.GameAlreadyExists, responses);
 
         assertNotNull(response, "Response should not be null");
-        assertEquals(ResponseEnum.GameAlreadyExists, response.getReponse(), "Expected response to be " + ResponseEnum.GameAlreadyExists);
+        assertEquals(ResponseEnum.GameAlreadyExists, response.getResponse(), "Expected response to be " + ResponseEnum.GameAlreadyExists);
 
         /**
          * Check if the game is created on the server
@@ -200,7 +200,7 @@ public class AllTest extends ArenaTestBase {
         Response response = TestClientJava.filterResponseStatic(ResponseEnum.GamesLimitReached, responses);
 
         assertNotNull(response, "Response should not be null");
-        assertEquals(ResponseEnum.GamesLimitReached, response.getReponse(), "Expected response to be " + ResponseEnum.GamesLimitReached);
+        assertEquals(ResponseEnum.GamesLimitReached, response.getResponse(), "Expected response to be " + ResponseEnum.GamesLimitReached);
     }
 
 
@@ -229,7 +229,7 @@ public class AllTest extends ArenaTestBase {
         Response response = TestClientJava.filterResponseStatic(ResponseEnum.Joined, responses);
 
         assertNotNull(response, "Response should not be null After Join");
-        assertEquals(ResponseEnum.Joined, response.getReponse(), "Expected response to be " + ResponseEnum.Joined);
+        assertEquals(ResponseEnum.Joined, response.getResponse(), "Expected response to be " + ResponseEnum.Joined);
 
         /**
          * Check if the player is added to the game
@@ -271,7 +271,7 @@ public class AllTest extends ArenaTestBase {
         Response response = TestClientJava.filterResponseStatic(ResponseEnum.PlayerAlreadyInGame, responses);
 
         assertNotNull(response, "Response should not be null After Join");
-        assertEquals(ResponseEnum.PlayerAlreadyInGame, response.getReponse(), "Expected response to be " + ResponseEnum.PlayerAlreadyInGame);
+        assertEquals(ResponseEnum.PlayerAlreadyInGame, response.getResponse(), "Expected response to be " + ResponseEnum.PlayerAlreadyInGame);
     }
 
 
@@ -297,7 +297,7 @@ public class AllTest extends ArenaTestBase {
         Response response = TestClientJava.filterResponseStatic(ResponseEnum.GameState, responses);
 
         assertNotNull(response, "Response should not be null After GameState");
-        assertEquals(ResponseEnum.GameState, response.getReponse(), "Expected response to be " + ResponseEnum.GameState);
+        assertEquals(ResponseEnum.GameState, response.getResponse(), "Expected response to be " + ResponseEnum.GameState);
 
         // Check if the game state contains the expected data
         assertFalse(response.getLivingEntities().isEmpty(), "GameState should contain living entities");

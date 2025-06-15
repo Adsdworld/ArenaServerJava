@@ -35,13 +35,13 @@ public class PlayerStateUpdateHandler implements IMessageHandler {
                     Response response = new Response();
                     response.setResponse(ResponseEnum.Info);
                     response.setNotify("Living entity not found for player: " + message.getUuid() + ". Please check if you have sent a Join Action.");
-                    response.Send(player.getUuid());
+                    response.send(player.getUuid());
                 }
             } else {
                 Response response = new Response();
                 response.setResponse(ResponseEnum.Info);
                 response.setNotify("Game not found for player: " + message.getUuid() + ". Please check if you have sent a Join Action.");
-                response.Send(player.getUuid());
+                response.send(player.getUuid());
             }
         }
     }

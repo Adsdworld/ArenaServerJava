@@ -12,70 +12,69 @@ import java.util.Collection;
  * This class is used to encapsulate the data that is sent by the {@link com.arena.server.Server} to the {@link com.arena.player.Player} .
  */
 public class Response implements Comparable<Response>{
-    private String _uuid;
-    private ResponseEnum _reponse;
-    private GameNameEnum _gameName;
-    private String _ability;
-    private String _text;
-    private String _notify;
-    private long _timestamp;
-    private Collection<LivingEntity> _livingEntities;
+    private String uuid;
+    private ResponseEnum response;
+    private GameNameEnum gameName;
+    private String text;
+    private String notify;
+    private long timestamp;
+    private Collection<LivingEntity> livingEntities;
 
     /* Constructor for json */
     public Response() {
     }
 
     public GameNameEnum getGameName() {
-        return _gameName;
+        return gameName;
     }
 
     public void setGameName(GameNameEnum gameName) {
-        this._gameName = gameName;
+        this.gameName = gameName;
     }
 
-    public ResponseEnum getReponse() {
-        return _reponse;
+    public ResponseEnum getResponse() {
+        return response;
     }
 
-    public void setResponse(ResponseEnum response) {
-        this._reponse = response;
+    public void setResponse(ResponseEnum res) {
+        this.response = res;
     }
 
     public String getUuid() {
-        return _uuid;
+        return uuid;
     }
 
     public void setUuid(String uuid) {
-        this._uuid = uuid;
+        this.uuid = uuid;
     }
 
     public void setText(String text) {
-        this._text = text;
+        this.text = text;
     }
 
-    public void setNotify(String notify) {
-        this._notify = notify;
+    public void setNotify(String notify1) {
+        this.notify = notify1;
     }
 
-    public void setTimestamp(long timestamp) {
-        this._timestamp = timestamp;
+    public void setTimestamp(long timestamp1) {
+        this.timestamp = timestamp1;
     }
 
     public long getTimestamp() {
-        return _timestamp;
+        return timestamp;
     }
 
-    public void setLivingEntities(Collection<LivingEntity> livingEntities) {
-        _livingEntities = livingEntities;
+    public void setLivingEntities(Collection<LivingEntity> entities) {
+        livingEntities = entities;
     }
 
     public Collection<LivingEntity> getLivingEntities() {
-        return _livingEntities;
+        return livingEntities;
     }
 
     @Override
     public int compareTo(Response other) {
-        return Long.compare(this._timestamp, other._timestamp);
+        return Long.compare(this.timestamp, other.timestamp);
     }
 
     @Override
@@ -86,8 +85,8 @@ public class Response implements Comparable<Response>{
     /**
      * Send to server.
      */
-    public void Send() {
-        _timestamp = System.currentTimeMillis();
+    public void send() {
+        timestamp = System.currentTimeMillis();
         ResponseService.send(this, false);
     }
 
@@ -95,47 +94,47 @@ public class Response implements Comparable<Response>{
      * Send to server silently
      * @param silent whether to send the response silently or not.
      */
-    public void Send(boolean silent) {
-        _timestamp = System.currentTimeMillis();
+    public void send(boolean silent) {
+        timestamp = System.currentTimeMillis();
         ResponseService.send(this, silent);
     }
 
 
     /**
      * Send to game.
-     * @param gameName the name of the game as a {@link GameNameEnum}.
+     * @param game the name of the game as a {@link GameNameEnum}.
      */
-    public void Send(GameNameEnum gameName) {
-        _timestamp = System.currentTimeMillis();
-        ResponseService.sendToGame(this, gameName, false);
+    public void send(GameNameEnum game) {
+        timestamp = System.currentTimeMillis();
+        ResponseService.sendToGame(this, game, false);
     }
 
     /**
      * Send to game silently.
-     * @param gameName the name of the game as a {@link GameNameEnum}.
+     * @param game the name of the game as a {@link GameNameEnum}.
      * @param silent whether to send the response silently or not.
      */
-    public void Send(GameNameEnum gameName, boolean silent) {
-        _timestamp = System.currentTimeMillis();
-        ResponseService.sendToGame(this, gameName, silent);
+    public void send(GameNameEnum game, boolean silent) {
+        timestamp = System.currentTimeMillis();
+        ResponseService.sendToGame(this, game, silent);
     }
 
     /**
      * Send to uuid.
-     * @param uuid the unique identifier of the player as a {@link String}.
+     * @param id the unique identifier of the player as a {@link String}.
      */
-    public void Send(String uuid) {
-        _timestamp = System.currentTimeMillis();
-        ResponseService.sendToUuid(uuid, this, false);
+    public void send(String id) {
+        timestamp = System.currentTimeMillis();
+        ResponseService.sendToUuid(id, this, false);
     }
 
     /**
      * Send to uuid silently
-     * @param uuid the unique identifier of the player as a {@link String}.
+     * @param id the unique identifier of the player as a {@link String}.
      * @param silent whether to send the response silently or not.
      */
-    public void Send(String uuid, boolean silent) {
-        _timestamp = System.currentTimeMillis();
-        ResponseService.sendToUuid(uuid, this, silent);
+    public void send(String id, boolean silent) {
+        timestamp = System.currentTimeMillis();
+        ResponseService.sendToUuid(id, this, silent);
     }
 }

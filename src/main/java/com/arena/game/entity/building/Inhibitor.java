@@ -82,6 +82,6 @@ public class Inhibitor extends LivingEntity {
         Response response = new Response();
         response.setResponse(ResponseEnum.Info);
         response.setNotify("Inhibitor " + this.getGeneralId() + " has been destroyed.");
-        response.Send(game.getGameNameEnum());
+        response.send(game.getGameNameEnum());
     }
 }

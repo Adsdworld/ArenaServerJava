@@ -96,6 +96,6 @@ public class Nexus extends LivingEntity {
         } else {
             response.setNotify("The Blue Nexus has been destroyed! Red Team wins!");
         }
-        response.Send(game.getGameNameEnum());
+        response.send(game.getGameNameEnum());
     }
 }

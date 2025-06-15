@@ -43,8 +43,6 @@ public class Garen extends LivingEntity {
      */
     public Garen(String id, int team) {
         super(id, 600, team, "Garen"); // maxHealth
-        this.setArmor(30);
-        this.setAttackDamage(60);
         this.setMoveSpeed(12f);
 
         this.setAttackable(true);
@@ -231,7 +229,7 @@ public class Garen extends LivingEntity {
             response.setGameName(game.getGameNameEnum());
             response.setResponse(ResponseEnum.Info);
             response.setNotify(this.getName() + " " + this.getId() + " have respawn.");
-            response.Send(game.getGameNameEnum());
+            response.send(game.getGameNameEnum());
 
             /* Clear the Unity game of the player */
             game.clearUnityGame(player);

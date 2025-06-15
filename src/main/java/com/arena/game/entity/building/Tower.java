@@ -15,8 +15,6 @@ public class Tower extends LivingEntity {
     public Tower(String id, int team) {
         super(id, 300, team, "Tower");
 
-        this.setAttackDamage(100);
-
         Building building = new Building(13f);
 
         this.setRigidbody(building.getRigidbody());
@@ -69,6 +67,6 @@ public class Tower extends LivingEntity {
         Response response = new Response();
         response.setResponse(ResponseEnum.Info);
         response.setNotify("Tower " + this.getGeneralId() + " has been destroyed.");
-        response.Send(game.getGameNameEnum());
+        response.send(game.getGameNameEnum());
     }
 }

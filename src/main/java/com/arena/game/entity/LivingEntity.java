@@ -15,14 +15,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static com.arena.game.entity.EntityPositions.*;
-
-public abstract class LivingEntity extends Entity implements ILiving {
+public abstract class LivingEntity extends LivingEntitySkin implements ILiving {
     protected int health, maxHealth;
-    protected int armor, magicResist, attackDamage, abilityPower;
     protected boolean moving, hasArrived, skinAnimationLocked, attackable, entityLocked, entityCastLocked, entityMoveLocked;
-    protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, skinScale, posXDesired, posZDesired, posYDesired, skinAnimationSpeed, skinAnimationBaseSpeed;
-    protected String name, skinAnimation;
+    protected float moveSpeed, rotationY, posX, posZ, posY, posSkinX, posSkinZ, posSkinY, skinScale, posXDesired, posZDesired, posYDesired;
+    protected String name;
     /* Team 1 = Blue Team, Team 2 = Red Team */
     protected int team;
     protected long cooldownQStart, cooldownWStart, cooldownEStart, cooldownRStart, cooldownQEnd, cooldownWEnd, cooldownEEnd, cooldownREnd, cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs;
@@ -140,6 +137,9 @@ public abstract class LivingEntity extends Entity implements ILiving {
         return entityMoveLocked;
     }
 
+    @Override public void lockSkinAnimation(boolean lock) { this.skinAnimationLocked = lock; }
+    @Override public boolean isSkinAnimationLocked() { return skinAnimationLocked; }
+
     @Override public int getHealth() { return health; }
     @Override public void heal(int amount) {
         this.health = Math.min(this.health + amount, maxHealth);
@@ -197,37 +197,18 @@ public abstract class LivingEntity extends Entity implements ILiving {
     public void spawnAtTeamSpawn() {
         switch (this.getTeam()) {
             case 1:
-                this.setPos(BLUE_SPAWN);
+                this.setPos(EntityPositions.BLUE_SPAWN);
                 break;
             case 2:
-                this.setPos(RED_SPAWN);
+                this.setPos(EntityPositions.RED_SPAWN);
                 break;
             default:
-                this.setPos(CENTER_SPAWN);
+                this.setPos(EntityPositions.CENTER_SPAWN);
                 Logger.warn("Team not specified for player " + this.getId() + ", defaulting to CENTER_SPAWN.");
                 break;
         }
     }
 
-    @Override public int getArmor() { return armor; }
-    @Override public int setArmor(int armor) {
-        this.armor = armor; return this.armor;
-    }
-
-    @Override public int getMagicResist() { return magicResist; }
-    @Override public int setMagicResist(int magicResist) {
-        this.magicResist = magicResist; return this.magicResist;
-    }
-
-    @Override public int getAttackDamage() { return attackDamage; }
-    @Override public int setAttackDamage(int attackDamage) {
-        this.attackDamage = attackDamage; return this.attackDamage;
-    }
-
-    @Override public int getAbilityPower() { return abilityPower; }
-    @Override public int setAbilityPower(int abilityPower) {
-        this.abilityPower = abilityPower; return this.abilityPower;
-    }
 
     @Override public int getQTotalDamage() { return 0; }
     @Override public int getWTotalShield() { return 0; }
@@ -279,57 +260,6 @@ public abstract class LivingEntity extends Entity implements ILiving {
     @Override public void setPosSkinZ(float z) { this.posSkinZ = z; }
     @Override public float getPosSkinY() { return posSkinY; }
     @Override public void setPosSkinY(float y) { this.posSkinY = y; }
-
-    @Override public void lockSkinAnimation(boolean lock) { this.skinAnimationLocked = lock; }
-    @Override public boolean isSkinAnimationLocked() { return skinAnimationLocked; }
-    @Override public String getSkinAnimation() { return skinAnimation; }
-    @Override public void setSkinAnimation(String animation) { this.skinAnimation = animation;}
-    @Override public float getSkinAnimationBaseSpeed() { return skinAnimationBaseSpeed; }
-    @Override public void setSkinAnimationBaseSpeed(float speed) {this.skinAnimationBaseSpeed = speed;}
-    @Override public float getSkinAnimationSpeed() { return skinAnimationSpeed; }
-    @Override public void setSkinAnimationSpeed(float skinAnimationSpeed) { this.skinAnimationSpeed = skinAnimationSpeed; }
-    @Override public String getSkinAnimationForRunning() {
-        return "None";
-    }
-    @Override public String getSkinAnimationForIdle() {
-        return "None";
-    }
-    @Override public String getSkinAnimationForQ() {
-        return "None";
-    }
-    @Override public String getSkinAnimationForW() {
-        return "None";
-    }
-    @Override public String getSkinAnimationForE() {
-        return "None";
-    }
-    @Override public String getSkinAnimationForR() {
-        return "None";
-    }
-    @Override public String getSkinAnimationForDeath() {
-        return "None";
-    }
-    @Override public String getSkinAnimationForSpawnHold() {return "None";}
-    @Override public String getSkinAnimationForSpawn() {return "None";}
-    @Override public String getSkinAnimationForDeathHold() {return "None";}
-    @Override public long getSkinAnimationDurationForQ() {
-        return 0;
-    }
-    @Override public long getSkinAnimationDurationForW() {
-        return 0;
-    }
-    @Override public long getSkinAnimationDurationForE() {
-        return 0;
-    }
-    @Override public long getSkinAnimationDurationForR() {
-        return 0;
-    }
-    @Override public long getSkinAnimationDurationForDeath() {
-        return 0;
-    }
-    @Override public long getSkinAnimationDurationForSpawnHold() {return 0;}
-    @Override public long getSkinAnimationDurationForSpawn() {return 0;}
-    @Override public long getSkinAnimationDurationForDeathHold() {return 0;}
 
     public void LockSkinAnimation(long ms) {
         this.lockSkinAnimation(true);

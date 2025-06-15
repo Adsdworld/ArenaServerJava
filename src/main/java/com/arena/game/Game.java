@@ -17,22 +17,33 @@ public class Game {
     /* Identifier for the game */
     GameNameEnum gameNameEnum;
 
-    //private ArrayList<LivingEntity> livingEntities;
     private final ConcurrentHashMap<String, LivingEntity> livingEntities;
-
 
     private final ConcurrentHashMap<String, Player> players;
 
     /**
-     * @param gameNameEnum
+     * Constructor for the Game class.
+     *
+     * @param gameNameEnum the {@link GameNameEnum} representing the name of the game.
+     * @implNote This constructor initializes the game with a specific name and creates empty maps for living entities and players.
+     * @author A.SALLIER
+     * @date 2025-06-15
      */
     public Game(GameNameEnum gameNameEnum) {
-        this.gameNameEnum = gameNameEnum;
-
+        this.setGameNameEnum(gameNameEnum);
         this.livingEntities = new ConcurrentHashMap<>();
         this.players = new ConcurrentHashMap<>();
     }
 
+    /**
+     * Get the {@link LivingEntity} associated with a player.
+     *
+     * @param player the {@link Player} for whom to retrieve the living entity.
+     * @return the {@link LivingEntity} associated with the player, or null if not found.
+     * @implNote This method searches through the map of living entities to find one that matches the player's UUID. If no entity is found, it sends a notification to the player and logs a warning.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public LivingEntity getLivingEntity(Player player) {
         LivingEntity livingEntity = getLivingEntitiesMap().values().stream()
                 .filter(entity -> entity.getId().equals(player.getUuid()))
@@ -42,7 +53,7 @@ public class Game {
             Response response = new Response();
             response.setResponse(ResponseEnum.Info);
             response.setNotify("Living entity not found for player: " + player.getUuid() + ". Please check if you have sent a Join Action.");
-            response.Send(player.getUuid());
+            response.send(player.getUuid());
             Logger.warn("Living entity not found for player: " + player.getUuid() + ". Please check if you have sent a Join Action.");
         }
         return livingEntity;
@@ -69,7 +80,7 @@ public class Game {
         } else {
             response.setText("default");
         }
-        response.Send(entityId);
+        response.send(entityId);
     }
 
     /**
@@ -92,6 +103,14 @@ public class Game {
         }
     }
 
+    /**
+     * Removes a {@link LivingEntity} from the game.
+     *
+     * @param livingEntity the {@link LivingEntity} to remove.
+     * @implNote This method checks if the {@link LivingEntity} is not null before attempting to remove it. If it is null, it logs a failure message. If it exists, it removes the entity from the game and logs the action.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public void removeEntity(LivingEntity livingEntity) {
         if (livingEntity != null) {
             getLivingEntitiesMap().remove(livingEntity.getId());
@@ -101,6 +120,15 @@ public class Game {
         }
     }
 
+    /**
+     * Retrieves a list of players associated with a specific team in the game.
+     *
+     * @param team the team number (1 or 2) for which to retrieve players.
+     * @return a list of {@link Player} objects belonging to the specified team.
+     * @implNote This method filters the players based on their association with living entities of the specified team.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public List<Player> getPlayersOfTeam(int team) {
         return getPlayersMap().values().stream()
                 .filter((player -> getLivingEntitiesOfTeam(team).stream()
@@ -108,12 +136,20 @@ public class Game {
                 .toList();
     }
 
+    /**
+     * Retrieves a list of living entities associated with a specific team in the game.
+     *
+     * @param team the team number (1 or 2) for which to retrieve living entities.
+     * @return a list of {@link LivingEntity} objects belonging to the specified team.
+     * @implNote This method filters the living entities based on their team number.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public List<LivingEntity> getLivingEntitiesOfTeam(int team) {
         return getLivingEntitiesMap().values().stream()
                 .filter(entity -> entity.getTeam() == team)
                 .toList();
     }
-
 
     /**
      * Checks if a {@link LivingEntity} with the given {@code id} already exists in the game.
@@ -151,13 +187,14 @@ public class Game {
         response.setResponse(ResponseEnum.GameState);
         response.setGameName(gameNameEnum);
         response.setLivingEntities(new ArrayList<>());
-        response.Send(player.getUuid(), true);
+        response.send(player.getUuid(), true);
     }
 
     /**
      * Clears the Unity game state for all players in the game.
      * This method sends a response to all players to clear all entities in the Unity client game by sending an empty list of living entities.
      *
+     * @param game the {@link Game} for which the game state should be cleared.
      * @implNote This method creates a new {@link Response} object, sets the response type to {@link ResponseEnum#GameState}, and sends an empty list of living entities to all players in the game.
      * @author A.SALLIER
      * @date 2025-06-09
@@ -167,9 +204,19 @@ public class Game {
         response.setResponse(ResponseEnum.GameState);
         response.setGameName(gameNameEnum);
         response.setLivingEntities(new ArrayList<>());
-        response.Send(game.getGameNameEnum(), true);
+        response.send(game.getGameNameEnum(), true);
     }
 
+    /**
+     * Deals damage to all enemies of the attacker in the specified zone.
+     *
+     * @param attacker the {@link LivingEntity} that is dealing damage.
+     * @param zone the {@link Zone} in which the damage is being dealt.
+     * @param damage the amount of damage to deal to each enemy.
+     * @implNote This method iterates through all enemies of the attacker, checks if they are within the specified zone, and applies damage to them. It also logs the damage dealt to each enemy.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public void dealDamageToEnnemies(LivingEntity attacker, Zone zone, int damage) {
         List<LivingEntity> enemies = getEnemies(attacker);
 
@@ -184,7 +231,7 @@ public class Game {
         }
     }
 
-    public void dealDamageToEnnemies(LivingEntity attacker, Zone zone, int damage, long duration) {
+    /*public void dealDamageToEnnemies(LivingEntity attacker, Zone zone, int damage, long duration) {
         List<LivingEntity> enemies = getEnemies(attacker);
 
         for (LivingEntity enemy : enemies) {
@@ -192,8 +239,17 @@ public class Game {
                 enemy.heal(damage);
             }
         }
-    }
+    }*/
 
+    /**
+     * Retrieves a {@link LivingEntity} by its general ID.
+     *
+     * @param generalId the {@link String} general ID of the LivingEntity to retrieve.
+     * @return the {@link LivingEntity} with the specified general ID, or null if not found.
+     * @implNote This method searches through the map of living entities to find one that matches the provided general ID. If no entity is found, it logs a warning message.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public LivingEntity getLivingEntityByGeneralId(String generalId) {
         LivingEntity livingEntity = getLivingEntitiesMap().values().stream()
                 .filter(entity -> entity.getGeneralId().equals(generalId))
@@ -205,6 +261,15 @@ public class Game {
         return livingEntity;
     }
 
+    /**
+     * Retrieves a collection of {@link LivingEntity} objects by their general IDs.
+     *
+     * @param generalId a collection of {@link String} general IDs of the LivingEntities to retrieve.
+     * @return a collection of {@link LivingEntity} objects that match the provided general IDs. If no entities are found, a warning is logged.
+     * @implNote This method filters the map of living entities to find those that match any of the provided general IDs. If no entities are found, it logs a warning message.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public Collection<LivingEntity> getLivingEntityByGeneralId(Collection<String> generalId) {
         Collection<LivingEntity> livingEntity = getLivingEntitiesMap().values().stream()
                 .filter(entity -> generalId.contains(entity.getGeneralId()))
@@ -215,11 +280,27 @@ public class Game {
         return livingEntity;
     }
 
+    /**
+     * Heals the living entity by retrieving W TotalShield and applying it to the entity's health.
+     *
+     * @param livingEntity the {@link LivingEntity} to heal.
+     * @implNote This method retrieves the total shield of the living entity and applies it to its health, effectively healing it.
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public void healSelf(LivingEntity livingEntity) {
         livingEntity.heal(livingEntity.getWTotalShield());
     }
 
-
+    /**
+     * Retrieves a list of enemies for a given living entity based on its team.
+     *
+     * @param livingEntity the {@link LivingEntity} for which to retrieve enemies.
+     * @return a list of {@link LivingEntity} objects that are considered enemies of the specified living entity.
+     * @implNote This method filters the living entities based on their team affiliation. It checks if the living entity is attackable and not the same as the one provided, then determines enemies based on the team number:
+     * @author A.SALLIER
+     * @date 2025-06-15
+     */
     public List<LivingEntity> getEnemies(LivingEntity livingEntity) {
          int team = livingEntity.getTeam();
 
@@ -235,7 +316,6 @@ public class Game {
                 .toList();
     }
 
-    // Getters and Setters
     public GameNameEnum getGameNameEnum() {
         return gameNameEnum;
     }

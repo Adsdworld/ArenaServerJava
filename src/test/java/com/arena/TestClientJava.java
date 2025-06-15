@@ -70,7 +70,6 @@ public  class TestClientJava extends WebSocketClient {
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {
-            e.printStackTrace();
             throw new RuntimeException(e);
         }
         Logger.test("Response : " + response_);
@@ -93,7 +92,6 @@ public  class TestClientJava extends WebSocketClient {
     @Override
     public void onError(Exception e) {
         Logger.error("Client error: " + e.getMessage());
-        e.printStackTrace();
     }
 
     /**
@@ -157,7 +155,7 @@ public  class TestClientJava extends WebSocketClient {
      */
     public Response filterResponse(ResponseEnum responseEnum, ArrayList<Response> responses) {
         for (Response response : responses) {
-            if (response.getReponse().equals(responseEnum)) {
+            if (response.getResponse().equals(responseEnum)) {
                 return response;
             }
         }
@@ -172,7 +170,7 @@ public  class TestClientJava extends WebSocketClient {
         ArrayList<Response> filteredResponses = new ArrayList<>();
         for (Response response : responses) {
             for (ResponseEnum responseEnum : responsesEnum) {
-                if (response.getReponse().equals(responseEnum)) {
+                if (response.getResponse().equals(responseEnum)) {
                     filteredResponses.add(response);
                 }
             }

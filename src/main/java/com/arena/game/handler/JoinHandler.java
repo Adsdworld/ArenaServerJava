@@ -110,7 +110,7 @@ public class JoinHandler implements IMessageHandler {
             server.subscribePlayerToGame(player, game);
 
             /* Send the notification */
-            response.Send(gameNameEnum);
+            response.send(gameNameEnum);
 
             /* Assign the new entity to the player */
             game.yourEntityIs(player.getUuid());
@@ -123,7 +123,7 @@ public class JoinHandler implements IMessageHandler {
             response.setResponse(ResponseEnum.GameNotFound);
             response.setNotify("Could not Join : " + message.getGameName().getGameName() + " not found, please create it first.");
             response.setGameName(message.getGameName());
-            response.Send(message.getUuid());
+            response.send(message.getUuid());
 
             Logger.failure("Could not Join : " + message.getGameName().getGameName() + " not found, please create it first.");
         }

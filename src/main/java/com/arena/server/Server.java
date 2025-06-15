@@ -69,13 +69,13 @@ public class Server {
             Logger.warn(gameNameEnum.getGameName() + " already exists.");
             response.setResponse(ResponseEnum.GameAlreadyExists);
             response.setNotify(gameNameEnum.getGameName() + " already exists.");
-            response.Send(message.getUuid());
+            response.send(message.getUuid());
 
         } else if (games.size() >= MAX_GAMES) {
             Logger.warn("Cannot create more than " + MAX_GAMES + " games.");
             response.setResponse(ResponseEnum.GamesLimitReached);
             response.setNotify("Cannot create more than " + MAX_GAMES + " games.");
-            response.Send(message.getUuid());
+            response.send(message.getUuid());
 
         } else {
             Logger.game("Creating " + gameNameEnum.getGameName());
@@ -88,7 +88,7 @@ public class Server {
             response.setResponse(ResponseEnum.GameCreated);
             response.setNotify(gameNameEnum.getGameName() + " created successfully.");
             response.setGameName(gameNameEnum);
-            response.Send();
+            response.send();
         }
     }
 
@@ -110,7 +110,7 @@ public class Server {
             Response response = new Response();
             response.setResponse(ResponseEnum.Info);
             response.setNotify("Game not found for player: " + player.getUuid() + ". Please check if you have sent a Create Game Action.");
-            response.Send(player.getUuid());
+            response.send(player.getUuid());
             Logger.warn("Game not found for player: " + player.getUuid() + ". Please check if you have sent a Create Game Action.");
         }
         return game;
@@ -228,7 +228,7 @@ public class Server {
             // TODO: create the unity handler for this case game not found
             response.setResponse(ResponseEnum.GameNotFound);
             response.setNotify(gameNameEnum.getGameName() + " does not exist.");
-            response.Send(message.getUuid());
+            response.send(message.getUuid());
 
         } else {
             Logger.game("Closing " + gameNameEnum.getGameName());
@@ -238,7 +238,7 @@ public class Server {
             response1.setResponse(ResponseEnum.YourEntityIs);
             response1.setText("default");
             response1.setGameName(gameNameEnum);
-            response1.Send(gameNameEnum);
+            response1.send(gameNameEnum);
 
             /* Send a clear game state to all players before closing for removing all entities */
             game.clearUnityGame(game);
@@ -247,7 +247,7 @@ public class Server {
             response.setResponse(ResponseEnum.GameClosed);
             response.setGameName(gameNameEnum);
             response.setNotify(gameNameEnum.getGameName() + " closed successfully.");
-            response.Send();
+            response.send();
         }
     }
 

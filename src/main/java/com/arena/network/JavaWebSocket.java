@@ -151,7 +151,7 @@ public class JavaWebSocket extends WebSocketServer {
                 response.setResponse(ResponseEnum.Logged);
                 response.setUuid(player.getUuid());
                 response.setNotify("Connected to the server ! Welcome to Arena!");
-                response.Send(player.getUuid());
+                response.send(player.getUuid());
 
                 return;
             }
