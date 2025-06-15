@@ -5,6 +5,7 @@ import com.arena.game.entity.LivingEntity;
 import com.arena.network.message.Message;
 import com.arena.player.Player;
 import com.arena.server.Server;
+import com.arena.utils.logger.Logger;
 
 public class CastQHandler implements IMessageHandler {
 
@@ -29,6 +30,7 @@ public class CastQHandler implements IMessageHandler {
             LivingEntity entity = game.getLivingEntity(player);
 
             if (entity != null) {
+                Logger.info("Player " + player.getUuid() + " is casting Q with entity ID: " + entity.getId() + " at " + message.getLivingEntity().getCooldownQStart() + " in game " + game.getGameNameEnum());
                 long castStart = message.getLivingEntity().getCooldownQStart();
                 long castDuration = entity.getCooldownQMs();
                 long castEnd = castStart + castDuration;
@@ -47,6 +49,8 @@ public class CastQHandler implements IMessageHandler {
                     /* Lock the skin animation */
                     entity.lockSkinAnimation(entity.getSkinAnimationDurationForQ(), () -> entity.lockEntityCast(false));
                 }
+            } else {
+                Logger.error("LivingEntity not found for player " + player.getUuid() + " in game " + game.getGameNameEnum());
             }
         }
     }

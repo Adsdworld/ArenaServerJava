@@ -5,6 +5,7 @@ import com.arena.MessageService;
 import com.arena.TestClientJava;
 import com.arena.game.GameNameEnum;
 import com.arena.game.entity.LivingEntity;
+import com.arena.game.entity.champion.Garen;
 import com.arena.network.message.Message;
 import com.arena.network.response.Response;
 import com.arena.player.ActionEnum;
@@ -20,9 +21,21 @@ import org.junit.jupiter.api.TestInfo;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * AllTest is a test class that contains various tests for the Arena game.
+ *
+ * > Login : Logged
+ * > Create Game 1 : Game Created
+ * > Create Game 1 : Game Already Exists
+ * > Create Game 2, 3, 4, 5, 6 : Games Limit Reached
+ * > Join Game 1 : Joined
+ * > Join Game 1 : Player Already In Game
+ * < Game State contains entities
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AllTest extends ArenaTestBase {
 
@@ -44,7 +57,6 @@ public class AllTest extends ArenaTestBase {
      * @author A.BENETREAU
      * @date 2025-06-10
      */
-
     @Test
     @Order(1)
     void testUnityLogin() throws InterruptedException {
@@ -87,8 +99,6 @@ public class AllTest extends ArenaTestBase {
      * @author A.BENETREAU
      * @date 2025-06-10
      */
-
-
     @Test
     @Order(2)
     void testUnityCreateGame() throws InterruptedException {
@@ -175,8 +185,6 @@ public class AllTest extends ArenaTestBase {
      * @author A.BENETREAU
      * @date 2025-06-10
      */
-
-
     @Test
     @Order(4)
     void testUnityGameLimitReached() throws InterruptedException {
@@ -215,7 +223,6 @@ public class AllTest extends ArenaTestBase {
      * @author A.BENETREAU
      * @date 2025-06-10
      */
-
     @Test
     @Order(5)
     void testUnityJoin1() throws InterruptedException {
@@ -319,30 +326,28 @@ public class AllTest extends ArenaTestBase {
     @Order(8)
     void testUnityCooldownStart() throws InterruptedException {
 
-        //TODO:  lancer le cooldown Q
+        Message message = new Message();
+        message.setAction(ActionEnum.CastQ);
+        LivingEntity entity = new Garen(TestClientJava.testUuid, 2);
+        entity.setCooldownQStart(System.currentTimeMillis());
+        message.setLivingEntity(entity);
 
+        MessageService.Send(message);
+
+        long qtimestamp = TestClientJava.getLastSentTimestampStatic();
+
+        Logger.test("Avant pause et reception des réponses");
         ArrayList<Response> responses = TestClientJava.waitForNextMessagesStatic();
+        Logger.test("Après la pause");
 
-        Response response = TestClientJava.filterResponseStatic(ResponseEnum.GameState, responses);
+        ArrayList<Response> res = TestClientJava.filterResponseStatic(List.of(ResponseEnum.GameState), responses);
 
-        LivingEntity livingEntity = (LivingEntity) response.getLivingEntities()
-                .stream()
-                .filter(l -> l.getId().equals(TestClientJava.testUuid))
-                .findFirst()
-                .orElse(null);
+        Logger.test("nombre de réponses " + String.valueOf(res.size()));
 
-        // Check if the cooldowns are updated
-        //assertTrue(response.isCooldownUpToDate(), "Cooldowns should be up to date");
+        boolean cooldownUpToDate = res.stream()
+                .anyMatch(response -> response.getLivingEntities().stream()
+                        .anyMatch(e -> e.getCooldownQStart() == qtimestamp));
+
+        assertTrue(cooldownUpToDate, "Cooldown Q should be updated in GameState");
     }
-
-    // TODO: Order3 CloseGame > GameAlreadyExists
-    // TODO: Order4 CloseGame > GamesLimitReached try to create Game6 "Game 6" when there are already 5 games created
-    // TODO: Order6 Join > PlayerAlreadyInGame
-    // TODO: Order7 Just listen GameState Response to see that Server send game state to all players in the game
-    // TODO: CooldownStart > GameState vérifier que un gamestate parmis les plusieurs reçus contient les cooldowns mis à jour
-    //  (cooldownUpToDate = false for Response response : responses (filter multiples response by GameState)
-    //  reponse.cooldownQStart, cooldownQEnd, cooldownWStart, cooldownWEnd, cooldownEStart, cooldownEEnd, cooldownRStart,
-    //  cooldownREnd are okay according to cooldownQMs, cooldownWMs, cooldownEMs, cooldownRMs)
-
-    //TODO: Look at Jacoco coverage and make improvements
 }

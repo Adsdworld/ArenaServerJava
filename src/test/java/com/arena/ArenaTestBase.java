@@ -1,7 +1,6 @@
 package com.arena;
 
 import org.junit.jupiter.api.BeforeAll;
-import java.net.URI;
 
 public abstract class ArenaTestBase {
 
@@ -28,13 +27,4 @@ public abstract class ArenaTestBase {
             serverStarted = true;
         }
     }
-
-    /*protected void sendAndAwaitResponse(String json) throws InterruptedException {
-        client_test.send(json);
-        Thread.sleep(200); // Laisse le temps pour recevoir la réponse
-    }*/
-
-//    protected String getLastResponse() {
-//        return client_test.getLastMessage();
-//    }
 }

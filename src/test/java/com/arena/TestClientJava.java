@@ -8,6 +8,7 @@ import com.arena.game.entity.building.TowerDead;
 import com.arena.game.entity.champion.Garen;
 import com.arena.network.response.Response;
 import com.arena.player.ResponseEnum;
+import com.arena.utils.json.JsonService;
 import com.arena.utils.logger.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,7 +36,7 @@ public  class TestClientJava extends WebSocketClient {
     /* * A Gson with a RuntimeTypeAdapterFactory to handle polymorphic types.
      * This allows us to deserialize LivingEntity and its subclasses correctly.
      */
-    public static final Gson gson = new GsonBuilder()
+    /*public static final Gson gson = new GsonBuilder()
             .registerTypeAdapterFactory(
                     RuntimeTypeAdapterFactory.of(LivingEntity.class, "name")
                             .registerSubtype(Garen.class, "Garen")
@@ -44,7 +45,8 @@ public  class TestClientJava extends WebSocketClient {
                             .registerSubtype(Inhibitor.class, "Inhibitor")
                             .registerSubtype(Nexus.class, "Nexus")
             )
-            .create();
+            .create();*/
+    public static final JsonService gson = new JsonService();
 
     private static TestClientJava instance;
 
@@ -72,16 +74,16 @@ public  class TestClientJava extends WebSocketClient {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Logger.test("Response : " + response_);
+        //Logger.test("Response : " + response_);
 
         Response response = gson.fromJson(response_, Response.class);
 
-        if (response.getTimestamp() >= lastSentTimestamp) {
+        //if (response.getTimestamp() >= lastSentTimestamp) {
             responseQueue.add(response);
             //Logger.test("Response added to queue: " + response.getTimestamp() + " | Last sent: " + lastSentTimestamp);
-        } else {
-            Logger.test("#Warning Ignored response with old timestamp: " + response.getTimestamp());
-        }
+        //} else {
+        //    Logger.test("#Warning Ignored response with old timestamp: " + response.getTimestamp());
+        //}
     }
 
     @Override

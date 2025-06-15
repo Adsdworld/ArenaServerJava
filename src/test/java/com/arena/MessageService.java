@@ -4,7 +4,6 @@ import com.arena.network.message.Message;
 
 import static com.arena.TestClientJava.testUuid;
 
-// TODO: class inutilisé, on à considéré qu'un meessage du serveur est un Reponse.java mais pas Message.java.
 public class MessageService {
 
     private static IMessageSender messageSender;
@@ -24,11 +23,10 @@ public class MessageService {
             message.setTimeStamp(now);
 
             TestClientJava.getInstance().setLastSentTimestamp(now);
-            //TestClientJava.getInstance().clearMessages();
 
             MessageService.getMessageSender().sendMessage(message);
         } else {
-            System.err.println("⚠ No MessageSender is set in MessageService.");
+            System.err.println("No MessageSender is set in MessageService.");
         }
     }
 }
