@@ -20,14 +20,14 @@ public class CastRHandler implements IMessageHandler {
 
         Server server = Server.getInstance();
 
-        Player player = server.getPlayerByUuid(message.getUuid());
+        Player player;
+        Game game;
 
-        if (player != null) {
-
-            Game game = server.getGameOfPlayer(player);
-
-            if (game != null) {
+        if (server != null
+                && (player = server.getPlayerByUuid(message.getUuid())) != null
+                && (game = server.getGameOfPlayer(player)) != null) {
                 LivingEntity entity = game.getLivingEntity(player);
+
                 if (entity != null) {
                     long castStart = message.getLivingEntity().getCooldownRStart();
                     long castDuration = entity.getCooldownRMs();
@@ -45,12 +45,9 @@ public class CastRHandler implements IMessageHandler {
                         entity.setSkinAnimation(entity.getSkinAnimationForR());
 
                         /* Lock the skin animation */
-                        entity.LockSkinAnimation(entity.getSkinAnimationDurationForR(), () -> {
-                            entity.lockEntityCast(false);
-                        });
+                        entity.LockSkinAnimation(entity.getSkinAnimationDurationForR(), () -> entity.lockEntityCast(false));
                     }
                 }
             }
-        }
     }
 }

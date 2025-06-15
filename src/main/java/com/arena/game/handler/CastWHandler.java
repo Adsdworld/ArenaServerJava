@@ -20,35 +20,31 @@ public class CastWHandler implements IMessageHandler {
 
         Server server = Server.getInstance();
 
-        Player player = server.getPlayerByUuid(message.getUuid());
+        Player player;
+        Game game;
 
-        if (player != null) {
+        if (server != null
+                && (player = server.getPlayerByUuid(message.getUuid())) != null
+                && (game = server.getGameOfPlayer(player)) != null) {
+            LivingEntity entity = game.getLivingEntity(player);
+            if (entity != null) {
+                long castStart = message.getLivingEntity().getCooldownWStart();
+                long castDuration = entity.getCooldownWMs();
+                long castEnd = castStart + castDuration;
 
-            Game game = server.getGameOfPlayer(player);
+                if (castStart >= entity.getCooldownWEnd() && !entity.isLocked() && !entity.isCastLocked()) {
+                    entity.lockEntityCast(true);
 
-            if (game != null) {
-                LivingEntity entity = game.getLivingEntity(player);
-                if (entity != null) {
-                    long castStart = message.getLivingEntity().getCooldownWStart();
-                    long castDuration = entity.getCooldownWMs();
-                    long castEnd = castStart + castDuration;
+                    entity.setCooldownWStart(castStart);
+                    entity.setCooldownWEnd(castEnd);
 
-                    if (castStart >= entity.getCooldownWEnd() && !entity.isLocked() && !entity.isCastLocked()) {
-                        entity.lockEntityCast(true);
+                    entity.useW();
 
-                        entity.setCooldownWStart(castStart);
-                        entity.setCooldownWEnd(castEnd);
+                    /* Set the skin animation */
+                    entity.setSkinAnimation(entity.getSkinAnimationForW());
 
-                        entity.useW();
-
-                        /* Set the skin animation */
-                        entity.setSkinAnimation(entity.getSkinAnimationForW());
-
-                        /* Lock the skin animation */
-                        entity.LockSkinAnimation(entity.getSkinAnimationDurationForW(), () -> {
-                            entity.lockEntityCast(false);
-                        });
-                    }
+                    /* Lock the skin animation */
+                    entity.LockSkinAnimation(entity.getSkinAnimationDurationForW(), () -> entity.lockEntityCast(false));
                 }
             }
         }

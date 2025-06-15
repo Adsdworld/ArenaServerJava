@@ -2,16 +2,17 @@ package com.arena.network.response;
 
 import com.arena.game.GameNameEnum;
 import com.arena.game.entity.LivingEntity;
-import com.arena.network.message.Message;
-import com.arena.player.ActionEnum;
 import com.arena.player.ResponseEnum;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Represents a response sent over the network.
+ * This class is used to encapsulate the data that is sent by the {@link com.arena.server.Server} to the {@link com.arena.player.Player} .
+ */
 public class Response implements Comparable<Response>{
-    private String _uuid;   // Unique id
+    private String _uuid;
     private ResponseEnum _reponse;
     private GameNameEnum _gameName;
     private String _ability;
@@ -20,7 +21,7 @@ public class Response implements Comparable<Response>{
     private long _timestamp;
     private Collection<LivingEntity> _livingEntities;
 
-    // Constructeur vide nécessaire pour Gson
+    /* Constructor for json */
     public Response() {
     }
 
@@ -78,12 +79,12 @@ public class Response implements Comparable<Response>{
     }
 
     @Override
-    public String toString() { //TODO: replace all Gson, gson() usages in code with new JsonService().toJson(class) or JsonService.fromJson(json, class) the service integrate exeptions managment
+    public String toString() {
         return new Gson().toJson(this);
     }
 
     /**
-     * send to server.
+     * Send to server.
      */
     public void Send() {
         _timestamp = System.currentTimeMillis();
@@ -91,8 +92,8 @@ public class Response implements Comparable<Response>{
     }
 
     /**
-     * send to server silently
-     * @param silent
+     * Send to server silently
+     * @param silent whether to send the response silently or not.
      */
     public void Send(boolean silent) {
         _timestamp = System.currentTimeMillis();
@@ -101,8 +102,8 @@ public class Response implements Comparable<Response>{
 
 
     /**
-     * send to game.
-     * @param gameName
+     * Send to game.
+     * @param gameName the name of the game as a {@link GameNameEnum}.
      */
     public void Send(GameNameEnum gameName) {
         _timestamp = System.currentTimeMillis();
@@ -110,8 +111,9 @@ public class Response implements Comparable<Response>{
     }
 
     /**
-     * send to game silently.
-     * @param gameName
+     * Send to game silently.
+     * @param gameName the name of the game as a {@link GameNameEnum}.
+     * @param silent whether to send the response silently or not.
      */
     public void Send(GameNameEnum gameName, boolean silent) {
         _timestamp = System.currentTimeMillis();
@@ -119,8 +121,8 @@ public class Response implements Comparable<Response>{
     }
 
     /**
-     * send to uuid.
-     * @param uuid
+     * Send to uuid.
+     * @param uuid the unique identifier of the player as a {@link String}.
      */
     public void Send(String uuid) {
         _timestamp = System.currentTimeMillis();
@@ -128,8 +130,9 @@ public class Response implements Comparable<Response>{
     }
 
     /**
-     * send to uuid silently
-     * @param uuid
+     * Send to uuid silently
+     * @param uuid the unique identifier of the player as a {@link String}.
+     * @param silent whether to send the response silently or not.
      */
     public void Send(String uuid, boolean silent) {
         _timestamp = System.currentTimeMillis();

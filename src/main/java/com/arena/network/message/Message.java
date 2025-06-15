@@ -5,6 +5,10 @@ import com.arena.game.entity.LivingEntity;
 import com.arena.player.ActionEnum;
 import com.google.gson.Gson;
 
+/**
+ * Represents a message sent over the network.
+ * This class is used to encapsulate the data that is sent by the {@link com.arena.player.Player} to the {@link com.arena.server.Server} .
+ */
 public class Message implements Comparable<Message> {
     private String uuid;
     private ActionEnum action;
@@ -13,7 +17,7 @@ public class Message implements Comparable<Message> {
 
     private LivingEntity livingEntity;
 
-    // Constructeur vide nécessaire pour Gson
+    /* Constructor for json */
     public Message() {}
 
     public long getTimeStamp() {return timestamp;}

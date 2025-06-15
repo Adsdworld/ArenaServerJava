@@ -20,35 +20,32 @@ public class CastQHandler implements IMessageHandler {
 
         Server server = Server.getInstance();
 
-        Player player = server.getPlayerByUuid(message.getUuid());
+        Player player;
+        Game game;
 
-        if (player != null) {
+        if (server != null
+                && (player = server.getPlayerByUuid(message.getUuid())) != null
+                && (game = server.getGameOfPlayer(player)) != null) {
+            LivingEntity entity = game.getLivingEntity(player);
 
-            Game game = server.getGameOfPlayer(player);
+            if (entity != null) {
+                long castStart = message.getLivingEntity().getCooldownQStart();
+                long castDuration = entity.getCooldownQMs();
+                long castEnd = castStart + castDuration;
 
-            if (game != null) {
-                LivingEntity entity = game.getLivingEntity(player);
-                if (entity != null) {
-                    long castStart = message.getLivingEntity().getCooldownQStart();
-                    long castDuration = entity.getCooldownQMs();
-                    long castEnd = castStart + castDuration;
+                if (castStart >= entity.getCooldownQEnd() && !entity.isLocked() && !entity.isCastLocked()) {
+                    entity.lockEntityCast(true);
 
-                    if (castStart >= entity.getCooldownQEnd() && !entity.isLocked() && !entity.isCastLocked()) {
-                        entity.lockEntityCast(true);
+                    entity.setCooldownQStart(castStart);
+                    entity.setCooldownQEnd(castEnd);
 
-                        entity.setCooldownQStart(castStart);
-                        entity.setCooldownQEnd(castEnd);
+                    entity.useQ();
 
-                        entity.useQ();
+                    /* Set the skin animation */
+                    entity.setSkinAnimation(entity.getSkinAnimationForQ());
 
-                        /* Set the skin animation */
-                        entity.setSkinAnimation(entity.getSkinAnimationForQ());
-
-                        /* Lock the skin animation */
-                        entity.LockSkinAnimation(entity.getSkinAnimationDurationForQ(), () -> {
-                            entity.lockEntityCast(false);
-                        });
-                    }
+                    /* Lock the skin animation */
+                    entity.LockSkinAnimation(entity.getSkinAnimationDurationForQ(), () -> entity.lockEntityCast(false));
                 }
             }
         }

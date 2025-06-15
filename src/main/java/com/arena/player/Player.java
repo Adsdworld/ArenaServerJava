@@ -1,43 +1,20 @@
 package com.arena.player;
 
 /**
- * Represents a unity client player with his uuid.
+ * Player class represents a player in the game with a unique identifier (UUID).
+ *
+ * @param uuid the unique identifier of the player as a {@link String}.
  */
-public class Player {
+public record Player(String uuid) {
     /**
-     * The unique identifier for the player.
+     * Get the UUID of the player.
+     *
+     * @return the UUID of the player as a {@link String} .
+     * @implNote This method returns the UUID of the player, which is a unique identifier for each player in the game.
+     * @author A.SALLIER
+     * @date 2025-06-15
      */
-    private final String uuid;
-
-    public Player(String uuid) {
-        this.uuid = uuid;
-    }
-
-    // Getters and setters
     public String getUuid() {
         return uuid;
     }
-
-    /// <summary>
-    /// Do not change the UUID of a player.
-    /// </summary>
-    public void setUuid(String uuid) throws Exception {
-        throw new Exception("Do not change the UUID of a player.");
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Player player = (Player) o;
-
-        return uuid != null ? uuid.equals(player.uuid) : player.uuid == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return uuid != null ? uuid.hashCode() : 0;
-    }
-
 }
