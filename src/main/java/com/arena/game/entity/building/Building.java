@@ -25,7 +25,7 @@ class Building {
         collider.setEnabled(true);
 
         navMeshAgent = new EntityNavMeshAgent();
-        navMeshAgent.setEnabled(true);
+        navMeshAgent.setEnabled(false);
 
         transform = new EntityTransform();
         transform.setScale(scale);
