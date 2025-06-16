@@ -306,9 +306,9 @@ public class Game {
 
 <span class="fc" id="L307">        return this.livingEntities.values().stream()</span>
 <span class="fc" id="L308">                .filter(LivingEntity::isAttackable)</span>
-<span class="fc bfc" id="L309" title="All 2 branches covered.">                .filter(e -&gt; e != livingEntity) // évite de se filtrer soi-même</span>
+<span class="fc bfc" id="L309" title="All 2 branches covered.">                .filter(e -&gt; e != livingEntity)</span>
 <span class="pc bpc" id="L310" title="3 of 4 branches missed.">                .filter(e -&gt; switch (team) {</span>
-<span class="nc" id="L311">                    case 0 -&gt; false;                      // neutre, pas d'ennemi</span>
+<span class="nc" id="L311">                    case 0 -&gt; false; /* neutral team, no enemies */</span>
 <span class="nc bnc" id="L312" title="All 2 branches missed.">                    case 1 -&gt; e.getTeam() == 2;</span>
 <span class="fc bfc" id="L313" title="All 2 branches covered.">                    case 2 -&gt; e.getTeam() == 1;</span>
 <span class="nc" id="L314">                    default -&gt; false;</span>

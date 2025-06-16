@@ -41,17 +41,13 @@ public class Core {
 <span class="fc" id="L41">        return core;</span>
     }
 
-    public PriorityBlockingQueue&lt;Message&gt; getQueue() {
-<span class="nc" id="L45">        return messageQueue;</span>
-    }
+<span class="fc" id="L44">    private final Map&lt;ActionEnum, IMessageHandler&gt; handlers = new HashMap&lt;&gt;();</span>
 
-<span class="fc" id="L48">    private final Map&lt;ActionEnum, IMessageHandler&gt; handlers = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L46">    private final PriorityBlockingQueue&lt;Message&gt; messageQueue = new PriorityBlockingQueue&lt;&gt;();</span>
 
-<span class="fc" id="L50">    private final PriorityBlockingQueue&lt;Message&gt; messageQueue = new PriorityBlockingQueue&lt;&gt;();</span>
+<span class="fc" id="L48">    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();</span>
 
-<span class="fc" id="L52">    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();</span>
-
-<span class="fc" id="L54">    public Core() {</span>
+<span class="fc" id="L50">    public Core() {</span>
         /*handlers.put(ActionEnum.CreateGame, new CreateGameHandler());
         handlers.put(ActionEnum.Join, new JoinHandler());
         handlers.put(ActionEnum.CloseGame, new CloseGameHandler());
@@ -60,36 +56,37 @@ public class Core {
         handlers.put(ActionEnum.CastW, new CastWHandler());
         handlers.put(ActionEnum.CastE, new CastEHandler());
         handlers.put(ActionEnum.CastR, new CastRHandler());*/
-<span class="fc" id="L63">        handlers.putAll(HandlersGame.HANDLERS);</span>
-<span class="fc" id="L64">        handlers.putAll(HandlersCast.HANDLERS);</span>
+<span class="fc" id="L59">        handlers.putAll(HandlersGame.HANDLERS);</span>
+<span class="fc" id="L60">        handlers.putAll(HandlersCast.HANDLERS);</span>
 
 
-<span class="fc" id="L67">        isEnteringTick = false;</span>
-<span class="fc" id="L68">        scheduler.scheduleAtFixedRate(this::processMessages, 0, 10, TimeUnit.MILLISECONDS);</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L63">        isEnteringTick = false;</span>
+<span class="fc" id="L64">        scheduler.scheduleAtFixedRate(this::processMessages, 0, 10, TimeUnit.MILLISECONDS);</span>
+<span class="fc" id="L65">    }</span>
 
     /**
      * Receive is a method that receives a message and adds it to the message queue.
      *
      * @param message the {@link Message} to be processed.
+     * @return true if the message was successfully added to the queue, false otherwise.
      * @implNote Checks if the message is null or if the action is invalid, logging an error if so.
      * @author A.SALLIER
      * @date 2025-06-15
      */
     public boolean receive(Message message) {
-<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (message == null) {</span>
-<span class="fc" id="L81">            Logger.failure(&quot;Received null message&quot;);</span>
-<span class="fc" id="L82">            return false;</span>
-<span class="fc bfc" id="L83" title="All 2 branches covered.">        } else if (message.getAction() == null) {</span>
-<span class="fc" id="L84">            Logger.failure(&quot;Unknown or invalid action in message: &quot; + message);</span>
-<span class="fc" id="L85">            return false;</span>
+<span class="fc" id="L77">        boolean result = false;</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (message == null) {</span>
+<span class="fc" id="L79">            Logger.failure(&quot;Received null message&quot;);</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        } else if (message.getAction() == null) {</span>
+<span class="fc" id="L81">            Logger.failure(&quot;Unknown or invalid action in message: &quot; + message);</span>
         } else {
-<span class="fc" id="L87">            messageQueue.offer(message);</span>
-<span class="fc" id="L88">            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss.SSS&quot;)</span>
-<span class="fc" id="L89">                    .withZone(ZoneOffset.UTC);</span>
+<span class="fc" id="L83">            messageQueue.offer(message);</span>
+<span class="fc" id="L84">            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss.SSS&quot;)</span>
+<span class="fc" id="L85">                    .withZone(ZoneOffset.UTC);</span>
             //Logger.info(&quot;Offered message to queue: &quot; + message.getAction() + &quot; with timestamp: &quot; + formatter.format(Instant.ofEpochMilli(message.getTimeStamp())));
-<span class="fc" id="L91">            return true;</span>
+<span class="fc" id="L87">            result = true;</span>
         }
+<span class="fc" id="L89">        return result;</span>
     }
 
     /**
@@ -100,7 +97,7 @@ public class Core {
      * @date 2025-06-15
      */
     private void processMessages() {
-<span class="fc" id="L103">        long now = System.currentTimeMillis();</span>
+<span class="fc" id="L100">        long now = System.currentTimeMillis();</span>
         //Logger.info(&quot;Processing &quot; + messageQueue.size() + &quot; messages&quot;);
 
 
@@ -108,80 +105,89 @@ public class Core {
          * VivoBook A.SALLIER (16 Go) : max 9ms for a CreateGame action
          *
          */
-<span class="fc" id="L111">        long tolerance = 200;</span>
-<span class="fc" id="L112">        isEnteringTick = true;</span>
-<span class="fc" id="L113">        boolean isQueueEmpty = messageQueue.isEmpty();</span>
-<span class="fc" id="L114">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss.SSS&quot;)</span>
-<span class="fc" id="L115">                .withZone(ZoneOffset.UTC);</span>
+<span class="fc" id="L108">        long tolerance = 200;</span>
+<span class="fc" id="L109">        isEnteringTick = true;</span>
+<span class="fc" id="L110">        boolean isQueueEmpty = messageQueue.isEmpty();</span>
+<span class="fc" id="L111">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd HH:mm:ss.SSS&quot;)</span>
+<span class="fc" id="L112">                .withZone(ZoneOffset.UTC);</span>
 
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        while (!messageQueue.isEmpty()) {</span>
-<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (isEnteringTick) {</span>
-<span class="fc" id="L119">                StringBuilder stringBuilder = new StringBuilder(&quot;Actions in queue (&quot; + messageQueue.size() + &quot;) : &quot;);</span>
-<span class="fc bfc" id="L120" title="All 2 branches covered.">                for (Message message : messageQueue) {</span>
-<span class="fc" id="L121">                    stringBuilder.append(message.getAction()).append(&quot;, &quot;);</span>
-<span class="fc" id="L122">                }</span>
-<span class="fc" id="L123">                Logger.server(stringBuilder.toString());</span>
-<span class="fc" id="L124">                isEnteringTick = false;</span>
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">                if (!isQueueEmpty) {</span>
-<span class="fc" id="L126">                    Logger.server(&quot;Processing messages at &quot; + formatter.format(Instant.ofEpochMilli(now)) + &quot; with tolerance: &quot; + tolerance + &quot;ms&quot;);</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        while (!messageQueue.isEmpty()) {</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            if (isEnteringTick) {</span>
+<span class="fc" id="L116">                StringBuilder stringBuilder = new StringBuilder(&quot;Actions in queue (&quot; + messageQueue.size() + &quot;) : &quot;);</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">                for (Message message : messageQueue) {</span>
+<span class="fc" id="L118">                    stringBuilder.append(message.getAction()).append(&quot;, &quot;);</span>
+<span class="fc" id="L119">                }</span>
+<span class="fc" id="L120">                Logger.server(stringBuilder.toString());</span>
+<span class="fc" id="L121">                isEnteringTick = false;</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">                if (!isQueueEmpty) {</span>
+<span class="fc" id="L123">                    Logger.server(&quot;Processing messages at &quot; + formatter.format(Instant.ofEpochMilli(now)) + &quot; with tolerance: &quot; + tolerance + &quot;ms&quot;);</span>
                 }
             }
 
 
 
-<span class="fc" id="L132">            Message next = messageQueue.peek(); // pas encore retiré</span>
+<span class="fc" id="L129">            Message next = messageQueue.peek(); // pas encore retiré</span>
             /*if (next == null) {
                 break;
             }*/
 
-<span class="pc bpc" id="L137" title="1 of 2 branches missed.">            if (next.getTimeStamp() &lt; now - tolerance) {</span>
-<span class="nc" id="L138">                Logger.server(&quot;Skipping message: &quot; + next.getUuid() + &quot; &gt;&gt;&gt; &quot;+ next.getAction() + &quot; (timestamp: &quot; + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + &quot;)&quot;);</span>
-<span class="nc" id="L139">                messageQueue.poll();</span>
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">            } else if (next.getTimeStamp() &lt;= now + tolerance) {</span>
-<span class="fc" id="L141">                Logger.server(&quot;Processing message: &quot; + next.getUuid() + &quot; &gt;&gt;&gt; &quot; + next.getAction() + &quot; (timestamp: &quot; + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + &quot;)&quot;);</span>
-<span class="fc" id="L142">                handleMessage(next);</span>
-<span class="fc" id="L143">                messageQueue.poll();</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">            if (next.getTimeStamp() &lt; now - tolerance) {</span>
+<span class="nc" id="L135">                Logger.server(&quot;Skipping message: &quot; + next.getUuid() + &quot; &gt;&gt;&gt; &quot;+ next.getAction() + &quot; (timestamp: &quot; + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + &quot;)&quot;);</span>
+<span class="nc" id="L136">                messageQueue.poll();</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">            } else if (next.getTimeStamp() &lt;= now + tolerance) {</span>
+<span class="fc" id="L138">                Logger.server(&quot;Processing message: &quot; + next.getUuid() + &quot; &gt;&gt;&gt; &quot; + next.getAction() + &quot; (timestamp: &quot; + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + &quot;)&quot;);</span>
+<span class="fc" id="L139">                handleMessage(next);</span>
+<span class="fc" id="L140">                messageQueue.poll();</span>
             } else {
-<span class="nc" id="L145">                Logger.server(&quot;Message not ready yet: &quot; + next.getUuid() + &quot; &gt;&gt;&gt; &quot; + next.getAction() + &quot; (timestamp: &quot; + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + &quot;)&quot;);</span>
-<span class="nc" id="L146">                break;</span>
+<span class="nc" id="L142">                Logger.server(&quot;Message not ready yet: &quot; + next.getUuid() + &quot; &gt;&gt;&gt; &quot; + next.getAction() + &quot; (timestamp: &quot; + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + &quot;)&quot;);</span>
+<span class="nc" id="L143">                break;</span>
             }
-<span class="fc" id="L148">        }</span>
+<span class="fc" id="L145">        }</span>
 
-<span class="fc" id="L150">        sendGameState();</span>
+<span class="fc" id="L147">        sendGameState();</span>
 
-<span class="fc bfc" id="L152" title="All 2 branches covered.">        if (!isQueueEmpty) {</span>
-<span class="fc" id="L153">            long endTime = System.currentTimeMillis();</span>
-<span class="fc" id="L154">            long duration = endTime - now;</span>
-<span class="fc" id="L155">            Logger.info(&quot;processMessages total duration: &quot; + duration + &quot; ms&quot;);</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (!isQueueEmpty) {</span>
+<span class="fc" id="L150">            long endTime = System.currentTimeMillis();</span>
+<span class="fc" id="L151">            long duration = endTime - now;</span>
+<span class="fc" id="L152">            Logger.info(&quot;processMessages total duration: &quot; + duration + &quot; ms&quot;);</span>
         }
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L154">    }</span>
 
+    /**
+     * handleMessage is a method that handles a message by finding the appropriate handler and processing it.
+     *
+     * @param message the {@link Message} to be handled.
+     * @return true if the handler was found, false otherwise.
+     * @implNote It retrieves the handler for the action specified in the message and calls its handle method.
+     * @author A.SALLIER
+     * @date 2025-06-16
+     */
     public boolean handleMessage(Message message) {
         //Logger.info(&quot;Traitement du message : &quot; + message.toString());
 
-<span class="fc" id="L162">        IMessageHandler handler = handlers.get(message.getAction());</span>
+<span class="fc" id="L168">        IMessageHandler handler = handlers.get(message.getAction());</span>
 
-<span class="fc bfc" id="L164" title="All 2 branches covered.">        if (handler != null) {</span>
-<span class="fc" id="L165">            handler.handle(message);</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (handler != null) {</span>
+<span class="fc" id="L171">            handler.handle(message);</span>
             //Logger.info(&quot;Handled action: &quot; + message.getAction() + &quot; for player: &quot; + message.getUuid());
-<span class="fc" id="L167">            return true;</span>
+<span class="fc" id="L173">            return true;</span>
         } else {
-<span class="fc" id="L169">            Logger.failure(&quot;Couldn't find handler for action &quot; + message.getAction());</span>
-<span class="fc" id="L170">            return false;</span>
+<span class="fc" id="L175">            Logger.failure(&quot;Couldn't find handler for action &quot; + message.getAction());</span>
+<span class="fc" id="L176">            return false;</span>
         }
     }
 
     private void sendGameState() {
             //Logger.info(&quot;Starting to send game state to all clients...&quot; + new Date());
-<span class="fc bfc" id="L176" title="All 2 branches covered.">            for (Game game : Server.getInstance().getGames()) {</span>
-<span class="fc" id="L177">                Response response = new Response();</span>
-<span class="fc" id="L178">                response.setResponse(ResponseEnum.GameState);</span>
-<span class="fc" id="L179">                response.setGameName(game.getGameNameEnum());</span>
-<span class="fc" id="L180">                response.setLivingEntities(game.getLivingEntities());</span>
-<span class="fc" id="L181">                response.send(game.getGameNameEnum(), true);</span>
-<span class="fc" id="L182">            }</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">            for (Game game : Server.getInstance().getGames()) {</span>
+<span class="fc" id="L183">                Response response = new Response();</span>
+<span class="fc" id="L184">                response.setResponse(ResponseEnum.GameState);</span>
+<span class="fc" id="L185">                response.setGameName(game.getGameNameEnum());</span>
+<span class="fc" id="L186">                response.setLivingEntities(game.getLivingEntities());</span>
+<span class="fc" id="L187">                response.send(game.getGameNameEnum(), true);</span>
+<span class="fc" id="L188">            }</span>
             //Logger.server(&quot;Game state sent to all clients at &quot; + new Date());
-<span class="fc" id="L184">    }</span>
+<span class="fc" id="L190">    }</span>
 
     /*public void retryLater(Message message) {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();

@@ -178,7 +178,7 @@ import java.util.concurrent.TimeUnit;
      * @date 2025-06-15
      */
     public static void flush() {
-<span class="fc bfc" id="L181" title="All 2 branches covered.">        if (!LOG_QUEUE.isEmpty()) {</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        if (!LOG_QUEUE.isEmpty()) {</span>
 <span class="fc" id="L182">            new Thread(() -&gt; LogWriter.processLogQueue(LOG_QUEUE)).start();</span>
         }
 <span class="fc" id="L184">    }</span>

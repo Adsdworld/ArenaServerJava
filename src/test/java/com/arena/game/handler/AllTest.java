@@ -48,7 +48,6 @@ public class AllTest extends ArenaTestBase {
         Logger.info(">>> " + testInfo.getDisplayName());
     }
 
-
     /**
      * Test Unity : Login
      * This test simulates a player logging in by sending a login message to the server.
@@ -56,7 +55,7 @@ public class AllTest extends ArenaTestBase {
      * The expected behavior is that the server responds with a "Logged" response.
      *
      * @throws InterruptedException, Exception
-     * @implNote
+     * @implNote This test checks if the player is registered on the server and if the UUID in the response matches the test UUID.
      * @author A.BENETREAU
      * @date 2025-06-10
      */
@@ -645,6 +644,4 @@ public class AllTest extends ArenaTestBase {
                         ),
                 "Game with name '" + GameNameEnum.Game1 + "' should be closed on server");
     }
-
-
 }

@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Server is a singleton class that manages the game server, including game creation, player registration, and game state management.
+ */
 public class Server {
 
     private static Server instance;
@@ -55,13 +58,16 @@ public class Server {
      * Creates a new game based on the provided {@link Message}.
      *
      * @param message the {@link Message}  containing the {@link GameNameEnum}  to create the {@link Game}.
+     * @return {@code true} if the game was created successfully; {@code false} otherwise.
      * @implNote This method checks if a {@link Game}  is already being created. If so, it logs a warning and retries later. If not, it proceeds to create the {@link Game} , checking if it already exists or if the maximum number of games has been reached. It sends a {@link Response}  back to the client with the result of the operation.
      * @author A.SALLIER
      * @date 2025-06-07
      */
-    public void createGame(Message message) {
+    public boolean createGame(Message message) {
         GameNameEnum gameNameEnum = message.getGameName();
         Game game = gameExists(gameNameEnum);
+
+        boolean result = false;
 
         Response response = new Response();
 
@@ -89,7 +95,9 @@ public class Server {
             response.setNotify(gameNameEnum.getGameName() + " created successfully.");
             response.setGameName(gameNameEnum);
             response.send();
+            result = true;
         }
+        return result;
     }
 
     /**
@@ -215,17 +223,18 @@ public class Server {
      * @author A.SALLIER
      * @date 2025-06-07
      */
-    public void closeGame(Message message) {
+    public boolean closeGame(Message message) {
         Server.getInstance().getGames().removeIf(Objects::isNull);
 
         GameNameEnum gameNameEnum = message.getGameName();
         Game game = gameExists(gameNameEnum);
 
+        boolean result = false;
+
         Response response = new Response();
 
         if (game == null) {
             Logger.warn(gameNameEnum.getGameName() + " does not exist.");
-            // TODO: create the unity handler for this case game not found
             response.setResponse(ResponseEnum.GameNotFound);
             response.setNotify(gameNameEnum.getGameName() + " does not exist.");
             response.send(message.getUuid());
@@ -248,7 +257,9 @@ public class Server {
             response.setGameName(gameNameEnum);
             response.setNotify(gameNameEnum.getGameName() + " closed successfully.");
             response.send();
+            result = true;
         }
+        return result;
     }
 
 

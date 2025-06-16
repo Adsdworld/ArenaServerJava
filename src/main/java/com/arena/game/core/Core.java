@@ -41,10 +41,6 @@ public class Core {
         return core;
     }
 
-    public PriorityBlockingQueue<Message> getQueue() {
-        return messageQueue;
-    }
-
     private final Map<ActionEnum, IMessageHandler> handlers = new HashMap<>();
 
     private final PriorityBlockingQueue<Message> messageQueue = new PriorityBlockingQueue<>();

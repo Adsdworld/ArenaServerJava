@@ -306,9 +306,9 @@ public class Game {
 
         return this.livingEntities.values().stream()
                 .filter(LivingEntity::isAttackable)
-                .filter(e -> e != livingEntity) // évite de se filtrer soi-même
+                .filter(e -> e != livingEntity)
                 .filter(e -> switch (team) {
-                    case 0 -> false;                      // neutre, pas d'ennemi
+                    case 0 -> false; /* neutral team, no enemies */
                     case 1 -> e.getTeam() == 2;
                     case 2 -> e.getTeam() == 1;
                     default -> false;

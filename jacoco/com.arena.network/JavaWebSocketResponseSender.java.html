@@ -49,7 +49,7 @@ import org.java_websocket.exceptions.WebsocketNotConnectedException;
 
     @Override
     public void sendUuidResponse(String uuid, Response response, boolean silent) {
-<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (Server.getInstance().getPlayersMap().containsKey(uuid)) {</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (Server.getInstance().getPlayersMap().containsKey(uuid)) {</span>
 <span class="fc" id="L53">            response.setUuid(uuid);</span>
 <span class="fc" id="L54">            sendToConn(getConnByUuid(uuid), response);</span>
         }
@@ -62,16 +62,16 @@ import org.java_websocket.exceptions.WebsocketNotConnectedException;
     private WebSocket getConnByUuid(String uuid) {
 <span class="fc" id="L63">        Player player = new Player(uuid);</span>
 <span class="fc" id="L64">        WebSocket conn = JavaWebSocket.getInstance().uuidToWebSocket.get(player);</span>
-<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (conn != null) {</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (conn != null) {</span>
 <span class="fc" id="L66">            return conn;</span>
         }
-<span class="nc" id="L68">        Logger.failure(&quot;Player &quot; + uuid + &quot; not found in connections.&quot;);</span>
-<span class="nc" id="L69">        return null;</span>
+<span class="fc" id="L68">        Logger.failure(&quot;Player &quot; + uuid + &quot; not found in connections.&quot;);</span>
+<span class="fc" id="L69">        return null;</span>
     }
 
     private void sendToConn(WebSocket conn, Response response) {
         try {
-<span class="pc bpc" id="L74" title="2 of 4 branches missed.">            if (conn != null &amp;&amp; conn.isOpen()) {</span>
+<span class="pc bpc" id="L74" title="1 of 4 branches missed.">            if (conn != null &amp;&amp; conn.isOpen()) {</span>
 <span class="fc" id="L75">                conn.send(new JsonService().toJson(response));</span>
             }
 <span class="nc" id="L77">        } catch (WebsocketNotConnectedException e) {</span>
