@@ -95,12 +95,12 @@ $(function(){initNavTree('classcom_1_1arena_1_1server_1_1_server.html','','class
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4adac1f9f65cf0c1651ba719c648c3da" id="r_a4adac1f9f65cf0c1651ba719c648c3da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4adac1f9f65cf0c1651ba719c648c3da">createGame</a> (<a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a> message)</td></tr>
+<tr class="memitem:ad5333a07d74ba51a514c7d7544d44d28" id="r_ad5333a07d74ba51a514c7d7544d44d28"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5333a07d74ba51a514c7d7544d44d28">createGame</a> (<a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a> message)</td></tr>
 <tr class="memitem:a922e39c801ee3fa7d2e6e4cd8fbf5a1b" id="r_a922e39c801ee3fa7d2e6e4cd8fbf5a1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a922e39c801ee3fa7d2e6e4cd8fbf5a1b">getGameOfPlayer</a> (Player player)</td></tr>
 <tr class="memitem:af9511aac08a1cb9520a06c58e25bf670" id="r_af9511aac08a1cb9520a06c58e25bf670"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9511aac08a1cb9520a06c58e25bf670">getGameOfEntity</a> (<a class="el" href="classcom_1_1arena_1_1game_1_1entity_1_1_living_entity.html">LivingEntity</a> entity)</td></tr>
 <tr class="memitem:a77a8bba126c7c1c048fa6ed4bc25d8e9" id="r_a77a8bba126c7c1c048fa6ed4bc25d8e9"><td class="memItemLeft" align="right" valign="top">Player&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a77a8bba126c7c1c048fa6ed4bc25d8e9">getPlayerByUuid</a> (String uuid)</td></tr>
 <tr class="memitem:aeadf5627add5c400659d64e47fde6da9" id="r_aeadf5627add5c400659d64e47fde6da9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeadf5627add5c400659d64e47fde6da9">subscribePlayerToGame</a> (Player player, <a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a> game)</td></tr>
-<tr class="memitem:afca9f0be2365a3207bc867d9c317a1ad" id="r_afca9f0be2365a3207bc867d9c317a1ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afca9f0be2365a3207bc867d9c317a1ad">closeGame</a> (<a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a> message)</td></tr>
+<tr class="memitem:a678fd5b0cb83cecfd12fbac13552cfe7" id="r_a678fd5b0cb83cecfd12fbac13552cfe7"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a678fd5b0cb83cecfd12fbac13552cfe7">closeGame</a> (<a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a> message)</td></tr>
 <tr class="memitem:afc20fe1350d54beaec6c5e2dffeb4782" id="r_afc20fe1350d54beaec6c5e2dffeb4782"><td class="memItemLeft" align="right" valign="top"><a id="afc20fe1350d54beaec6c5e2dffeb4782" name="afc20fe1350d54beaec6c5e2dffeb4782"></a>
 ArrayList&lt; <a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getGames</b> ()</td></tr>
 <tr class="memitem:a2b1919b31f969bc6968740ba56c6ef37" id="r_a2b1919b31f969bc6968740ba56c6ef37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcom_1_1arena_1_1server_1_1_server.html">Server</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b1919b31f969bc6968740ba56c6ef37">serverExists</a> ()</td></tr>
@@ -118,15 +118,17 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a3b710275c89687054292a4678619c433" id="r_a3b710275c89687054292a4678619c433"><td class="memItemLeft" align="right" valign="top"><a id="a3b710275c89687054292a4678619c433" name="a3b710275c89687054292a4678619c433"></a>
 ArrayList&lt; <a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>games</b></td></tr>
 </table>
-<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="afca9f0be2365a3207bc867d9c317a1ad" name="afca9f0be2365a3207bc867d9c317a1ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afca9f0be2365a3207bc867d9c317a1ad">&#9670;&#160;</a></span>closeGame()</h2>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="classcom_1_1arena_1_1server_1_1_server.html">Server</a> is a singleton class that manages the game server, including game creation, player registration, and game state management. </p>
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a678fd5b0cb83cecfd12fbac13552cfe7" name="a678fd5b0cb83cecfd12fbac13552cfe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a678fd5b0cb83cecfd12fbac13552cfe7">&#9670;&#160;</a></span>closeGame()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void com.arena.server.Server.closeGame </td>
+          <td class="memname">boolean com.arena.server.Server.closeGame </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
           <td></td>
@@ -136,23 +138,24 @@ ArrayList&lt; <a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game<
 <p>Closes a game based on the provided <code><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">message</td><td>the <code><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></code> containing the <code><a class="el" href="enumcom_1_1arena_1_1game_1_1_game_name_enum.html">GameNameEnum</a></code> to close the <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code>. @implNote This method checks if a <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code> is already being closed. If so, it logs a warning and retries later. If not, it proceeds to close the <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code>, checking if it exists. It sends a <code><a class="el" href="classcom_1_1arena_1_1network_1_1response_1_1_response.html">Response</a></code> back to the client with the result of the operation. </td></tr>
+    <tr><td class="paramname">message</td><td>the <code><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></code> containing the <code><a class="el" href="enumcom_1_1arena_1_1game_1_1_game_name_enum.html">GameNameEnum</a></code> to close the <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code>. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>true if success @implNote This method checks if a <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code> is already being closed. If so, it logs a warning and retries later. If not, it proceeds to close the <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code>, checking if it exists. It sends a <code><a class="el" href="classcom_1_1arena_1_1network_1_1response_1_1_response.html">Response</a></code> back to the client with the result of the operation. </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A.SALLIER </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025-06-07 </dd></dl>
 
 </div>
 </div>
-<a id="a4adac1f9f65cf0c1651ba719c648c3da" name="a4adac1f9f65cf0c1651ba719c648c3da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4adac1f9f65cf0c1651ba719c648c3da">&#9670;&#160;</a></span>createGame()</h2>
+<a id="ad5333a07d74ba51a514c7d7544d44d28" name="ad5333a07d74ba51a514c7d7544d44d28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5333a07d74ba51a514c7d7544d44d28">&#9670;&#160;</a></span>createGame()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void com.arena.server.Server.createGame </td>
+          <td class="memname">boolean com.arena.server.Server.createGame </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
           <td></td>
@@ -162,10 +165,11 @@ ArrayList&lt; <a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game<
 <p>Creates a new game based on the provided <code><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">message</td><td>the <code><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></code> containing the <code><a class="el" href="enumcom_1_1arena_1_1game_1_1_game_name_enum.html">GameNameEnum</a></code> to create the <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code>. @implNote This method checks if a <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code> is already being created. If so, it logs a warning and retries later. If not, it proceeds to create the <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code> , checking if it already exists or if the maximum number of games has been reached. It sends a <code><a class="el" href="classcom_1_1arena_1_1network_1_1response_1_1_response.html">Response</a></code> back to the client with the result of the operation. </td></tr>
+    <tr><td class="paramname">message</td><td>the <code><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></code> containing the <code><a class="el" href="enumcom_1_1arena_1_1game_1_1_game_name_enum.html">GameNameEnum</a></code> to create the <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code>. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><code class="JavaDocCode">true</code> if the game was created successfully; <code class="JavaDocCode">false</code> otherwise. @implNote This method checks if a <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code> is already being created. If so, it logs a warning and retries later. If not, it proceeds to create the <code><a class="el" href="classcom_1_1arena_1_1game_1_1_game.html">Game</a></code> , checking if it already exists or if the maximum number of games has been reached. It sends a <code><a class="el" href="classcom_1_1arena_1_1network_1_1response_1_1_response.html">Response</a></code> back to the client with the result of the operation. </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A.SALLIER </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025-06-07 </dd></dl>
 

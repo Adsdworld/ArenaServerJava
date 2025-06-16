@@ -1,7 +1,7 @@
 var classcom_1_1arena_1_1server_1_1_server =
 [
-    [ "closeGame", "classcom_1_1arena_1_1server_1_1_server.html#afca9f0be2365a3207bc867d9c317a1ad", null ],
-    [ "createGame", "classcom_1_1arena_1_1server_1_1_server.html#a4adac1f9f65cf0c1651ba719c648c3da", null ],
+    [ "closeGame", "classcom_1_1arena_1_1server_1_1_server.html#a678fd5b0cb83cecfd12fbac13552cfe7", null ],
+    [ "createGame", "classcom_1_1arena_1_1server_1_1_server.html#ad5333a07d74ba51a514c7d7544d44d28", null ],
     [ "gameExists", "classcom_1_1arena_1_1server_1_1_server.html#a1b90a5a09ea65e90156cf731a4849dea", null ],
     [ "getGameOfEntity", "classcom_1_1arena_1_1server_1_1_server.html#af9511aac08a1cb9520a06c58e25bf670", null ],
     [ "getGameOfPlayer", "classcom_1_1arena_1_1server_1_1_server.html#a922e39c801ee3fa7d2e6e4cd8fbf5a1b", null ],

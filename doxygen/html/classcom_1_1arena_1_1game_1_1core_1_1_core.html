@@ -95,7 +95,8 @@ $(function(){initNavTree('classcom_1_1arena_1_1game_1_1core_1_1_core.html','','c
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2678d828d6521ee9386da9fd5db45123" id="r_a2678d828d6521ee9386da9fd5db45123"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2678d828d6521ee9386da9fd5db45123">receive</a> (<a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a> message)</td></tr>
+<tr class="memitem:a1c26f20767128d1a9a4706f01aaeed71" id="r_a1c26f20767128d1a9a4706f01aaeed71"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c26f20767128d1a9a4706f01aaeed71">receive</a> (<a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a> message)</td></tr>
+<tr class="memitem:a5562c0822742afb8ea49734b97b12d00" id="r_a5562c0822742afb8ea49734b97b12d00"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5562c0822742afb8ea49734b97b12d00">handleMessage</a> (<a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a> message)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -131,14 +132,41 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2678d828d6521ee9386da9fd5db45123" name="a2678d828d6521ee9386da9fd5db45123"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2678d828d6521ee9386da9fd5db45123">&#9670;&#160;</a></span>receive()</h2>
+<a id="a5562c0822742afb8ea49734b97b12d00" name="a5562c0822742afb8ea49734b97b12d00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5562c0822742afb8ea49734b97b12d00">&#9670;&#160;</a></span>handleMessage()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void com.arena.game.core.Core.receive </td>
+          <td class="memname">boolean com.arena.game.core.Core.handleMessage </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>handleMessage is a method that handles a message by finding the appropriate handler and processing it.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>the <code><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></code> to be handled. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the handler was found, false otherwise. @implNote It retrieves the handler for the action specified in the message and calls its handle method. </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>A.SALLIER </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2025-06-16 </dd></dl>
+
+</div>
+</div>
+<a id="a1c26f20767128d1a9a4706f01aaeed71" name="a1c26f20767128d1a9a4706f01aaeed71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c26f20767128d1a9a4706f01aaeed71">&#9670;&#160;</a></span>receive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">boolean com.arena.game.core.Core.receive </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></td>          <td class="paramname"><span class="paramname"><em>message</em></span></td><td>)</td>
           <td></td>
@@ -148,10 +176,11 @@ Static Public Member Functions</h2></td></tr>
 <p>Receive is a method that receives a message and adds it to the message queue.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">message</td><td>the <code><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></code> to be processed. @implNote Checks if the message is null or if the action is invalid, logging an error if so. </td></tr>
+    <tr><td class="paramname">message</td><td>the <code><a class="el" href="classcom_1_1arena_1_1network_1_1message_1_1_message.html">Message</a></code> to be processed. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the message was successfully added to the queue, false otherwise. @implNote Checks if the message is null or if the action is invalid, logging an error if so. </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>A.SALLIER </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025-06-15 </dd></dl>
 

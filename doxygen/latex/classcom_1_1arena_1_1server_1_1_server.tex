@@ -3,7 +3,7 @@
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_a4adac1f9f65cf0c1651ba719c648c3da}{create\+Game}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
+boolean \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_ad5333a07d74ba51a514c7d7544d44d28}{create\+Game}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
 \item 
 \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_a922e39c801ee3fa7d2e6e4cd8fbf5a1b}{get\+Game\+Of\+Player}} (Player player)
 \item 
@@ -13,7 +13,7 @@ Player \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_a77a8bba126c7c1c0
 \item 
 void \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_aeadf5627add5c400659d64e47fde6da9}{subscribe\+Player\+To\+Game}} (Player player, \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} game)
 \item 
-void \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_afca9f0be2365a3207bc867d9c317a1ad}{close\+Game}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
+boolean \mbox{\hyperlink{classcom_1_1arena_1_1server_1_1_server_a678fd5b0cb83cecfd12fbac13552cfe7}{close\+Game}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
 \item 
 \Hypertarget{classcom_1_1arena_1_1server_1_1_server_afc20fe1350d54beaec6c5e2dffeb4782}\label{classcom_1_1arena_1_1server_1_1_server_afc20fe1350d54beaec6c5e2dffeb4782} 
 Array\+List$<$ \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} $>$ {\bfseries get\+Games} ()
@@ -40,41 +40,50 @@ Array\+List$<$ \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1_game}{Game}} $>$ {
 \end{DoxyCompactItemize}
 
 
+\doxysubsection{Detailed Description}
+\doxylink{classcom_1_1arena_1_1server_1_1_server}{Server} is a singleton class that manages the game server, including game creation, player registration, and game state management. 
+
 \label{doc-func-members}
 \Hypertarget{classcom_1_1arena_1_1server_1_1_server_doc-func-members}
 \doxysubsection{Member Function Documentation}
-\Hypertarget{classcom_1_1arena_1_1server_1_1_server_afca9f0be2365a3207bc867d9c317a1ad}\index{com.arena.server.Server@{com.arena.server.Server}!closeGame@{closeGame}}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_a678fd5b0cb83cecfd12fbac13552cfe7}\index{com.arena.server.Server@{com.arena.server.Server}!closeGame@{closeGame}}
 \index{closeGame@{closeGame}!com.arena.server.Server@{com.arena.server.Server}}
 \doxysubsubsection{\texorpdfstring{closeGame()}{closeGame()}}
-{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_afca9f0be2365a3207bc867d9c317a1ad} 
-void com.\+arena.\+server.\+Server.\+close\+Game (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_a678fd5b0cb83cecfd12fbac13552cfe7} 
+boolean com.\+arena.\+server.\+Server.\+close\+Game (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
 
 Closes a game based on the provided {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}.
 
 
 \begin{DoxyParams}{Parameters}
-{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} containing the {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} to close the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}}. @impl\+Note This method checks if a {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} is already being closed. If so, it logs a warning and retries later. If not, it proceeds to close the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}}, checking if it exists. It sends a {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} back to the client with the result of the operation. \\
+{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} containing the {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} to close the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}}. \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if success @impl\+Note This method checks if a {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} is already being closed. If so, it logs a warning and retries later. If not, it proceeds to close the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}}, checking if it exists. It sends a {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} back to the client with the result of the operation. 
+\end{DoxyReturn}
 \begin{DoxyAuthor}{Author}
 A.\+SALLIER 
 \end{DoxyAuthor}
 \begin{DoxyDate}{Date}
 2025-\/06-\/07 
 \end{DoxyDate}
-\Hypertarget{classcom_1_1arena_1_1server_1_1_server_a4adac1f9f65cf0c1651ba719c648c3da}\index{com.arena.server.Server@{com.arena.server.Server}!createGame@{createGame}}
+\Hypertarget{classcom_1_1arena_1_1server_1_1_server_ad5333a07d74ba51a514c7d7544d44d28}\index{com.arena.server.Server@{com.arena.server.Server}!createGame@{createGame}}
 \index{createGame@{createGame}!com.arena.server.Server@{com.arena.server.Server}}
 \doxysubsubsection{\texorpdfstring{createGame()}{createGame()}}
-{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_a4adac1f9f65cf0c1651ba719c648c3da} 
-void com.\+arena.\+server.\+Server.\+create\+Game (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1server_1_1_server_ad5333a07d74ba51a514c7d7544d44d28} 
+boolean com.\+arena.\+server.\+Server.\+create\+Game (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
 
 Creates a new game based on the provided {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}.
 
 
 \begin{DoxyParams}{Parameters}
-{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} containing the {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} to create the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}}. @impl\+Note This method checks if a {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} is already being created. If so, it logs a warning and retries later. If not, it proceeds to create the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} , checking if it already exists or if the maximum number of games has been reached. It sends a {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} back to the client with the result of the operation. \\
+{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} containing the {\ttfamily \doxylink{enumcom_1_1arena_1_1game_1_1_game_name_enum}{Game\+Name\+Enum}} to create the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}}. \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if the game was created successfully; {\ttfamily false} otherwise. @impl\+Note This method checks if a {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} is already being created. If so, it logs a warning and retries later. If not, it proceeds to create the {\ttfamily \doxylink{classcom_1_1arena_1_1game_1_1_game}{Game}} , checking if it already exists or if the maximum number of games has been reached. It sends a {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1response_1_1_response}{Response}} back to the client with the result of the operation. 
+\end{DoxyReturn}
 \begin{DoxyAuthor}{Author}
 A.\+SALLIER 
 \end{DoxyAuthor}

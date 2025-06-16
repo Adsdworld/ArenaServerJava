@@ -8,9 +8,9 @@ var annotated_dup =
           ] ],
           [ "entity", "namespacecom_1_1arena_1_1game_1_1entity.html", [
             [ "building", "namespacecom_1_1arena_1_1game_1_1entity_1_1building.html", [
-              [ "Inhibitor", "classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_inhibitor.html", null ],
-              [ "Nexus", "classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_nexus.html", null ],
-              [ "Tower", "classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_tower.html", null ],
+              [ "Inhibitor", "classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_inhibitor.html", "classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_inhibitor" ],
+              [ "Nexus", "classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_nexus.html", "classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_nexus" ],
+              [ "Tower", "classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_tower.html", "classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_tower" ],
               [ "TowerDead", "classcom_1_1arena_1_1game_1_1entity_1_1building_1_1_tower_dead.html", null ]
             ] ],
             [ "champion", "namespacecom_1_1arena_1_1game_1_1entity_1_1champion.html", [
@@ -22,9 +22,9 @@ var annotated_dup =
             [ "EntityPositions", "classcom_1_1arena_1_1game_1_1entity_1_1_entity_positions.html", null ],
             [ "EntityRigidbody", "classcom_1_1arena_1_1game_1_1entity_1_1_entity_rigidbody.html", null ],
             [ "EntityTransform", "classcom_1_1arena_1_1game_1_1entity_1_1_entity_transform.html", "classcom_1_1arena_1_1game_1_1entity_1_1_entity_transform" ],
-            [ "ILivingEntity", "interfacecom_1_1arena_1_1game_1_1entity_1_1_i_living_entity.html", null ],
+            [ "ILivingEntity", "interfacecom_1_1arena_1_1game_1_1entity_1_1_i_living_entity.html", "interfacecom_1_1arena_1_1game_1_1entity_1_1_i_living_entity" ],
             [ "ILivingEntityCast", "interfacecom_1_1arena_1_1game_1_1entity_1_1_i_living_entity_cast.html", null ],
-            [ "ILivingEntityLock", "interfacecom_1_1arena_1_1game_1_1entity_1_1_i_living_entity_lock.html", null ],
+            [ "ILivingEntityLock", "interfacecom_1_1arena_1_1game_1_1entity_1_1_i_living_entity_lock.html", "interfacecom_1_1arena_1_1game_1_1entity_1_1_i_living_entity_lock" ],
             [ "ILivingEntityPos", "interfacecom_1_1arena_1_1game_1_1entity_1_1_i_living_entity_pos.html", null ],
             [ "ILivingEntitySkin", "interfacecom_1_1arena_1_1game_1_1entity_1_1_i_living_entity_skin.html", null ],
             [ "LivingEntity", "classcom_1_1arena_1_1game_1_1entity_1_1_living_entity.html", "classcom_1_1arena_1_1game_1_1entity_1_1_living_entity" ],
@@ -57,7 +57,6 @@ var annotated_dup =
             [ "ZoneRectangle", "classcom_1_1arena_1_1game_1_1zone_1_1_zone_rectangle.html", "classcom_1_1arena_1_1game_1_1zone_1_1_zone_rectangle" ]
           ] ],
           [ "Game", "classcom_1_1arena_1_1game_1_1_game.html", "classcom_1_1arena_1_1game_1_1_game" ],
-          [ "GameManager", "classcom_1_1arena_1_1game_1_1_game_manager.html", null ],
           [ "GameNameEnum", "enumcom_1_1arena_1_1game_1_1_game_name_enum.html", null ]
         ] ],
         [ "network", "namespacecom_1_1arena_1_1network.html", [
@@ -77,8 +76,7 @@ var annotated_dup =
           [ "ResponseEnum", "enumcom_1_1arena_1_1player_1_1_response_enum.html", "enumcom_1_1arena_1_1player_1_1_response_enum" ]
         ] ],
         [ "server", "namespacecom_1_1arena_1_1server.html", [
-          [ "Server", "classcom_1_1arena_1_1server_1_1_server.html", "classcom_1_1arena_1_1server_1_1_server" ],
-          [ "ServerManager", "classcom_1_1arena_1_1server_1_1_server_manager.html", null ]
+          [ "Server", "classcom_1_1arena_1_1server_1_1_server.html", "classcom_1_1arena_1_1server_1_1_server" ]
         ] ],
         [ "utils", "namespacecom_1_1arena_1_1utils.html", [
           [ "json", "namespacecom_1_1arena_1_1utils_1_1json.html", [

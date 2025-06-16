@@ -5,7 +5,7 @@ var searchData=
   ['castrhandler_2',['CastRHandler',['../classcom_1_1arena_1_1game_1_1handler_1_1_cast_r_handler.html',1,'com::arena::game::handler']]],
   ['castwhandler_3',['CastWHandler',['../classcom_1_1arena_1_1game_1_1handler_1_1_cast_w_handler.html',1,'com::arena::game::handler']]],
   ['clearunitygame_4',['clearUnityGame',['../classcom_1_1arena_1_1game_1_1_game.html#a03caed79873439ea7840bcf84da50049',1,'com.arena.game.Game.clearUnityGame(Player player)'],['../classcom_1_1arena_1_1game_1_1_game.html#a8c6b3325dbc97791c22713749e6da9fb',1,'com.arena.game.Game.clearUnityGame(Game game)']]],
-  ['closegame_5',['closeGame',['../classcom_1_1arena_1_1server_1_1_server.html#afca9f0be2365a3207bc867d9c317a1ad',1,'com::arena::server::Server']]],
+  ['closegame_5',['closeGame',['../classcom_1_1arena_1_1server_1_1_server.html#a678fd5b0cb83cecfd12fbac13552cfe7',1,'com::arena::server::Server']]],
   ['closegamehandler_6',['CloseGameHandler',['../classcom_1_1arena_1_1game_1_1handler_1_1_close_game_handler.html',1,'com::arena::game::handler']]],
   ['com_3a_3aarena_7',['arena',['../namespacecom_1_1arena.html',1,'com']]],
   ['com_3a_3aarena_3a_3agame_8',['game',['../namespacecom_1_1arena_1_1game.html',1,'com::arena']]],
@@ -25,6 +25,6 @@ var searchData=
   ['com_3a_3aarena_3a_3autils_3a_3ajson_22',['json',['../namespacecom_1_1arena_1_1utils_1_1json.html',1,'com::arena::utils']]],
   ['com_3a_3aarena_3a_3autils_3a_3alogger_23',['logger',['../namespacecom_1_1arena_1_1utils_1_1logger.html',1,'com::arena::utils']]],
   ['core_24',['Core',['../classcom_1_1arena_1_1game_1_1core_1_1_core.html',1,'com::arena::game::core']]],
-  ['creategame_25',['createGame',['../classcom_1_1arena_1_1server_1_1_server.html#a4adac1f9f65cf0c1651ba719c648c3da',1,'com::arena::server::Server']]],
+  ['creategame_25',['createGame',['../classcom_1_1arena_1_1server_1_1_server.html#ad5333a07d74ba51a514c7d7544d44d28',1,'com::arena::server::Server']]],
   ['creategamehandler_26',['CreateGameHandler',['../classcom_1_1arena_1_1game_1_1handler_1_1_create_game_handler.html',1,'com::arena::game::handler']]]
 ];

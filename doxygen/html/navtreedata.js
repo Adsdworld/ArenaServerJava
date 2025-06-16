@@ -48,7 +48,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"interfacecom_1_1arena_1_1game_1_1entity_1_1_i_living_entity_lock.html"
+"classcom_1_1arena_1_1utils_1_1logger_1_1_log_writer.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

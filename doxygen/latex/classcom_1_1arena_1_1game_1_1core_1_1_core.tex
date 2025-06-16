@@ -3,7 +3,9 @@
 \doxysubsubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1core_1_1_core_a2678d828d6521ee9386da9fd5db45123}{receive}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
+boolean \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1core_1_1_core_a1c26f20767128d1a9a4706f01aaeed71}{receive}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
+\item 
+boolean \mbox{\hyperlink{classcom_1_1arena_1_1game_1_1core_1_1_core_a5562c0822742afb8ea49734b97b12d00}{handle\+Message}} (\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} message)
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Static Public Member Functions}
 \begin{DoxyCompactItemize}
@@ -32,19 +34,44 @@ A.\+SALLIER
 \begin{DoxyDate}{Date}
 2025-\/06-\/15 
 \end{DoxyDate}
-\Hypertarget{classcom_1_1arena_1_1game_1_1core_1_1_core_a2678d828d6521ee9386da9fd5db45123}\index{com.arena.game.core.Core@{com.arena.game.core.Core}!receive@{receive}}
+\Hypertarget{classcom_1_1arena_1_1game_1_1core_1_1_core_a5562c0822742afb8ea49734b97b12d00}\index{com.arena.game.core.Core@{com.arena.game.core.Core}!handleMessage@{handleMessage}}
+\index{handleMessage@{handleMessage}!com.arena.game.core.Core@{com.arena.game.core.Core}}
+\doxysubsubsection{\texorpdfstring{handleMessage()}{handleMessage()}}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1game_1_1core_1_1_core_a5562c0822742afb8ea49734b97b12d00} 
+boolean com.\+arena.\+game.\+core.\+Core.\+handle\+Message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
+
+handle\+Message is a method that handles a message by finding the appropriate handler and processing it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} to be handled. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the handler was found, false otherwise. @impl\+Note It retrieves the handler for the action specified in the message and calls its handle method. 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+A.\+SALLIER 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2025-\/06-\/16 
+\end{DoxyDate}
+\Hypertarget{classcom_1_1arena_1_1game_1_1core_1_1_core_a1c26f20767128d1a9a4706f01aaeed71}\index{com.arena.game.core.Core@{com.arena.game.core.Core}!receive@{receive}}
 \index{receive@{receive}!com.arena.game.core.Core@{com.arena.game.core.Core}}
 \doxysubsubsection{\texorpdfstring{receive()}{receive()}}
-{\footnotesize\ttfamily \label{classcom_1_1arena_1_1game_1_1core_1_1_core_a2678d828d6521ee9386da9fd5db45123} 
-void com.\+arena.\+game.\+core.\+Core.\+receive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{classcom_1_1arena_1_1game_1_1core_1_1_core_a1c26f20767128d1a9a4706f01aaeed71} 
+boolean com.\+arena.\+game.\+core.\+Core.\+receive (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}}}]{message}{}\end{DoxyParamCaption})}
 
 Receive is a method that receives a message and adds it to the message queue.
 
 
 \begin{DoxyParams}{Parameters}
-{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} to be processed. @impl\+Note Checks if the message is null or if the action is invalid, logging an error if so. \\
+{\em message} & the {\ttfamily \doxylink{classcom_1_1arena_1_1network_1_1message_1_1_message}{Message}} to be processed. \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the message was successfully added to the queue, false otherwise. @impl\+Note Checks if the message is null or if the action is invalid, logging an error if so. 
+\end{DoxyReturn}
 \begin{DoxyAuthor}{Author}
 A.\+SALLIER 
 \end{DoxyAuthor}

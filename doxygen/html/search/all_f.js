@@ -10,11 +10,10 @@ var searchData=
   ['server_7',['Server',['../classcom_1_1arena_1_1server_1_1_server.html',1,'com::arena::server']]],
   ['server_8',['server',['../classcom_1_1arena_1_1utils_1_1logger_1_1_logger.html#a7aeac4d63610399caff56c2a4409b9bb',1,'com::arena::utils::logger::Logger']]],
   ['serverexists_9',['serverExists',['../classcom_1_1arena_1_1server_1_1_server.html#a2b1919b31f969bc6968740ba56c6ef37',1,'com::arena::server::Server']]],
-  ['servermanager_10',['ServerManager',['../classcom_1_1arena_1_1server_1_1_server_manager.html',1,'com::arena::server']]],
-  ['setpos_11',['setPos',['../classcom_1_1arena_1_1game_1_1entity_1_1_living_entity_pos.html#a135bfe553d2409b9a03ed53f21891b9a',1,'com::arena::game::entity::LivingEntityPos']]],
-  ['setscale_12',['setScale',['../classcom_1_1arena_1_1game_1_1entity_1_1_entity_transform.html#a8e0383cf644726f0068b41f3432695d2',1,'com::arena::game::entity::EntityTransform']]],
-  ['setskinpos_13',['setSkinPos',['../classcom_1_1arena_1_1game_1_1entity_1_1_living_entity_skin.html#ab2da2fd1d453f49ffa037a32dfb33d4d',1,'com::arena::game::entity::LivingEntitySkin']]],
-  ['spawnatteamspawn_14',['spawnAtTeamSpawn',['../classcom_1_1arena_1_1game_1_1entity_1_1_living_entity.html#a22709c4ef74611b1bcdaff22caf8fe01',1,'com::arena::game::entity::LivingEntity']]],
-  ['sub_15',['sub',['../classcom_1_1arena_1_1utils_1_1_vector2f.html#a7b4551c544c6c05fade2d285504c12f2',1,'com::arena::utils::Vector2f']]],
-  ['subscribeplayertogame_16',['subscribePlayerToGame',['../classcom_1_1arena_1_1server_1_1_server.html#aeadf5627add5c400659d64e47fde6da9',1,'com::arena::server::Server']]]
+  ['setpos_10',['setPos',['../classcom_1_1arena_1_1game_1_1entity_1_1_living_entity_pos.html#a135bfe553d2409b9a03ed53f21891b9a',1,'com::arena::game::entity::LivingEntityPos']]],
+  ['setscale_11',['setScale',['../classcom_1_1arena_1_1game_1_1entity_1_1_entity_transform.html#a8e0383cf644726f0068b41f3432695d2',1,'com::arena::game::entity::EntityTransform']]],
+  ['setskinpos_12',['setSkinPos',['../classcom_1_1arena_1_1game_1_1entity_1_1_living_entity_skin.html#ab2da2fd1d453f49ffa037a32dfb33d4d',1,'com::arena::game::entity::LivingEntitySkin']]],
+  ['spawnatteamspawn_13',['spawnAtTeamSpawn',['../classcom_1_1arena_1_1game_1_1entity_1_1_living_entity.html#a22709c4ef74611b1bcdaff22caf8fe01',1,'com::arena::game::entity::LivingEntity']]],
+  ['sub_14',['sub',['../classcom_1_1arena_1_1utils_1_1_vector2f.html#a7b4551c544c6c05fade2d285504c12f2',1,'com::arena::utils::Vector2f']]],
+  ['subscribeplayertogame_15',['subscribePlayerToGame',['../classcom_1_1arena_1_1server_1_1_server.html#aeadf5627add5c400659d64e47fde6da9',1,'com::arena::server::Server']]]
 ];
