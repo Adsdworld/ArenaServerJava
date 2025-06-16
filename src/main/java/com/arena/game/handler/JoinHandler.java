@@ -50,10 +50,6 @@ public class JoinHandler implements IMessageHandler {
 
             if (existsInGame == null) {
 
-                // TODO: Permettre au joueur de choisir son équipe : bien pour faire une demo, car aucun outil pour forcer une équipe
-                // rajouter un propriété dans le message
-                // rajouter un élément dans l'interface ServerSelector pour choisir BLEU ROUGE SPECTATEUR
-
                 int blue = game.getPlayersOfTeam(1).size();
                 int red = game.getPlayersOfTeam(2).size();
 
@@ -115,11 +111,7 @@ public class JoinHandler implements IMessageHandler {
             /* Assign the new entity to the player */
             game.yourEntityIs(player.getUuid());
 
-            // TODO : improve message add possibility to choose team and champion
-
-
         } else {
-            // TODO: improve this response create a special ResponseEnum for this case and handle it in the client unity
             response.setResponse(ResponseEnum.GameNotFound);
             response.setNotify("Could not Join : " + message.getGameName().getGameName() + " not found, please create it first.");
             response.setGameName(message.getGameName());

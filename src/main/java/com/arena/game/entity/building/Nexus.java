@@ -25,7 +25,7 @@ public class Nexus extends LivingEntity {
 
 
     public Nexus(String id, int team) {
-        super(id, 50, team, "Nexus");
+        super(id, 2000, team, "Nexus");
 
         Building building = new Building(26f);
 

@@ -231,16 +231,6 @@ public class Game {
         }
     }
 
-    /*public void dealDamageToEnnemies(LivingEntity attacker, Zone zone, int damage, long duration) {
-        List<LivingEntity> enemies = getEnemies(attacker);
-
-        for (LivingEntity enemy : enemies) {
-            if (zone.isInZone(attacker, enemy)) {
-                enemy.heal(damage);
-            }
-        }
-    }*/
-
     /**
      * Retrieves a {@link LivingEntity} by its general ID.
      *

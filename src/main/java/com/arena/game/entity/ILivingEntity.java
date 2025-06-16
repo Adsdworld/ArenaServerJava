@@ -22,7 +22,13 @@ public interface ILivingEntity {
 
     String getName();
 
+    /**
+     * To make die an entity
+     * Code logic specific to make the entity die after taking damage and having 0 health.
+     *
+     * @implNote
+     * @author A.SALLIER
+     * @date 2025-06-16
+     */
     void die();
-
-
 }

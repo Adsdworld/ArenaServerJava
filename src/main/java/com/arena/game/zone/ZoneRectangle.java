@@ -4,8 +4,8 @@ import com.arena.game.entity.LivingEntity;
 import com.arena.utils.Vector2f;
 
 public class ZoneRectangle implements Zone {
-    private final float width;    // largeur du rectangle (gauche/droite)
-    private final float length;   // profondeur (distance devant soi)
+    private final float width;
+    private final float length;
 
     public ZoneRectangle(float width, float length) {
         this.width = width;
@@ -20,10 +20,10 @@ public class ZoneRectangle implements Zone {
         Vector2f toTarget = targetPos.sub(attackerPos);
 
         Vector2f forward = Vector2f.rotationToDirection(attacker.getRotationY());
-        Vector2f right = new Vector2f(forward.y, -forward.x); // vecteur perpendiculaire à gauche/droite
+        Vector2f right = new Vector2f(forward.y, -forward.x);
 
-        float forwardDist = toTarget.dot(forward);  // projection sur la direction (profondeur)
-        float rightDist = toTarget.dot(right);      // projection sur le côté (largeur)
+        float forwardDist = toTarget.dot(forward);
+        float rightDist = toTarget.dot(right);
 
         return (forwardDist >= 0 && forwardDist <= length && Math.abs(rightDist) <= width / 2f);
     }

@@ -48,14 +48,6 @@ public class Core {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     public Core() {
-        /*handlers.put(ActionEnum.CreateGame, new CreateGameHandler());
-        handlers.put(ActionEnum.Join, new JoinHandler());
-        handlers.put(ActionEnum.CloseGame, new CloseGameHandler());
-        handlers.put(ActionEnum.PlayerStateUpdate, new PlayerStateUpdateHandler());
-        handlers.put(ActionEnum.CastQ, new CastQHandler());
-        handlers.put(ActionEnum.CastW, new CastWHandler());
-        handlers.put(ActionEnum.CastE, new CastEHandler());
-        handlers.put(ActionEnum.CastR, new CastRHandler());*/
         handlers.putAll(HandlersGame.HANDLERS);
         handlers.putAll(HandlersCast.HANDLERS);
 
@@ -126,10 +118,7 @@ public class Core {
 
 
 
-            Message next = messageQueue.peek(); // pas encore retiré
-            /*if (next == null) {
-                break;
-            }*/
+            Message next = messageQueue.peek();
 
             if (next.getTimeStamp() < now - tolerance) {
                 Logger.server("Skipping message: " + next.getUuid() + " >>> "+ next.getAction() + " (timestamp: " + formatter.format(Instant.ofEpochMilli(next.getTimeStamp())) + ")");
@@ -188,16 +177,4 @@ public class Core {
             }
             //Logger.server("Game state sent to all clients at " + new Date());
     }
-
-    /*public void retryLater(Message message) {
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.schedule(() -> {
-            Core.getInstance().receive(message);
-            scheduler.shutdown();
-        }, 100, TimeUnit.MILLISECONDS);
-    }*/
-
-    /*public void shutdown() {
-        scheduler.shutdown();
-    }*/
 }

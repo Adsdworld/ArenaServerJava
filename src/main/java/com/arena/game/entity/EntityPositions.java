@@ -8,7 +8,6 @@ import java.util.Map;
 
 public class EntityPositions {
 
-    // Spawn joueurs
     public static final Position BLUE_SPAWN = new Position(272.9823f, 15.0f, 300.6143f, 0f);
     public static final Position RED_SPAWN = new Position(723.0251f, 15.0f, 752.9824f, 0f);
     public static final Position CENTER_SPAWN = new Position(493.0f, 15.0f, 530.0f, 0f);

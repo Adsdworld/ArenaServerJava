@@ -219,6 +219,7 @@ public class Server {
      * Closes a game based on the provided {@link Message}.
      *
      * @param message the {@link Message} containing the {@link GameNameEnum} to close the {@link Game}.
+     * @return true if success
      * @implNote This method checks if a {@link Game}  is already being closed. If so, it logs a warning and retries later. If not, it proceeds to close the {@link Game}, checking if it exists. It sends a {@link Response} back to the client with the result of the operation.
      * @author A.SALLIER
      * @date 2025-06-07

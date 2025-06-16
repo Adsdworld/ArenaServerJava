@@ -24,7 +24,7 @@ public class Inhibitor extends LivingEntity {
 
 
     public Inhibitor(String id, int team) {
-        super(id, 50, team, "Inhibitor");
+        super(id, 1200, team, "Inhibitor");
 
         this.setSkinScale(0.0029f);
         this.setSkinPos(new Vector3f(0.0f, 0.515f, 0.0f));
