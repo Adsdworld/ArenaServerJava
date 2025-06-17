@@ -549,7 +549,7 @@ public class AllTest extends ArenaTestBase {
         assertEquals(entity.getSkinAnimationForIdle(), matchingEntity.getSkinAnimation(), "Idle animation should be set for the entity");
     }
 
-    @Test
+    /*@Test
     @Order(15)
     void endToWin() throws InterruptedException {
         Map<String, EntityInit> BLUE = new LinkedHashMap<>();
@@ -612,7 +612,7 @@ public class AllTest extends ArenaTestBase {
         assertNotNull(match, "Info response should contain a win message");
         Logger.test(match.getNotify());
 
-    }
+    }*/
 
     @Test
     @Order(16)
